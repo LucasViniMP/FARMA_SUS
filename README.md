@@ -44,3 +44,15 @@ Banco de Dados:
 O Cloud Firestore será utilizado como plataforma de banco de dados e serviços de apoio à
 aplicação. Sua utilização permite trabalhar com banco de dados hospedado em nuvem e recursos
 de autenticação e API.
+
+Integrantes:
+-
+Felipe Deivid:
+
+Gabriel Cardoso:
+
+João Antônio:
+
+Lucas Vinicius:
+
+Yasmin Rios:
