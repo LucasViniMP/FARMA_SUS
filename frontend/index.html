@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Acesso ao portal FarmaSUS" />
+    <title>Entrar | FarmaSUS</title>
+    <link rel="stylesheet" href="style.css" />
+    <script src="script.js" defer></script>
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="index.html" aria-label="FarmaSUS - página de login">
+        <span class="brand-cross" aria-hidden="true"></span>
+        <span>FarmaSUS</span>
+      </a>
+    </header>
+
+    <div class="page-shell">
+      <main class="auth-main auth-main--login">
+        <section class="auth-panel auth-panel--login" aria-labelledby="page-title">
+          <div class="panel-heading">
+            <h1 id="page-title">Entrar no FarmaSUS</h1>
+            <p>Use seu e-mail e senha para acessar.</p>
+          </div>
+
+          <form id="login-form" class="auth-form" data-form-type="login" novalidate>
+            <div class="form-field">
+              <label for="login-email">E-mail</label>
+              <input
+                id="login-email"
+                name="email"
+                type="email"
+                autocomplete="email"
+                placeholder="seuemail@exemplo.com"
+                aria-describedby="login-email-error"
+                required
+              />
+              <span class="field-error" id="login-email-error" aria-live="polite"></span>
+            </div>
+
+            <div class="form-field">
+              <label for="login-password">Senha</label>
+              <div class="password-control">
+                <input
+                  id="login-password"
+                  name="password"
+                  type="password"
+                  autocomplete="current-password"
+                  placeholder="Digite sua senha"
+                  aria-describedby="login-password-error"
+                  required
+                />
+                <button
+                  class="password-toggle"
+                  type="button"
+                  data-password-toggle="login-password"
+                  aria-label="Mostrar senha"
+                  aria-pressed="false"
+                >
+                  <svg aria-hidden="true" viewBox="0 0 24 24" focusable="false">
+                    <path d="M2.2 12s3.6-6 9.8-6 9.8 6 9.8 6-3.6 6-9.8 6-9.8-6-9.8-6Z" />
+                    <circle cx="12" cy="12" r="2.8" />
+                  </svg>
+                </button>
+              </div>
+              <span class="field-error" id="login-password-error" aria-live="polite"></span>
+            </div>
+
+            <button class="primary-button" type="submit">Entrar</button>
+
+            <div class="form-message" data-form-message role="status" aria-live="polite"></div>
+          </form>
+
+          <p class="alternate-action">
+            Ainda não tem conta? <a href="cadastro.html">Cadastre-se</a>
+          </p>
+        </section>
+      </main>
+
+      <footer class="site-footer">FarmaSUS</footer>
+    </div>
+  </body>
+</html>
