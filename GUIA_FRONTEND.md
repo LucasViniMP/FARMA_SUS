@@ -1,56 +1,56 @@
 # FarmaSUS — Login e cadastro
 
-Front-end estático, em modo de demonstração, das telas de login e cadastro do FarmaSUS. Foi implementado somente com HTML, CSS e JavaScript puro.
+Esta é a primeira etapa do front-end do FarmaSUS, com as telas de login e cadastro desenvolvidas em HTML, CSS e JavaScript puro.
 
-## Como executar
+As telas já permitem preencher os formulários e testar as validações. Por enquanto, tudo funciona em modo de demonstração: nenhuma conta é criada e os dados não são enviados nem salvos.
 
-Opção mais simples: abra `frontend/index.html` diretamente no navegador.
+## Como abrir
 
-Para servir por HTTP a partir da raiz do projeto, use uma destas opções:
+Abra `frontend/index.html` no navegador. Para acessar o cadastro ou voltar ao login, use os links abaixo dos botões.
 
-```powershell
-python -m http.server 8000
-```
+## Organização dos arquivos
 
-Depois acesse `http://localhost:8000/frontend/`. A navegação entre login e cadastro funciona pelos links abaixo dos botões.
+| Arquivo | Função |
+| --- | --- |
+| `frontend/index.html` | Página de login. |
+| `frontend/cadastro.html` | Página de cadastro. |
+| `frontend/style.css` | Cores, fontes, espaçamentos e adaptação para celular. |
+| `frontend/script.js` | Validações, controle da senha e mensagens dos formulários. |
 
-## Arquivos
+## Como os formulários funcionam
 
-- `frontend/index.html`: tela de login.
-- `frontend/cadastro.html`: tela de cadastro.
-- `frontend/style.css`: identidade visual compartilhada, layout responsivo e estados de validação.
-- `frontend/script.js`: validação compartilhada, mostrar/ocultar senha, mensagens de demonstração e pontos de integração futura.
+As duas telas verificam os campos obrigatórios, o formato do e-mail e os requisitos da senha.
 
-## Validação e modo de demonstração
+A senha deve ter pelo menos **8 caracteres**, incluindo letra maiúscula, letra minúscula, número e caractere especial.
 
-As duas páginas impedem o envio quando há campos obrigatórios vazios, e-mail inválido ou senha fraca. A senha precisa ter pelo menos 8 caracteres, incluindo letra maiúscula, letra minúscula, número e caractere especial. O cadastro também valida o CPF, bloqueia letras nesse campo, impede datas de nascimento futuras e verifica se a confirmação coincide com a senha. Os erros são exibidos junto aos campos e o conteúdo já digitado é preservado.
+No cadastro, também são verificados o CPF, a data de nascimento e a confirmação da senha. O formulário bloqueia letras no CPF, datas futuras e senhas que não coincidem.
 
-Quando todos os dados são válidos, uma notificação verde aparece no canto superior direito e confirma a validação. Nenhum dado é enviado ou persistido nesta versão.
+Quando alguma informação precisa ser corrigida, o erro aparece próximo ao campo. Os dados já preenchidos são mantidos para facilitar a correção. Quando está tudo certo, uma notificação verde confirma a validação em modo de demonstração.
 
-## Resultados dos testes
+Também é possível mostrar ou ocultar a senha durante o preenchimento.
 
-| Cenário | Login | Cadastro |
-| --- | --- | --- |
-| Campos vazios | **Aprovado:** impediu o envio, marcou e informou e-mail e senha | **Aprovado:** impediu o envio, marcou e informou os 6 campos obrigatórios |
-| Senha fora do padrão | **Aprovado:** exige 8 caracteres, maiúscula, minúscula, número e especial | **Aprovado:** exige 8 caracteres, maiúscula, minúscula, número e especial |
-| Dados válidos | **Aprovado:** exibiu sucesso da validação em modo de demonstração | **Aprovado:** exibiu sucesso da validação em modo de demonstração |
-| Tela pequena | **Aprovado em 320 × 640 px:** campos e botão permaneceram dentro da tela, sem rolagem horizontal | **Aprovado em 320 × 640 px:** mudou de duas para uma coluna; todos os campos e o botão permaneceram dentro da tela, sem rolagem horizontal |
+## Testes realizados
 
-Também foram testados CPF com letras, CPF inválido, data futura e divergência entre senha e confirmação. Os valores preenchidos foram preservados em todos os erros. O controle de mostrar/ocultar senha foi verificado, e não houve erros no console do navegador. As duas páginas couberam sem rolagem vertical ou horizontal no desktop em 1365 × 768 px; no celular, o cadastro continuou utilizável em uma coluna e sem rolagem horizontal.
+Os testes abaixo foram feitos nas duas páginas:
 
-Testes executados em 22/10/2026 no navegador Chromium integrado, em viewport desktop de 1265 px e móvel de 320 × 640 px. A sintaxe de `script.js` também foi verificada com `node --check`. Não foram executados testes em outros motores de navegador nem com leitores de tela reais.
+| Teste | Resultado |
+| --- | --- |
+| Enviar campos vazios | O envio foi bloqueado e os campos necessários foram indicados. |
+| Informar senha fora do padrão | Os requisitos da senha foram apresentados. |
+| Preencher dados válidos | A mensagem de sucesso foi exibida. |
+| Abrir no celular | Campos e botões continuaram utilizáveis, sem rolagem horizontal. |
 
-## Integração prevista com Firebase
+Também foram conferidos CPF inválido, data futura, confirmação de senha diferente e o controle de mostrar/ocultar senha.
 
-O **cadastro será o primeiro formulário a integrar**. Em `script.js`, `registerWithFirebase()` já está separado do tratamento visual do formulário.
+Os testes foram realizados no Chromium, incluindo uma tela de celular de **320 × 640 px**, sem erros no console.
 
-Fluxo planejado para o cadastro:
+## Próxima etapa: Firebase
 
-1. Enviar `email` e `password` ao **Firebase Authentication** por `createUserWithEmailAndPassword`.
-2. Usar o `uid` devolvido pelo Authentication como chave do perfil no **Cloud Firestore**.
-3. Gravar no Firestore: `fullName`, `cpf`, `birthDate`, `email` e `createdAt`.
-4. **Nunca gravar `password` nem `confirmPassword` no Firestore.**
+O cadastro será o primeiro formulário conectado ao Firebase. O planejamento é usar:
 
-Resposta de sucesso esperada: usuário criado no Authentication, perfil criado no Firestore e confirmação de cadastro na interface. Respostas de erro esperadas: e-mail já cadastrado, credenciais inválidas ou falha de rede/permissão; a interface deverá converter o código do Firebase em uma mensagem clara sem apagar o formulário.
+- **Firebase Authentication:** para criar contas e autenticar o login.
+- **Cloud Firestore:** para guardar o perfil do usuário, vinculado ao identificador da conta, o `uid`.
 
-Depois, o login usará `signInWithEmailAndPassword` com `email` e `password`. Em caso de sucesso, a aplicação seguirá para a área autenticada; em caso de erro, exibirá uma mensagem de credenciais inválidas ou indisponibilidade, mantendo o e-mail preenchido.
+O perfil terá nome completo, CPF, nascimento, e-mail e data de criação. **A senha e sua confirmação não serão gravadas no Firestore.**
+
+Após a integração, a interface deverá confirmar o cadastro ou informar problemas, como e-mail já cadastrado e falha de conexão. O login seguirá o mesmo padrão, liberando o acesso quando as credenciais forem válidas.
