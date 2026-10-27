@@ -1,0 +1,104 @@
+.conteudo-autenticacao {
+  align-items: flex-start;
+  padding-top: clamp(18px, 3.2vh, 34px);
+  padding-bottom: 12px;
+}
+
+.painel {
+  max-width: 640px;
+}
+
+.introducao-formulario {
+  margin-bottom: 18px;
+}
+
+.grade-cadastro {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px 26px;
+}
+
+.largura-total {
+  grid-column: 1 / -1;
+}
+
+.grade-cadastro .botao-principal {
+  margin-top: 4px;
+}
+
+.link-alternativo {
+  margin-top: 16px;
+}
+
+@media (min-width: 641px) {
+  body {
+    height: 100vh;
+    overflow-y: hidden;
+    overscroll-behavior: none;
+  }
+
+  .pagina {
+    height: calc(100vh - 72px);
+    min-height: 0;
+  }
+
+  .conteudo-autenticacao {
+    min-height: 0;
+    padding-top: 10px;
+    padding-bottom: 0;
+    overflow: hidden;
+  }
+
+  .introducao-formulario {
+    margin-bottom: 10px;
+  }
+
+  .grade-cadastro {
+    gap: 6px 26px;
+  }
+
+  .campo label {
+    margin-bottom: 5px;
+  }
+
+  .erro-campo {
+    margin-top: 3px;
+    font-size: 12px;
+  }
+
+  .botao-principal {
+    margin-top: 12px;
+  }
+
+  .link-alternativo {
+    margin-top: 8px;
+  }
+
+  .rodape {
+    padding-top: 4px;
+    padding-bottom: 8px;
+  }
+}
+
+@media (max-width: 640px) {
+  .introducao-formulario {
+    margin-bottom: 28px;
+  }
+
+  .grade-cadastro {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 20px;
+  }
+
+  .largura-total {
+    grid-column: auto;
+  }
+
+  .grade-cadastro .botao-principal {
+    margin-top: 2px;
+  }
+
+  .link-alternativo {
+    margin-top: 26px;
+  }
+}

@@ -5,56 +5,57 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content="Acesso ao portal FarmaSUS" />
     <title>Entrar | FarmaSUS</title>
-    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="css/global.css" />
+    <link rel="stylesheet" href="css/login.css" />
     <script src="script.js" defer></script>
   </head>
-  <body>
-    <header class="site-header">
-      <a class="brand" href="index.html" aria-label="FarmaSUS - página de login">
-        <span class="brand-cross" aria-hidden="true"></span>
+  <body class="pagina-login">
+    <header class="cabecalho">
+      <a class="marca" href="index.html" aria-label="FarmaSUS - página de login">
+        <span class="cruz-marca" aria-hidden="true"></span>
         <span>FarmaSUS</span>
       </a>
     </header>
 
-    <div class="page-shell">
-      <main class="auth-main auth-main--login">
-        <section class="auth-panel auth-panel--login" aria-labelledby="page-title">
-          <div class="panel-heading">
-            <h1 id="page-title">Entrar no FarmaSUS</h1>
+    <div class="pagina">
+      <main class="conteudo-autenticacao">
+        <section class="painel" aria-labelledby="titulo-pagina">
+          <div class="introducao-formulario">
+            <h1 id="titulo-pagina">Entrar no FarmaSUS</h1>
             <p>Use seu e-mail e senha para acessar.</p>
           </div>
 
-          <form id="login-form" class="auth-form" data-form-type="login" novalidate>
-            <div class="form-field">
-              <label for="login-email">E-mail</label>
+          <form id="formulario-login" class="formulario" data-tipo-formulario="login" novalidate>
+            <div class="campo">
+              <label for="email-login">E-mail</label>
               <input
-                id="login-email"
+                id="email-login"
                 name="email"
                 type="email"
                 autocomplete="email"
                 placeholder="seuemail@exemplo.com"
-                aria-describedby="login-email-error"
+                aria-describedby="erro-email-login"
                 required
               />
-              <span class="field-error" id="login-email-error" aria-live="polite"></span>
+              <span class="erro-campo" id="erro-email-login" aria-live="polite"></span>
             </div>
 
-            <div class="form-field">
-              <label for="login-password">Senha</label>
-              <div class="password-control">
+            <div class="campo">
+              <label for="senha-login">Senha</label>
+              <div class="campo-senha">
                 <input
-                  id="login-password"
-                  name="password"
+                  id="senha-login"
+                  name="senha"
                   type="password"
                   autocomplete="current-password"
                   placeholder="Digite sua senha"
-                  aria-describedby="login-password-error"
+                  aria-describedby="erro-senha-login"
                   required
                 />
                 <button
-                  class="password-toggle"
+                  class="alternar-senha"
                   type="button"
-                  data-password-toggle="login-password"
+                  data-campo-senha="senha-login"
                   aria-label="Mostrar senha"
                   aria-pressed="false"
                 >
@@ -64,21 +65,21 @@
                   </svg>
                 </button>
               </div>
-              <span class="field-error" id="login-password-error" aria-live="polite"></span>
+              <span class="erro-campo" id="erro-senha-login" aria-live="polite"></span>
             </div>
 
-            <button class="primary-button" type="submit">Entrar</button>
+            <button class="botao-principal" type="submit">Entrar</button>
 
-            <div class="form-message" data-form-message role="status" aria-live="polite"></div>
+            <div class="mensagem-formulario" data-mensagem-formulario role="status" aria-live="polite"></div>
           </form>
 
-          <p class="alternate-action">
+          <p class="link-alternativo">
             Ainda não tem conta? <a href="cadastro.html">Cadastre-se</a>
           </p>
         </section>
       </main>
 
-      <footer class="site-footer">FarmaSUS</footer>
+      <footer class="rodape">FarmaSUS</footer>
     </div>
   </body>
 </html>
