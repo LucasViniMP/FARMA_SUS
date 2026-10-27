@@ -1,53 +1,53 @@
 (function () {
   "use strict";
 
-  const MIN_PASSWORD_LENGTH = 8;
+  const TAMANHO_MINIMO_SENHA = 8;
 
-  const requiredMessages = {
-    fullName: "Informe seu nome completo.",
+  const mensagensObrigatorias = {
+    nomeCompleto: "Informe seu nome completo.",
     cpf: "Informe seu CPF.",
-    birthDate: "Informe sua data de nascimento.",
+    dataNascimento: "Informe sua data de nascimento.",
     email: "Informe seu e-mail.",
-    password: "Informe sua senha.",
-    confirmPassword: "Confirme sua senha."
+    senha: "Informe sua senha.",
+    confirmarSenha: "Confirme sua senha."
   };
 
-  function getErrorElement(field) {
+  function obterElementoErro(field) {
     const describedBy = (field.getAttribute("aria-describedby") || "").split(" ");
-    const errorId = describedBy.find((id) => id.endsWith("-error"));
+    const errorId = describedBy.find((id) => id.startsWith("erro-"));
     return errorId ? document.getElementById(errorId) : null;
   }
 
-  function setFieldError(field, message) {
-    const errorElement = getErrorElement(field);
+  function mostrarErroCampo(field, message) {
+    const errorElement = obterElementoErro(field);
     field.setAttribute("aria-invalid", "true");
     if (errorElement) errorElement.textContent = message;
   }
 
-  function clearFieldError(field) {
-    const errorElement = getErrorElement(field);
+  function limparErroCampo(field) {
+    const errorElement = obterElementoErro(field);
     field.removeAttribute("aria-invalid");
     if (errorElement) errorElement.textContent = "";
   }
 
-  function isValidEmail(value) {
+  function emailValido(value) {
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
   }
 
-  function digitsOnly(value) {
+  function somenteNumeros(value) {
     return value.replace(/\D/g, "");
   }
 
-  function formatCpf(value) {
-    return digitsOnly(value)
+  function formatarCpf(value) {
+    return somenteNumeros(value)
       .slice(0, 11)
       .replace(/(\d{3})(\d)/, "$1.$2")
       .replace(/(\d{3})(\d)/, "$1.$2")
       .replace(/(\d{3})(\d{1,2})$/, "$1-$2");
   }
 
-  function isValidCpf(value) {
-    const cpf = digitsOnly(value);
+  function cpfValido(value) {
+    const cpf = somenteNumeros(value);
     if (cpf.length !== 11 || /^(\d)\1{10}$/.test(cpf)) return false;
 
     const calculateDigit = (length) => {
@@ -62,9 +62,9 @@
     return calculateDigit(9) === Number(cpf[9]) && calculateDigit(10) === Number(cpf[10]);
   }
 
-  function isStrongPassword(value) {
+  function senhaForte(value) {
     return (
-      value.length >= MIN_PASSWORD_LENGTH &&
+      value.length >= TAMANHO_MINIMO_SENHA &&
       /[a-z]/.test(value) &&
       /[A-Z]/.test(value) &&
       /\d/.test(value) &&
@@ -72,7 +72,7 @@
     );
   }
 
-  function getLocalToday() {
+  function obterDataAtual() {
     const today = new Date();
     const year = today.getFullYear();
     const month = String(today.getMonth() + 1).padStart(2, "0");
@@ -80,177 +80,184 @@
     return `${year}-${month}-${day}`;
   }
 
-  function validateField(field, form) {
+  function validarCampo(field, form) {
     const value = field.value.trim();
     let message = "";
 
     if (field.required && !value) {
-      message = requiredMessages[field.name] || "Preencha este campo.";
-    } else if (field.name === "email" && !isValidEmail(value)) {
+      message = mensagensObrigatorias[field.name] || "Preencha este campo.";
+    } else if (field.name === "email" && !emailValido(value)) {
       message = "Informe um e-mail válido.";
-    } else if (field.name === "cpf" && !isValidCpf(value)) {
+    } else if (field.name === "cpf" && !cpfValido(value)) {
       message = "Informe um CPF válido com 11 números.";
-    } else if (field.name === "birthDate" && value > getLocalToday()) {
+    } else if (field.name === "dataNascimento" && value > obterDataAtual()) {
       message = "A data de nascimento não pode estar no futuro.";
-    } else if (field.name === "password" && !isStrongPassword(value)) {
+    } else if (field.name === "senha" && !senhaForte(value)) {
       message = "Use 8 ou mais caracteres, com maiúscula, minúscula, número e caractere especial.";
-    } else if (field.name === "confirmPassword") {
-      const password = form.elements.password.value;
+    } else if (field.name === "confirmarSenha") {
+      const password = form.elements.senha.value;
       if (value !== password) message = "As senhas não coincidem.";
     }
 
     if (message) {
-      setFieldError(field, message);
+      mostrarErroCampo(field, message);
       return false;
     }
 
-    clearFieldError(field);
+    limparErroCampo(field);
     return true;
   }
 
-  function validateForm(form) {
+  function validarFormulario(form) {
     const fields = Array.from(form.querySelectorAll("input"));
-    const invalidFields = fields.filter((field) => !validateField(field, form));
+    const invalidFields = fields.filter((field) => !validarCampo(field, form));
 
     return {
-      isValid: invalidFields.length === 0,
-      invalidFields
+      valido: invalidFields.length === 0,
+      camposInvalidos: invalidFields
     };
   }
 
-  function showFormMessage(form, type, message) {
-    const messageArea = form.querySelector("[data-form-message]");
-    messageArea.className = `form-message is-visible is-${type}`;
+  function mostrarMensagem(form, type, message) {
+    const messageArea = form.querySelector("[data-mensagem-formulario]");
+    messageArea.className = `mensagem-formulario visivel ${type}`;
     messageArea.textContent = message;
   }
 
-  function clearFormMessage(form) {
-    const messageArea = form.querySelector("[data-form-message]");
-    messageArea.className = "form-message";
+  function limparMensagem(form) {
+    const messageArea = form.querySelector("[data-mensagem-formulario]");
+    messageArea.className = "mensagem-formulario";
     messageArea.textContent = "";
   }
 
-  function getLoginCredentials(form) {
+  function obterCredenciaisLogin(form) {
     return {
       email: form.elements.email.value.trim(),
-      password: form.elements.password.value
+      senha: form.elements.senha.value
     };
   }
 
-  function getRegistrationData(form) {
+  function obterDadosCadastro(form) {
     return {
-      credentials: {
+      credenciais: {
         email: form.elements.email.value.trim(),
-        password: form.elements.password.value
+        senha: form.elements.senha.value
       },
-      profile: {
-        fullName: form.elements.fullName.value.trim(),
+      perfil: {
+        nomeCompleto: form.elements.nomeCompleto.value.trim(),
         cpf: form.elements.cpf.value.trim(),
-        birthDate: form.elements.birthDate.value,
+        dataNascimento: form.elements.dataNascimento.value,
         email: form.elements.email.value.trim()
       }
     };
   }
 
   // Ponto de integração futura: Firebase Authentication recebe somente as credenciais.
-  async function signInWithFirebase(credentials) {
-    return { mode: "demo", credentials: { email: credentials.email } };
+  async function entrarComFirebase(credenciais) {
+    return { modo: "demonstracao", credenciais: { email: credenciais.email } };
   }
 
   // Primeiro fluxo a integrar. A senha fica exclusivamente no Authentication.
-  async function registerWithFirebase(registrationData) {
-    const { credentials, profile } = registrationData;
+  async function cadastrarComFirebase(dadosCadastro) {
+    const { credenciais, perfil } = dadosCadastro;
 
-    // Futuro: createUserWithEmailAndPassword(auth, credentials.email, credentials.password)
-    // Futuro: setDoc(doc(db, "users", uid), { ...profile, createdAt: serverTimestamp() })
-    // Nunca inclua credentials.password no documento do Firestore.
+    // Futuro: createUserWithEmailAndPassword(auth, credenciais.email, credenciais.senha)
+    // Futuro: setDoc(doc(db, "usuarios", uid), { ...perfil, criadoEm: serverTimestamp() })
+    // Nunca inclua credenciais.senha no documento do Firestore.
     return {
-      mode: "demo",
-      authentication: { email: credentials.email },
-      firestoreProfile: { ...profile }
+      modo: "demonstracao",
+      autenticacao: { email: credenciais.email },
+      perfilFirestore: { ...perfil }
     };
   }
 
-  async function handleValidSubmit(form) {
-    if (form.dataset.formType === "register") {
-      await registerWithFirebase(getRegistrationData(form));
-      showFormMessage(
+  async function processarFormularioValido(form) {
+    if (form.dataset.tipoFormulario === "cadastro") {
+      await cadastrarComFirebase(obterDadosCadastro(form));
+      mostrarMensagem(
         form,
-        "success",
+        "sucesso",
         "Cadastro validado com sucesso! Modo de demonstração: nenhum dado foi enviado."
       );
       return;
     }
 
-    await signInWithFirebase(getLoginCredentials(form));
-    showFormMessage(
-      form,
-      "success",
-      "Login validado com sucesso! Modo de demonstração: nenhuma autenticação foi realizada."
+    await entrarComFirebase(obterCredenciaisLogin(form));
+    sessionStorage.setItem(
+      "farmaSUSUsuario",
+      JSON.stringify({ email: form.elements.email.value.trim() })
     );
+    mostrarMensagem(
+      form,
+      "sucesso",
+      "Login validado com sucesso! Abrindo sua área de informações..."
+    );
+    window.setTimeout(() => {
+      window.location.href = "informacoes.html";
+    }, 900);
   }
 
-  function setupForm(form) {
+  function configurarFormulario(form) {
     const fields = Array.from(form.querySelectorAll("input"));
 
     fields.forEach((field) => {
       field.addEventListener("input", () => {
-        if (field.getAttribute("aria-invalid") === "true") validateField(field, form);
-        clearFormMessage(form);
+        if (field.getAttribute("aria-invalid") === "true") validarCampo(field, form);
+        limparMensagem(form);
 
-        if (field.name === "password" && form.elements.confirmPassword) {
-          const confirmation = form.elements.confirmPassword;
+        if (field.name === "senha" && form.elements.confirmarSenha) {
+          const confirmation = form.elements.confirmarSenha;
           if (confirmation.value && confirmation.getAttribute("aria-invalid") === "true") {
-            validateField(confirmation, form);
+            validarCampo(confirmation, form);
           }
         }
       });
 
       field.addEventListener("blur", () => {
         if (field.value || field.getAttribute("aria-invalid") === "true") {
-          validateField(field, form);
+          validarCampo(field, form);
         }
       });
     });
 
     form.addEventListener("submit", async (event) => {
       event.preventDefault();
-      clearFormMessage(form);
+      limparMensagem(form);
 
-      const result = validateForm(form);
-      if (!result.isValid) {
-        showFormMessage(
+      const result = validarFormulario(form);
+      if (!result.valido) {
+        mostrarMensagem(
           form,
-          "error",
+          "erro",
           "Revise os campos indicados antes de continuar."
         );
-        result.invalidFields[0].focus();
+        result.camposInvalidos[0].focus();
         return;
       }
 
-      await handleValidSubmit(form);
+      await processarFormularioValido(form);
     });
   }
 
-  function setupCpfMask() {
+  function configurarMascaraCpf() {
     const cpfField = document.getElementById("cpf");
     if (!cpfField) return;
 
     cpfField.addEventListener("input", () => {
-      cpfField.value = formatCpf(cpfField.value);
+      cpfField.value = formatarCpf(cpfField.value);
     });
   }
 
-  function setupBirthDateLimit() {
-    const birthDateField = document.getElementById("birth-date");
+  function configurarLimiteNascimento() {
+    const birthDateField = document.getElementById("data-nascimento");
     if (!birthDateField) return;
-    birthDateField.max = getLocalToday();
+    birthDateField.max = obterDataAtual();
   }
 
-  function setupPasswordToggles() {
-    document.querySelectorAll("[data-password-toggle]").forEach((button) => {
+  function configurarBotoesSenha() {
+    document.querySelectorAll("[data-campo-senha]").forEach((button) => {
       button.addEventListener("click", () => {
-        const input = document.getElementById(button.dataset.passwordToggle);
+        const input = document.getElementById(button.dataset.campoSenha);
         const willShow = input.type === "password";
         input.type = willShow ? "text" : "password";
         button.setAttribute("aria-pressed", String(willShow));
@@ -263,16 +270,16 @@
     });
   }
 
-  setupCpfMask();
-  setupBirthDateLimit();
-  document.querySelectorAll("form[data-form-type]").forEach(setupForm);
-  setupPasswordToggles();
+  configurarMascaraCpf();
+  configurarLimiteNascimento();
+  document.querySelectorAll("form[data-tipo-formulario]").forEach(configurarFormulario);
+  configurarBotoesSenha();
 
   // API interna separada para facilitar a substituição pelos SDKs do Firebase.
-  window.FarmaSUSAuth = {
-    getLoginCredentials,
-    getRegistrationData,
-    signInWithFirebase,
-    registerWithFirebase
+  window.FarmaSUSAutenticacao = {
+    obterCredenciaisLogin,
+    obterDadosCadastro,
+    entrarComFirebase,
+    cadastrarComFirebase
   };
 })();

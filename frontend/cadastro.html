@@ -5,41 +5,42 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content="Criação de conta no portal FarmaSUS" />
     <title>Criar conta | FarmaSUS</title>
-    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="css/global.css" />
+    <link rel="stylesheet" href="css/cadastro.css" />
     <script src="script.js" defer></script>
   </head>
-  <body class="register-page">
-    <header class="site-header">
-      <a class="brand" href="index.html" aria-label="FarmaSUS - página de login">
-        <span class="brand-cross" aria-hidden="true"></span>
+  <body class="pagina-cadastro">
+    <header class="cabecalho">
+      <a class="marca" href="index.html" aria-label="FarmaSUS - página de login">
+        <span class="cruz-marca" aria-hidden="true"></span>
         <span>FarmaSUS</span>
       </a>
     </header>
 
-    <div class="page-shell">
-      <main class="auth-main auth-main--register">
-        <section class="auth-panel auth-panel--register" aria-labelledby="page-title">
-          <div class="panel-heading">
-            <h1 id="page-title">Crie sua conta</h1>
+    <div class="pagina">
+      <main class="conteudo-autenticacao">
+        <section class="painel" aria-labelledby="titulo-pagina">
+          <div class="introducao-formulario">
+            <h1 id="titulo-pagina">Crie sua conta</h1>
             <p>Preencha seus dados para se cadastrar no FarmaSUS.</p>
           </div>
 
-          <form id="register-form" class="auth-form register-grid" data-form-type="register" novalidate>
-            <div class="form-field grid-full">
-              <label for="full-name">Nome completo</label>
+          <form id="formulario-cadastro" class="formulario grade-cadastro" data-tipo-formulario="cadastro" novalidate>
+            <div class="campo largura-total">
+              <label for="nome-completo">Nome completo</label>
               <input
-                id="full-name"
-                name="fullName"
+                id="nome-completo"
+                name="nomeCompleto"
                 type="text"
                 autocomplete="name"
                 placeholder="Seu nome completo"
-                aria-describedby="full-name-error"
+                aria-describedby="erro-nome-completo"
                 required
               />
-              <span class="field-error" id="full-name-error" aria-live="polite"></span>
+              <span class="erro-campo" id="erro-nome-completo" aria-live="polite"></span>
             </div>
 
-            <div class="form-field">
+            <div class="campo">
               <label for="cpf">CPF</label>
               <input
                 id="cpf"
@@ -49,56 +50,56 @@
                 autocomplete="off"
                 maxlength="14"
                 placeholder="000.000.000-00"
-                aria-describedby="cpf-error"
+                aria-describedby="erro-cpf"
                 pattern="[0-9]{3}\.[0-9]{3}\.[0-9]{3}-[0-9]{2}"
                 required
               />
-              <span class="field-error" id="cpf-error" aria-live="polite"></span>
+              <span class="erro-campo" id="erro-cpf" aria-live="polite"></span>
             </div>
 
-            <div class="form-field">
-              <label for="birth-date">Data de nascimento</label>
+            <div class="campo">
+              <label for="data-nascimento">Data de nascimento</label>
               <input
-                id="birth-date"
-                name="birthDate"
+                id="data-nascimento"
+                name="dataNascimento"
                 type="date"
                 autocomplete="bday"
-                aria-describedby="birth-date-error"
+                aria-describedby="erro-data-nascimento"
                 required
               />
-              <span class="field-error" id="birth-date-error" aria-live="polite"></span>
+              <span class="erro-campo" id="erro-data-nascimento" aria-live="polite"></span>
             </div>
 
-            <div class="form-field grid-full">
-              <label for="register-email">E-mail</label>
+            <div class="campo largura-total">
+              <label for="email-cadastro">E-mail</label>
               <input
-                id="register-email"
+                id="email-cadastro"
                 name="email"
                 type="email"
                 autocomplete="email"
                 placeholder="seuemail@exemplo.com"
-                aria-describedby="register-email-error"
+                aria-describedby="erro-email-cadastro"
                 required
               />
-              <span class="field-error" id="register-email-error" aria-live="polite"></span>
+              <span class="erro-campo" id="erro-email-cadastro" aria-live="polite"></span>
             </div>
 
-            <div class="form-field">
-              <label for="register-password">Senha</label>
-              <div class="password-control">
+            <div class="campo">
+              <label for="senha-cadastro">Senha</label>
+              <div class="campo-senha">
                 <input
-                  id="register-password"
-                  name="password"
+                  id="senha-cadastro"
+                  name="senha"
                   type="password"
                   autocomplete="new-password"
                   placeholder="Crie uma senha"
-                  aria-describedby="register-password-error"
+                  aria-describedby="erro-senha-cadastro"
                   required
                 />
                 <button
-                  class="password-toggle"
+                  class="alternar-senha"
                   type="button"
-                  data-password-toggle="register-password"
+                  data-campo-senha="senha-cadastro"
                   aria-label="Mostrar senha"
                   aria-pressed="false"
                 >
@@ -108,25 +109,25 @@
                   </svg>
                 </button>
               </div>
-              <span class="field-error" id="register-password-error" aria-live="polite"></span>
+              <span class="erro-campo" id="erro-senha-cadastro" aria-live="polite"></span>
             </div>
 
-            <div class="form-field">
-              <label for="confirm-password">Confirmar senha</label>
-              <div class="password-control">
+            <div class="campo">
+              <label for="confirmar-senha">Confirmar senha</label>
+              <div class="campo-senha">
                 <input
-                  id="confirm-password"
-                  name="confirmPassword"
+                  id="confirmar-senha"
+                  name="confirmarSenha"
                   type="password"
                   autocomplete="new-password"
                   placeholder="Repita a senha"
-                  aria-describedby="confirm-password-error"
+                  aria-describedby="erro-confirmar-senha"
                   required
                 />
                 <button
-                  class="password-toggle"
+                  class="alternar-senha"
                   type="button"
-                  data-password-toggle="confirm-password"
+                  data-campo-senha="confirmar-senha"
                   aria-label="Mostrar confirmação de senha"
                   aria-pressed="false"
                 >
@@ -136,21 +137,21 @@
                   </svg>
                 </button>
               </div>
-              <span class="field-error" id="confirm-password-error" aria-live="polite"></span>
+              <span class="erro-campo" id="erro-confirmar-senha" aria-live="polite"></span>
             </div>
 
-            <button class="primary-button grid-full" type="submit">Criar minha conta</button>
+            <button class="botao-principal largura-total" type="submit">Criar minha conta</button>
 
-            <div class="form-message grid-full" data-form-message role="status" aria-live="polite"></div>
+            <div class="mensagem-formulario largura-total" data-mensagem-formulario role="status" aria-live="polite"></div>
           </form>
 
-          <p class="alternate-action">
+          <p class="link-alternativo">
             Já tem uma conta? <a href="index.html">Entrar</a>
           </p>
         </section>
       </main>
 
-      <footer class="site-footer">FarmaSUS</footer>
+      <footer class="rodape">FarmaSUS</footer>
     </div>
   </body>
 </html>
