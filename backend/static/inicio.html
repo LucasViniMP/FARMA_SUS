@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Resumo do dia do paciente FarmaSUS" />
+    <title>Início | FarmaSUS</title>
+    <link rel="stylesheet" href="css/global.css" />
+    <link rel="stylesheet" href="css/inicio.css" />
+    <script src="assets/js/painel-inicio.js" defer></script>
+  </head>
+  <body class="pagina-inicio">
+    <header class="cabecalho">
+      <a class="marca" href="inicio.html" aria-label="FarmaSUS - início">
+        <span class="cruz-marca" aria-hidden="true"></span>
+        <span>FarmaSUS</span>
+      </a>
+    </header>
+
+    <div class="estrutura-inicio">
+      <aside class="menu-lateral" aria-label="Navegação principal">
+        <div class="perfil-menu">
+          <span class="avatar-perfil" aria-hidden="true">YR</span>
+          <span class="nome-perfil">Yasmin Rios</span>
+        </div>
+
+        <nav class="navegacao-lateral">
+          <a class="item-menu ativo" href="inicio.html" aria-current="page">
+            <svg aria-hidden="true" viewBox="0 0 24 24">
+              <path
+                class="icone-solido"
+                d="M12 2.8 2.5 11h2.7v9.2h5v-5.6h3.6v5.6h5V11h2.7L12 2.8Z"
+              ></path>
+            </svg>
+            <span>Início</span>
+          </a>
+
+          <a class="item-menu" href="exames.html">
+            <svg aria-hidden="true" viewBox="0 0 24 24">
+              <path
+                class="icone-solido"
+                d="M6 2h8l5 5v13a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2Zm7 2.2V8h3.8L13 4.2Z"
+              ></path>
+              <path class="detalhe-icone" d="M8 12h7M8 16h7"></path>
+            </svg>
+            <span>Exames</span>
+          </a>
+
+          <button
+            class="item-menu"
+            type="button"
+            aria-disabled="true"
+            title="Disponível em uma próxima etapa"
+          >
+            <svg aria-hidden="true" viewBox="0 0 24 24">
+              <rect
+                class="icone-solido"
+                x="2.8"
+                y="8.2"
+                width="18.4"
+                height="7.6"
+                rx="3.8"
+                transform="rotate(-45 12 12)"
+              ></rect>
+              <path class="detalhe-icone" d="m9.3 9.3 5.4 5.4"></path>
+            </svg>
+            <span>Medicamentos</span>
+          </button>
+
+          <a class="item-menu" href="informacoes.html">
+            <svg aria-hidden="true" viewBox="0 0 24 24">
+              <path
+                class="icone-solido"
+                d="M12 22a2.4 2.4 0 0 0 2.35-2h-4.7A2.4 2.4 0 0 0 12 22Zm6-14A6 6 0 0 0 6 8c0 4.8-2 6.4-3 8v2h18v-2c-1-1.6-3-3.2-3-8Z"
+              ></path>
+            </svg>
+            <span>Informações</span>
+          </a>
+        </nav>
+      </aside>
+
+      <main class="conteudo-inicio">
+        <section class="introducao-pagina" aria-labelledby="titulo-inicio">
+          <span class="icone-introducao" aria-hidden="true">
+            <svg viewBox="0 0 24 24">
+              <path d="M3 11.5 12 4l9 7.5"></path>
+              <path d="M5.5 10v10h13V10M10 20v-5h4v5"></path>
+            </svg>
+          </span>
+          <div>
+            <h1 id="titulo-inicio">Início</h1>
+            <p class="texto-introducao">
+              Olá, usuário. Aqui está seu resumo de hoje.
+            </p>
+          </div>
+        </section>
+
+        <div class="grade-resumo">
+          <section class="cartao-resumo" aria-labelledby="titulo-remedio">
+            <div class="topo-cartao">
+              <span class="etiqueta-categoria" id="titulo-remedio"
+                >Remédio</span
+              >
+            </div>
+
+            <div class="corpo-remedio">
+              <div class="foto-produto" role="img" aria-label="Foto do produto">
+                <svg aria-hidden="true" viewBox="0 0 24 24">
+                  <rect x="3" y="4" width="18" height="16" rx="2"></rect>
+                  <circle cx="8.5" cy="9.5" r="1.6"></circle>
+                  <path d="m3 17 5.5-5 4 3.5 3-2.5L21 17"></path>
+                </svg>
+                <span>Foto do produto</span>
+              </div>
+
+              <dl class="dados-remedio">
+                <div>
+                  <dt>Nome do medicamento</dt>
+                  <dd>Ibuprofeno</dd>
+                </div>
+                <div>
+                  <dt>Situação</dt>
+                  <dd><span class="situacao aceito">Aceito</span></dd>
+                </div>
+              </dl>
+            </div>
+          </section>
+
+          <a href="exames.html" style="text-decoration:none;color:inherit;display:block"><section class="cartao-resumo" aria-labelledby="titulo-laudo" style="cursor:pointer">
+            <div class="topo-cartao">
+              <span class="etiqueta-categoria" id="titulo-laudo">Laudo</span>
+            </div>
+
+            <div class="corpo-laudo">
+              <div class="imagem-laudo" role="img" aria-label="Imagem do laudo">
+                <svg aria-hidden="true" viewBox="0 0 24 24">
+                  <path
+                    d="M6 2h8l5 5v13a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2Z"
+                  ></path>
+                  <path d="M13 2.5V8h5.5M8 13h8M8 17h8"></path>
+                </svg>
+                <span>Imagem do laudo</span>
+              </div>
+              <p class="validade-laudo">Vence em <strong>45 dias</strong></p>
+            </div>
+          </section></a>
+        </div>
+
+        <a class="informativo-saude" href="informacoes.html">
+          <h2>Informativo de saúde</h2>
+          <strong
+            class="titulo-ultimo-aviso"
+            id="titulo-ultimo-aviso"
+            hidden
+          ></strong>
+          <p id="texto-ultimo-aviso">Nenhuma informação no momento.</p>
+          <span class="abrir-informacoes">Ver todas as informações</span>
+        </a>
+      </main>
+    </div>
+  </body>
+</html>
