@@ -9,11 +9,13 @@
     dataNascimento: "Informe sua data de nascimento.",
     email: "Informe seu e-mail.",
     senha: "Informe sua senha.",
-    confirmarSenha: "Confirme sua senha."
+    confirmarSenha: "Confirme sua senha.",
   };
 
   function obterElementoErro(field) {
-    const describedBy = (field.getAttribute("aria-describedby") || "").split(" ");
+    const describedBy = (field.getAttribute("aria-describedby") || "").split(
+      " ",
+    );
     const errorId = describedBy.find((id) => id.startsWith("erro-"));
     return errorId ? document.getElementById(errorId) : null;
   }
@@ -59,7 +61,10 @@
       return remainder === 10 ? 0 : remainder;
     };
 
-    return calculateDigit(9) === Number(cpf[9]) && calculateDigit(10) === Number(cpf[10]);
+    return (
+      calculateDigit(9) === Number(cpf[9]) &&
+      calculateDigit(10) === Number(cpf[10])
+    );
   }
 
   function senhaForte(value) {
@@ -93,7 +98,8 @@
     } else if (field.name === "dataNascimento" && value > obterDataAtual()) {
       message = "A data de nascimento não pode estar no futuro.";
     } else if (field.name === "senha" && !senhaForte(value)) {
-      message = "Use 8 ou mais caracteres, com maiúscula, minúscula, número e caractere especial.";
+      message =
+        "Use 8 ou mais caracteres, com maiúscula, minúscula, número e caractere especial.";
     } else if (field.name === "confirmarSenha") {
       const password = form.elements.senha.value;
       if (value !== password) message = "As senhas não coincidem.";
@@ -114,7 +120,7 @@
 
     return {
       valido: invalidFields.length === 0,
-      camposInvalidos: invalidFields
+      camposInvalidos: invalidFields,
     };
   }
 
@@ -133,7 +139,7 @@
   function obterCredenciaisLogin(form) {
     return {
       email: form.elements.email.value.trim(),
-      senha: form.elements.senha.value
+      senha: form.elements.senha.value,
     };
   }
 
@@ -141,14 +147,14 @@
     return {
       credenciais: {
         email: form.elements.email.value.trim(),
-        senha: form.elements.senha.value
+        senha: form.elements.senha.value,
       },
       perfil: {
         nomeCompleto: form.elements.nomeCompleto.value.trim(),
         cpf: form.elements.cpf.value.trim(),
         dataNascimento: form.elements.dataNascimento.value,
-        email: form.elements.email.value.trim()
-      }
+        email: form.elements.email.value.trim(),
+      },
     };
   }
 
@@ -167,7 +173,7 @@
     return {
       modo: "demonstracao",
       autenticacao: { email: credenciais.email },
-      perfilFirestore: { ...perfil }
+      perfilFirestore: { ...perfil },
     };
   }
 
@@ -177,7 +183,7 @@
       mostrarMensagem(
         form,
         "sucesso",
-        "Cadastro validado com sucesso! Modo de demonstração: nenhum dado foi enviado."
+        "Cadastro validado com sucesso! Modo de demonstração: nenhum dado foi enviado.",
       );
       return;
     }
@@ -185,15 +191,15 @@
     await entrarComFirebase(obterCredenciaisLogin(form));
     sessionStorage.setItem(
       "farmaSUSUsuario",
-      JSON.stringify({ email: form.elements.email.value.trim() })
+      JSON.stringify({ email: form.elements.email.value.trim() }),
     );
     mostrarMensagem(
       form,
       "sucesso",
-      "Login validado com sucesso! Abrindo sua área de informações..."
+      "Login validado com sucesso! Abrindo área de início...",
     );
     window.setTimeout(() => {
-      window.location.href = "informacoes.html";
+      window.location.href = "inicio.html";
     }, 900);
   }
 
@@ -202,12 +208,16 @@
 
     fields.forEach((field) => {
       field.addEventListener("input", () => {
-        if (field.getAttribute("aria-invalid") === "true") validarCampo(field, form);
+        if (field.getAttribute("aria-invalid") === "true")
+          validarCampo(field, form);
         limparMensagem(form);
 
         if (field.name === "senha" && form.elements.confirmarSenha) {
           const confirmation = form.elements.confirmarSenha;
-          if (confirmation.value && confirmation.getAttribute("aria-invalid") === "true") {
+          if (
+            confirmation.value &&
+            confirmation.getAttribute("aria-invalid") === "true"
+          ) {
             validarCampo(confirmation, form);
           }
         }
@@ -229,7 +239,7 @@
         mostrarMensagem(
           form,
           "erro",
-          "Revise os campos indicados antes de continuar."
+          "Revise os campos indicados antes de continuar.",
         );
         result.camposInvalidos[0].focus();
         return;
@@ -263,7 +273,7 @@
         button.setAttribute("aria-pressed", String(willShow));
         button.setAttribute(
           "aria-label",
-          willShow ? "Ocultar senha" : "Mostrar senha"
+          willShow ? "Ocultar senha" : "Mostrar senha",
         );
         input.focus();
       });
@@ -272,7 +282,9 @@
 
   configurarMascaraCpf();
   configurarLimiteNascimento();
-  document.querySelectorAll("form[data-tipo-formulario]").forEach(configurarFormulario);
+  document
+    .querySelectorAll("form[data-tipo-formulario]")
+    .forEach(configurarFormulario);
   configurarBotoesSenha();
 
   // API interna separada para facilitar a substituição pelos SDKs do Firebase.
@@ -280,6 +292,6 @@
     obterCredenciaisLogin,
     obterDadosCadastro,
     entrarComFirebase,
-    cadastrarComFirebase
+    cadastrarComFirebase,
   };
 })();
