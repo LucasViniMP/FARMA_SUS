@@ -52,6 +52,9 @@ body {
   text-decoration: none;
   cursor: default;
 }
+a.item-menu {
+  cursor: pointer;
+}
 
 .item-menu svg {
   box-sizing: content-box;
@@ -285,7 +288,9 @@ body {
   font: inherit;
   text-align: left;
   cursor: pointer;
-  transition: border-color 160ms ease, box-shadow 160ms ease;
+  transition:
+    border-color 160ms ease,
+    box-shadow 160ms ease;
 }
 
 .cartao-aviso.nao-lido {
