@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Envie e acompanhe seus laudos e exames no portal FarmaSUS" />
+    <title>Laudos e exames | FarmaSUS</title>
+    <link rel="stylesheet" href="css/global.css" />
+    <link rel="stylesheet" href="css/exames.css" />
+    <script src="assets/js/painel-exames.js" defer></script>
+  </head>
+  <body class="pagina-exames">
+    <header class="cabecalho">
+      <a class="marca" href="/" aria-label="FarmaSUS - laudos e exames">
+        <span class="cruz-marca" aria-hidden="true"></span>
+        <span>FarmaSUS</span>
+      </a>
+
+      <div class="usuario-cabecalho">
+      </div>
+    </header>
+
+    <div class="estrutura-exames">
+      <aside class="menu-lateral" aria-label="Navegação principal">
+        <div class="perfil-menu">
+          <span class="avatar-perfil" id="user-avatar" aria-hidden="true">YR</span>
+          <span class="nome-perfil" id="user-name">Yasmin Rios</span>
+        </div>
+
+        <nav class="navegacao-lateral">
+          <a class="item-menu ativo" href="/exames" aria-current="page">
+            <svg aria-hidden="true" viewBox="0 0 24 24">
+              <path
+                class="icone-solido"
+                d="M6 2h8l5 5v13a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2Zm7 2.2V8h3.8L13 4.2Z"
+              ></path>
+              <path class="detalhe-icone" d="M8 12h7M8 16h7"></path>
+            </svg>
+            <span>Exames</span>
+          </a>
+        </nav>
+      </aside>
+
+      <main class="conteudo-exames">
+        <section class="introducao-pagina" aria-labelledby="titulo-exames">
+          <span class="icone-introducao" aria-hidden="true">
+            <svg viewBox="0 0 24 24">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+              <polyline points="14 2 14 8 20 8"></polyline>
+              <line x1="16" y1="13" x2="8" y2="13"></line>
+              <line x1="16" y1="17" x2="8" y2="17"></line>
+            </svg>
+          </span>
+          <div>
+            <h1 id="titulo-exames">Laudos e exames</h1>
+            <p class="texto-introducao">
+              Envie e acompanhe seus documentos médicos para validação da farmácia.
+            </p>
+          </div>
+        </section>
+
+        <section class="cartao-upload" aria-labelledby="titulo-upload">
+          <div class="topo-upload">
+            <h2 id="titulo-upload">Enviar novo documento</h2>
+            <button class="botao-adicionar" type="button" id="btn-add-file">
+              Adicionar exame
+            </button>
+          </div>
+
+          <input
+            id="file-input"
+            type="file"
+            accept="application/pdf,image/png,image/jpeg,image/webp,text/plain"
+            hidden
+          />
+
+          <div class="dropzone" id="dropzone" role="button" tabindex="0" aria-label="Área de envio de arquivos">
+            <svg class="drop-icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+              <polyline points="17 8 12 3 7 8"></polyline>
+              <line x1="12" y1="3" x2="12" y2="15"></line>
+            </svg>
+            <strong>Arraste seus arquivos aqui</strong>
+            <span>ou clique para selecionar PDF, JPG ou PNG de até 10 MB</span>
+          </div>
+
+          <div class="mensagem-status" id="upload-status-msg" role="status" aria-live="polite"></div>
+        </section>
+
+        <section class="cartao-tabela" aria-labelledby="titulo-lista-exames">
+          <div class="topo-tabela">
+            <h2 id="titulo-lista-exames">Documentos cadastrados</h2>
+          </div>
+
+          <div class="tabela-container">
+            <table class="tabela-exames">
+              <thead>
+                <tr>
+                  <th>Nome do arquivo</th>
+                  <th>Data de envio</th>
+                  <th>Vencimento</th>
+                  <th>Status</th>
+                  <th>Ações</th>
+                </tr>
+              </thead>
+              <tbody id="tabela-exames-corpo">
+                <tr>
+                  <td colspan="5" class="estado-vazio">
+                    Carregando exames...
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+      </main>
+    </div>
+  </body>
+</html>
