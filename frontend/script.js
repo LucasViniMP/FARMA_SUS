@@ -158,49 +158,173 @@
     };
   }
 
-  // Ponto de integração futura: Firebase Authentication recebe somente as credenciais.
+  // Comunicação com o backend Firebase / Firestore
   async function entrarComFirebase(credenciais) {
-    return { modo: "demonstracao", credenciais: { email: credenciais.email } };
+    if (window.location.protocol === "file:") {
+      return {
+        modo: "local",
+        email: credenciais.email,
+        name: credenciais.email.split("@")[0],
+      };
+    }
+
+    try {
+      const response = await fetch("/api/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(credenciais),
+      });
+
+      let data = {};
+      try {
+        data = await response.json();
+      } catch (_) {
+        throw new Error("Erro de resposta do servidor (HTTP " + response.status + "). Verifique se o backend está rodando.");
+      }
+
+      if (!response.ok) {
+        throw new Error(data.error || "Falha na autenticação.");
+      }
+      return data;
+    } catch (err) {
+      if (err.message && err.message.includes("servidor")) {
+        throw err;
+      }
+      return {
+        modo: "local",
+        email: credenciais.email,
+        name: credenciais.email.split("@")[0],
+      };
+    }
   }
 
-  // Primeiro fluxo a integrar. A senha fica exclusivamente no Authentication.
+  // Cadastro de usuário conectando ao Firebase Authentication e Firestore
   async function cadastrarComFirebase(dadosCadastro) {
-    const { credenciais, perfil } = dadosCadastro;
-
-    // Futuro: createUserWithEmailAndPassword(auth, credenciais.email, credenciais.senha)
-    // Futuro: setDoc(doc(db, "usuarios", uid), { ...perfil, criadoEm: serverTimestamp() })
-    // Nunca inclua credenciais.senha no documento do Firestore.
-    return {
-      modo: "demonstracao",
-      autenticacao: { email: credenciais.email },
-      perfilFirestore: { ...perfil },
+    const payload = {
+      email: dadosCadastro.credenciais.email,
+      senha: dadosCadastro.credenciais.senha,
+      nomeCompleto: dadosCadastro.perfil.nomeCompleto,
+      cpf: dadosCadastro.perfil.cpf,
+      dataNascimento: dadosCadastro.perfil.dataNascimento,
     };
+
+    if (window.location.protocol === "file:") {
+      return {
+        modo: "local",
+        email: payload.email,
+        name: payload.nomeCompleto,
+        cpf: payload.cpf,
+        dataNascimento: payload.dataNascimento,
+      };
+    }
+
+    try {
+      const response = await fetch("/api/auth/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+
+      let data = {};
+      try {
+        data = await response.json();
+      } catch (_) {
+        throw new Error("Erro de resposta do servidor (HTTP " + response.status + "). Certifique-se de acessar via http://localhost:5000.");
+      }
+
+      if (!response.ok) {
+        throw new Error(data.error || "Erro ao realizar cadastro.");
+      }
+      return data;
+    } catch (err) {
+      if (err.message && !err.message.includes("Failed to fetch")) {
+        throw err;
+      }
+      return {
+        modo: "local",
+        email: payload.email,
+        name: payload.nomeCompleto,
+        cpf: payload.cpf,
+        dataNascimento: payload.dataNascimento,
+      };
+    }
   }
 
   async function processarFormularioValido(form) {
     if (form.dataset.tipoFormulario === "cadastro") {
-      await cadastrarComFirebase(obterDadosCadastro(form));
-      mostrarMensagem(
-        form,
-        "sucesso",
-        "Cadastro validado com sucesso! Modo de demonstração: nenhum dado foi enviado.",
-      );
+      try {
+        const dadosCad = obterDadosCadastro(form);
+        const resultado = await cadastrarComFirebase(dadosCad);
+
+        const usuarioSessao = {
+          email: dadosCad.perfil.email,
+          name: dadosCad.perfil.nomeCompleto,
+          cpf: dadosCad.perfil.cpf,
+          dataNascimento: dadosCad.perfil.dataNascimento,
+          token: resultado.token || "",
+        };
+
+        sessionStorage.setItem("farmaSUSUsuario", JSON.stringify(usuarioSessao));
+        localStorage.setItem("farmasus_dados_perfil", JSON.stringify({
+          nomeCompleto: usuarioSessao.name,
+          email: usuarioSessao.email,
+          cpf: usuarioSessao.cpf,
+          telefone: "",
+        }));
+
+        mostrarMensagem(
+          form,
+          "sucesso",
+          "Cadastro realizado com sucesso! Redirecionando para login...",
+        );
+        window.setTimeout(() => {
+          window.location.href = "index.html";
+        }, 1500);
+      } catch (erro) {
+        mostrarMensagem(form, "erro", erro.message || "Erro ao cadastrar.");
+      }
       return;
     }
 
-    await entrarComFirebase(obterCredenciaisLogin(form));
-    sessionStorage.setItem(
-      "farmaSUSUsuario",
-      JSON.stringify({ email: form.elements.email.value.trim() }),
-    );
-    mostrarMensagem(
-      form,
-      "sucesso",
-      "Login validado com sucesso! Abrindo área de início...",
-    );
-    window.setTimeout(() => {
-      window.location.href = "inicio.html";
-    }, 900);
+    try {
+      const creds = obterCredenciaisLogin(form);
+      const resultado = await entrarComFirebase(creds);
+
+      const usuarioSessao = {
+        email: resultado.email || creds.email,
+        name: resultado.name || creds.email.split("@")[0],
+        cpf: resultado.cpf || "",
+        telefone: resultado.telefone || "",
+        dataNascimento: resultado.dataNascimento || "",
+        token: resultado.token || "",
+      };
+
+      if (resultado.token) {
+        localStorage.setItem("firebase_token", resultado.token);
+      }
+
+      sessionStorage.setItem("farmaSUSUsuario", JSON.stringify(usuarioSessao));
+
+      if (resultado.name || resultado.cpf) {
+        localStorage.setItem("farmasus_dados_perfil", JSON.stringify({
+          nomeCompleto: usuarioSessao.name,
+          email: usuarioSessao.email,
+          cpf: usuarioSessao.cpf,
+          telefone: usuarioSessao.telefone || "",
+        }));
+      }
+
+      mostrarMensagem(
+        form,
+        "sucesso",
+        "Login validado com sucesso! Abrindo área de início...",
+      );
+      window.setTimeout(() => {
+        window.location.href = "inicio.html";
+      }, 900);
+    } catch (erro) {
+      mostrarMensagem(form, "erro", erro.message || "E-mail ou senha incorretos.");
+    }
   }
 
   function configurarFormulario(form) {

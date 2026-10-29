@@ -7,11 +7,12 @@
     <title>Laudos e exames | FarmaSUS</title>
     <link rel="stylesheet" href="css/global.css" />
     <link rel="stylesheet" href="css/exames.css" />
+    <script src="assets/js/usuario-sidebar.js" defer></script>
     <script src="assets/js/painel-exames.js" defer></script>
   </head>
   <body class="pagina-exames">
     <header class="cabecalho">
-      <a class="marca" href="/" aria-label="FarmaSUS - laudos e exames">
+      <a class="marca" href="inicio.html" aria-label="FarmaSUS - laudos e exames">
         <span class="cruz-marca" aria-hidden="true"></span>
         <span>FarmaSUS</span>
       </a>
@@ -22,13 +23,20 @@
 
     <div class="estrutura-exames">
       <aside class="menu-lateral" aria-label="Navegação principal">
-        <div class="perfil-menu">
-          <span class="avatar-perfil" id="user-avatar" aria-hidden="true">YR</span>
-          <span class="nome-perfil" id="user-name">Yasmin Rios</span>
-        </div>
+        <a class="perfil-menu" href="perfil.html" aria-label="Ver meu perfil">
+          <span class="avatar-perfil" id="user-avatar" aria-hidden="true">--</span>
+          <span class="nome-perfil" id="user-name">...</span>
+        </a>
 
         <nav class="navegacao-lateral">
-          <a class="item-menu ativo" href="/exames" aria-current="page">
+          <a class="item-menu" href="inicio.html">
+            <svg aria-hidden="true" viewBox="0 0 24 24">
+              <path class="icone-solido" d="M12 2.8 2.5 11h2.7v9.2h5v-5.6h3.6v5.6h5V11h2.7L12 2.8Z"></path>
+            </svg>
+            <span>Início</span>
+          </a>
+
+          <a class="item-menu ativo" href="exames.html" aria-current="page">
             <svg aria-hidden="true" viewBox="0 0 24 24">
               <path
                 class="icone-solido"
@@ -37,6 +45,32 @@
               <path class="detalhe-icone" d="M8 12h7M8 16h7"></path>
             </svg>
             <span>Exames</span>
+          </a>
+
+          <a class="item-menu" href="medicamentos.html">
+            <svg aria-hidden="true" viewBox="0 0 24 24">
+              <rect
+                class="icone-solido"
+                x="2.8"
+                y="8.2"
+                width="18.4"
+                height="7.6"
+                rx="3.8"
+                transform="rotate(-45 12 12)"
+              ></rect>
+              <path class="detalhe-icone" d="m9.3 9.3 5.4 5.4"></path>
+            </svg>
+            <span>Medicamentos</span>
+          </a>
+
+          <a class="item-menu" href="informacoes.html">
+            <svg aria-hidden="true" viewBox="0 0 24 24">
+              <path
+                class="icone-solido"
+                d="M12 22a2.4 2.4 0 0 0 2.35-2h-4.7A2.4 2.4 0 0 0 12 22Zm6-14A6 6 0 0 0 6 8c0 4.8-2 6.4-3 8v2h18v-2c-1-1.6-3-3.2-3-8Z"
+              ></path>
+            </svg>
+            <span>Informações</span>
           </a>
         </nav>
       </aside>

@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Central de informações e notificações do paciente FarmaSUS"
+    />
+    <title>Informações | FarmaSUS</title>
+    <link rel="stylesheet" href="css/global.css" />
+    <link rel="stylesheet" href="css/informacoes.css" />
+    <script src="assets/js/usuario-sidebar.js" defer></script>
+    <script src="assets/js/painel-informacoes.js" defer></script>
+  </head>
+  <body class="pagina-informacoes">
+    <header class="cabecalho">
+      <a class="marca" href="inicio.html" aria-label="FarmaSUS - central de informações">
+        <span class="cruz-marca" aria-hidden="true"></span>
+        <span>FarmaSUS</span>
+      </a>
+    </header>
+
+    <div class="estrutura-informacoes">
+      <aside class="menu-lateral" aria-label="Navegação principal">
+        <a class="perfil-menu" href="perfil.html" aria-label="Ver meu perfil">
+          <span class="avatar-perfil" aria-hidden="true">--</span>
+          <span class="nome-perfil">...</span>
+        </a>
+
+        <nav class="navegacao-lateral">
+          <a class="item-menu" href="inicio.html">
+            <svg aria-hidden="true" viewBox="0 0 24 24">
+              <path class="icone-solido" d="M12 2.8 2.5 11h2.7v9.2h5v-5.6h3.6v5.6h5V11h2.7L12 2.8Z"></path>
+            </svg>
+            <span>Início</span>
+          </a>
+
+          <a class="item-menu" href="exames.html">
+            <svg aria-hidden="true" viewBox="0 0 24 24">
+              <path class="icone-solido" d="M6 2h8l5 5v13a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2Zm7 2.2V8h3.8L13 4.2Z"></path>
+              <path class="detalhe-icone" d="M8 12h7M8 16h7"></path>
+            </svg>
+            <span>Exames</span>
+          </a>
+
+          <a class="item-menu" href="medicamentos.html">
+            <svg aria-hidden="true" viewBox="0 0 24 24">
+              <rect class="icone-solido" x="2.8" y="8.2" width="18.4" height="7.6" rx="3.8" transform="rotate(-45 12 12)"></rect>
+              <path class="detalhe-icone" d="m9.3 9.3 5.4 5.4"></path>
+            </svg>
+            <span>Medicamentos</span>
+          </a>
+
+          <a class="item-menu ativo" href="informacoes.html" aria-current="page">
+            <svg aria-hidden="true" viewBox="0 0 24 24">
+              <path class="icone-solido" d="M12 22a2.4 2.4 0 0 0 2.35-2h-4.7A2.4 2.4 0 0 0 12 22Zm6-14A6 6 0 0 0 6 8c0 4.8-2 6.4-3 8v2h18v-2c-1-1.6-3-3.2-3-8Z"></path>
+            </svg>
+            <span>Informações</span>
+          </a>
+        </nav>
+      </aside>
+
+      <main class="conteudo-informacoes" id="conteudo-informacoes">
+        <section class="introducao-pagina" aria-labelledby="titulo-informacoes">
+          <span class="icone-introducao" aria-hidden="true">
+            <svg viewBox="0 0 24 24">
+              <path d="M18 8a6 6 0 0 0-12 0c0 6-2.5 7-2.5 9h17c0-2-2.5-3-2.5-9"></path>
+              <path d="M9.5 20h5"></path>
+            </svg>
+          </span>
+          <div>
+            <h1 id="titulo-informacoes">Informações</h1>
+            <p class="texto-introducao">Avisos sobre seus medicamentos e atendimentos.</p>
+          </div>
+        </section>
+
+        <section class="resumo-notificacoes" id="resumo-notificacoes" aria-label="Resumo das notificações">
+          <div class="texto-resumo">
+            <strong id="resumo-nao-lidas">Nenhuma notificação não lida</strong>
+          </div>
+          <button class="fechar-resumo" id="fechar-resumo" type="button" aria-label="Fechar resumo das notificações">
+            <svg aria-hidden="true" viewBox="0 0 24 24">
+              <path d="m6 6 12 12M18 6 6 18"></path>
+            </svg>
+          </button>
+        </section>
+
+        <section aria-labelledby="titulo-avisos">
+          <div class="cabecalho-secao">
+            <div class="titulo-secao">
+              <h2 id="titulo-avisos">Avisos recentes</h2>
+              <span id="total-avisos">0 avisos</span>
+            </div>
+            <div class="filtros" aria-label="Filtrar notificações">
+              <button class="botao-filtro ativo" type="button" data-filtro="todos" aria-pressed="true">
+                Todas
+              </button>
+              <button class="botao-filtro" type="button" data-filtro="nao-lidas" aria-pressed="false">
+                Não lidas
+              </button>
+            </div>
+          </div>
+
+          <div class="grade-avisos" id="lista-avisos"></div>
+
+          <div class="estado-vazio" id="estado-vazio" hidden>
+            <span class="icone-vazio" aria-hidden="true">
+              <svg viewBox="0 0 24 24">
+                <path d="M4 5h16v14H4z"></path>
+                <path d="m4 7 8 6 8-6"></path>
+              </svg>
+            </span>
+            <h3>Nenhum aviso por aqui</h3>
+            <p>Quando a farmácia enviar uma informação, ela aparecerá nesta área.</p>
+          </div>
+
+          <button class="botao-ver-mais" id="botao-ver-mais" type="button" hidden>
+            <span>Ver mais avisos</span>
+            <svg aria-hidden="true" viewBox="0 0 24 24">
+              <path d="m7 10 5 5 5-5"></path>
+            </svg>
+          </button>
+        </section>
+      </main>
+    </div>
+
+    <button class="botao-adicionar" id="abrir-modal-aviso" type="button" aria-label="Adicionar aviso">
+      <svg aria-hidden="true" viewBox="0 0 24 24">
+        <path d="M12 5v14M5 12h14"></path>
+      </svg>
+      <span>Adicionar aviso</span>
+    </button>
+
+    <dialog class="modal-aviso" id="modal-aviso" aria-labelledby="titulo-modal-aviso">
+      <div class="cabecalho-modal">
+        <div>
+          <span class="rotulo-modal">Nova informação</span>
+          <h2 id="titulo-modal-aviso">Adicionar notificação</h2>
+          <p>Preencha os dados do aviso que será exibido.</p>
+        </div>
+        <button class="fechar-modal" id="fechar-modal-aviso" type="button" aria-label="Fechar">
+          <svg aria-hidden="true" viewBox="0 0 24 24">
+            <path d="m6 6 12 12M18 6 6 18"></path>
+          </svg>
+        </button>
+      </div>
+
+      <form class="formulario-aviso" id="formulario-aviso" novalidate>
+        <div class="campo-modal">
+          <label for="tipo-aviso">Tipo do aviso</label>
+          <select id="tipo-aviso" name="tipo" required>
+            <option value="medication">Medicamento disponível</option>
+            <option value="pickup">Lembrete de retirada</option>
+            <option value="guidance">Orientação farmacêutica</option>
+            <option value="exam">Exames</option>
+            <option value="general">Informação geral</option>
+          </select>
+        </div>
+
+        <div class="campo-modal">
+          <label for="titulo-aviso">Título</label>
+          <input id="titulo-aviso" name="titulo" type="text" maxlength="60" placeholder="Ex.: Seu medicamento está disponível" required />
+        </div>
+
+        <div class="campo-modal">
+          <label for="mensagem-aviso">Mensagem</label>
+          <textarea id="mensagem-aviso" name="mensagem" rows="4" maxlength="240" placeholder="Digite a informação que será exibida ao paciente." required></textarea>
+          <span class="contador-caracteres"><span id="contagem-mensagem">0</span>/240</span>
+        </div>
+
+        <p class="erro-modal" id="erro-modal" role="alert"></p>
+
+        <div class="acoes-modal">
+          <button class="botao-secundario" id="cancelar-aviso" type="button">Cancelar</button>
+          <button class="botao-confirmar" type="submit">Publicar aviso</button>
+        </div>
+      </form>
+    </dialog>
+
+    <dialog class="modal-aviso modal-detalhes" id="modal-detalhes" aria-labelledby="titulo-detalhes">
+      <div class="conteudo-detalhes">
+        <button class="fechar-modal fechar-detalhes" id="fechar-modal-detalhes" type="button" aria-label="Fechar aviso">
+          <svg aria-hidden="true" viewBox="0 0 24 24">
+            <path d="m6 6 12 12M18 6 6 18"></path>
+          </svg>
+        </button>
+        <span class="icone-detalhes" id="icone-detalhes" aria-hidden="true"></span>
+        <span class="categoria-detalhes" id="categoria-detalhes"></span>
+        <h2 id="titulo-detalhes"></h2>
+        <p id="mensagem-detalhes"></p>
+        <time class="data-detalhes" id="data-detalhes"></time>
+        <div class="acoes-modal acoes-detalhes">
+          <button class="botao-secundario" id="fechar-detalhes" type="button">Fechar</button>
+          <button class="botao-confirmar" id="marcar-como-lida" type="button">Marcar como lida</button>
+        </div>
+      </div>
+    </dialog>
+
+    <div class="aviso-flutuante" id="aviso-flutuante" role="status" aria-live="polite"></div>
+  </body>
+</html>

@@ -1,13 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
   const CHAVE_PERFIL = "farmasus_dados_perfil";
 
-  const dadosIniciais = {
-    nomeCompleto: "Yasmin Rios",
-    email: "yasmin.rios@exemplo.com",
-    telefone: "(93) 99124-8840",
-    cpf: "048.921.652-10",
-  };
-
   const formulario = document.getElementById("formulario-perfil");
   const campoNome = document.getElementById("nome-completo");
   const campoEmail = document.getElementById("email-perfil");
@@ -19,7 +12,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const erroTelefone = document.getElementById("erro-telefone");
   const erroCpf = document.getElementById("erro-cpf");
 
-  const nomeLateral = document.getElementById("nome-usuario-lateral");
   const botaoEditar = document.getElementById("botao-editar-perfil");
   const botaoCancelar = document.getElementById("cancelar-edicao");
   const containerAcoes = document.getElementById("acoes-perfil");
@@ -29,24 +21,64 @@ document.addEventListener("DOMContentLoaded", () => {
   let editando = false;
   let temporizadorAviso = null;
 
-  function carregarPerfil() {
+  function obterDadosAutenticados() {
     try {
-      const salvo = localStorage.getItem(CHAVE_PERFIL);
-      const dados = salvo ? JSON.parse(salvo) : dadosIniciais;
-
-      campoNome.value = dados.nomeCompleto || dadosIniciais.nomeCompleto;
-      campoEmail.value = dados.email || dadosIniciais.email;
-      campoTelefone.value = dados.telefone || dadosIniciais.telefone;
-      campoCpf.value = dados.cpf || dadosIniciais.cpf;
-
-      if (nomeLateral) {
-        nomeLateral.textContent = campoNome.value;
+      const salvoSessao = sessionStorage.getItem("farmaSUSUsuario");
+      if (salvoSessao) {
+        return JSON.parse(salvoSessao);
       }
-    } catch {
-      if (nomeLateral) {
-        nomeLateral.textContent = dadosIniciais.nomeCompleto;
+    } catch (_) {}
+
+    try {
+      const salvoPerfil = localStorage.getItem(CHAVE_PERFIL);
+      if (salvoPerfil) {
+        return JSON.parse(salvoPerfil);
       }
+    } catch (_) {}
+
+    return null;
+  }
+
+  function carregarPerfil() {
+    const dados = obterDadosAutenticados();
+
+    // Se não há usuário logado, redireciona para a tela de login
+    if (!dados || (!dados.email && !dados.name && !dados.nomeCompleto)) {
+      window.location.href = "index.html";
+      return;
     }
+
+    const nome = dados.name || dados.nomeCompleto || dados.email.split("@")[0];
+    const email = dados.email || "";
+    const telefone = dados.telefone || "";
+    const cpf = dados.cpf || "";
+
+    campoNome.value = nome;
+    campoEmail.value = email;
+    campoTelefone.value = telefone;
+    campoCpf.value = cpf;
+
+    // Atualizar visualmente o topo da página de perfil
+    const tituloPerfil = document.getElementById("titulo-perfil");
+    if (tituloPerfil) tituloPerfil.textContent = nome;
+
+    const emailTopo = document.querySelector(".email-perfil-topo");
+    if (emailTopo) emailTopo.textContent = email;
+
+    // Atualizar avatares com as iniciais do nome real
+    const partes = nome.trim().split(" ");
+    const iniciais = partes.length > 1
+      ? (partes[0][0] + partes[partes.length - 1][0]).toUpperCase()
+      : partes[0].slice(0, 2).toUpperCase();
+
+    const avatarGrande = document.querySelector(".avatar-perfil-grande");
+    if (avatarGrande) avatarGrande.textContent = iniciais;
+
+    const avatarMenu = document.querySelector(".avatar-perfil");
+    if (avatarMenu) avatarMenu.textContent = iniciais;
+
+    const nomeMenu = document.querySelector(".nome-perfil");
+    if (nomeMenu) nomeMenu.textContent = nome;
   }
 
   function formatarTelefone(valor) {
@@ -68,26 +100,30 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function limparErros() {
-    erroNome.textContent = "";
-    erroEmail.textContent = "";
-    erroTelefone.textContent = "";
-    erroCpf.textContent = "";
+    if (erroNome) erroNome.textContent = "";
+    if (erroEmail) erroEmail.textContent = "";
+    if (erroTelefone) erroTelefone.textContent = "";
+    if (erroCpf) erroCpf.textContent = "";
   }
 
   function alternarModoEdicao(ativo) {
     editando = ativo;
 
     campos.forEach((input) => {
-      if (ativo) {
-        input.removeAttribute("readonly");
-      } else {
-        input.setAttribute("readonly", "readonly");
+      if (input) {
+        if (ativo) {
+          input.removeAttribute("readonly");
+        } else {
+          input.setAttribute("readonly", "readonly");
+        }
       }
     });
 
-    containerAcoes.hidden = !ativo;
-    botaoEditar.hidden = ativo;
-    botaoEditar.setAttribute("aria-pressed", String(ativo));
+    if (containerAcoes) containerAcoes.hidden = !ativo;
+    if (botaoEditar) {
+      botaoEditar.hidden = ativo;
+      botaoEditar.setAttribute("aria-pressed", String(ativo));
+    }
 
     limparErros();
 
@@ -103,23 +139,23 @@ document.addEventListener("DOMContentLoaded", () => {
     let valido = true;
 
     if (campoNome.value.trim().length < 3) {
-      erroNome.textContent = "Informe seu nome completo.";
+      if (erroNome) erroNome.textContent = "Informe seu nome completo.";
       valido = false;
     }
 
     const emailValido = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(campoEmail.value.trim());
     if (!emailValido) {
-      erroEmail.textContent = "Informe um e-mail válido.";
+      if (erroEmail) erroEmail.textContent = "Informe um e-mail válido.";
       valido = false;
     }
 
-    if (campoTelefone.value.replace(/\D/g, "").length < 10) {
-      erroTelefone.textContent = "Informe um telefone válido com DDD.";
+    if (campoTelefone.value && campoTelefone.value.replace(/\D/g, "").length < 10) {
+      if (erroTelefone) erroTelefone.textContent = "Informe um telefone válido com DDD.";
       valido = false;
     }
 
-    if (campoCpf.value.replace(/\D/g, "").length !== 11) {
-      erroCpf.textContent = "Informe um CPF válido com 11 dígitos.";
+    if (campoCpf.value && campoCpf.value.replace(/\D/g, "").length !== 11) {
+      if (erroCpf) erroCpf.textContent = "Informe um CPF válido com 11 dígitos.";
       valido = false;
     }
 
@@ -137,50 +173,58 @@ document.addEventListener("DOMContentLoaded", () => {
     }, 3000);
   }
 
-  campoTelefone.addEventListener("input", (evento) => {
-    if (!editando) return;
-    evento.target.value = formatarTelefone(evento.target.value);
-    erroTelefone.textContent = "";
-  });
+  if (campoTelefone) {
+    campoTelefone.addEventListener("input", (evento) => {
+      if (!editando) return;
+      evento.target.value = formatarTelefone(evento.target.value);
+      if (erroTelefone) erroTelefone.textContent = "";
+    });
+  }
 
-  campoCpf.addEventListener("input", (evento) => {
-    if (!editando) return;
-    evento.target.value = formatarCpf(evento.target.value);
-    erroCpf.textContent = "";
-  });
+  if (campoCpf) {
+    campoCpf.addEventListener("input", (evento) => {
+      if (!editando) return;
+      evento.target.value = formatarCpf(evento.target.value);
+      if (erroCpf) erroCpf.textContent = "";
+    });
+  }
 
-  botaoEditar.addEventListener("click", () => {
-    alternarModoEdicao(true);
-  });
+  if (botaoEditar) {
+    botaoEditar.addEventListener("click", () => {
+      alternarModoEdicao(true);
+    });
+  }
 
-  botaoCancelar.addEventListener("click", () => {
-    alternarModoEdicao(false);
-  });
+  if (botaoCancelar) {
+    botaoCancelar.addEventListener("click", () => {
+      alternarModoEdicao(false);
+    });
+  }
 
-  formulario.addEventListener("submit", (evento) => {
-    evento.preventDefault();
-    if (!editando || !validarCampos()) return;
+  if (formulario) {
+    formulario.addEventListener("submit", (evento) => {
+      evento.preventDefault();
+      if (!editando || !validarCampos()) return;
 
-    const dadosAtualizados = {
-      nomeCompleto: campoNome.value.trim(),
-      email: campoEmail.value.trim(),
-      telefone: campoTelefone.value.trim(),
-      cpf: campoCpf.value.trim(),
-    };
+      const dadosAtualizados = {
+        name: campoNome.value.trim(),
+        nomeCompleto: campoNome.value.trim(),
+        email: campoEmail.value.trim(),
+        telefone: campoTelefone.value.trim(),
+        cpf: campoCpf.value.trim(),
+      };
 
-    try {
-      localStorage.setItem(CHAVE_PERFIL, JSON.stringify(dadosAtualizados));
-    } catch {
-      // Ignora erro caso o armazenamento esteja desabilitado
-    }
+      try {
+        localStorage.setItem(CHAVE_PERFIL, JSON.stringify(dadosAtualizados));
+        const salvoSessao = sessionStorage.getItem("farmaSUSUsuario");
+        const objSessao = salvoSessao ? JSON.parse(salvoSessao) : {};
+        sessionStorage.setItem("farmaSUSUsuario", JSON.stringify({ ...objSessao, ...dadosAtualizados }));
+      } catch (_) {}
 
-    if (nomeLateral) {
-      nomeLateral.textContent = dadosAtualizados.nomeCompleto;
-    }
-
-    alternarModoEdicao(false);
-    mostrarAviso("Perfil atualizado com sucesso.");
-  });
+      alternarModoEdicao(false);
+      mostrarAviso("Perfil atualizado com sucesso.");
+    });
+  }
 
   carregarPerfil();
 });

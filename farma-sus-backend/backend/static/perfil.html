@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Painel de perfil e dados cadastrais do paciente FarmaSUS"
+    />
+    <title>Meu Perfil | FarmaSUS</title>
+    <link rel="stylesheet" href="css/global.css" />
+    <link rel="stylesheet" href="css/informacoes.css" />
+    <link rel="stylesheet" href="css/perfil.css" />
+    <script src="assets/js/painel-perfil.js" defer></script>
+  </head>
+  <body class="pagina-informacoes pagina-perfil">
+    <header class="cabecalho cabecalho-perfil">
+      <span class="titulo-cabecalho-pagina">MEU PERFIL</span>
+      <a class="marca" href="inicio.html" aria-label="FarmaSUS - início">
+        <span class="cruz-marca" aria-hidden="true"></span>
+        <span>FarmaSUS</span>
+      </a>
+    </header>
+
+    <div class="estrutura-informacoes">
+      <aside class="menu-lateral" aria-label="Navegação principal">
+        <a class="perfil-menu ativo" href="perfil.html" aria-current="page">
+          <span class="avatar-perfil" aria-hidden="true">--</span>
+          <span class="nome-perfil">...</span>
+        </a>
+
+        <nav class="navegacao-lateral">
+          <a class="item-menu" href="inicio.html">
+            <svg aria-hidden="true" viewBox="0 0 24 24">
+              <path class="icone-solido" d="M12 2.8 2.5 11h2.7v9.2h5v-5.6h3.6v5.6h5V11h2.7L12 2.8Z"></path>
+            </svg>
+            <span>Início</span>
+          </a>
+
+          <a class="item-menu" href="exames.html">
+            <svg aria-hidden="true" viewBox="0 0 24 24">
+              <path class="icone-solido" d="M6 2h8l5 5v13a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2Zm7 2.2V8h3.8L13 4.2Z"></path>
+              <path class="detalhe-icone" d="M8 12h7M8 16h7"></path>
+            </svg>
+            <span>Exames</span>
+          </a>
+
+          <a class="item-menu" href="medicamentos.html">
+            <svg aria-hidden="true" viewBox="0 0 24 24">
+              <rect class="icone-solido" x="2.8" y="8.2" width="18.4" height="7.6" rx="3.8" transform="rotate(-45 12 12)"></rect>
+              <path class="detalhe-icone" d="m9.3 9.3 5.4 5.4"></path>
+            </svg>
+            <span>Medicamentos</span>
+          </a>
+
+          <a class="item-menu" href="informacoes.html">
+            <svg aria-hidden="true" viewBox="0 0 24 24">
+              <path class="icone-solido" d="M12 22a2.4 2.4 0 0 0 2.35-2h-4.7A2.4 2.4 0 0 0 12 22Zm6-14A6 6 0 0 0 6 8c0 4.8-2 6.4-3 8v2h18v-2c-1-1.6-3-3.2-3-8Z"></path>
+            </svg>
+            <span>Informações</span>
+          </a>
+        </nav>
+      </aside>
+
+      <main class="conteudo-informacoes conteudo-perfil" id="conteudo-perfil">
+        <section class="painel-perfil" aria-labelledby="titulo-perfil">
+          <div class="topo-painel-perfil">
+            <span class="avatar-perfil-grande" aria-hidden="true">--</span>
+
+            <div class="cabecalho-acoes-perfil">
+              <div>
+                <h1 id="titulo-perfil">Carregando...</h1>
+                <p class="email-perfil-topo">...</p>
+              </div>
+              <button class="botao-secundario" id="botao-editar-perfil" type="button" aria-pressed="false">
+                Editar perfil
+              </button>
+            </div>
+          </div>
+
+          <form id="formulario-perfil" class="formulario grade-perfil" data-tipo-formulario="perfil" novalidate>
+            <div class="campo largura-total">
+              <label for="nome-completo">Nome Completo:</label>
+              <input
+                id="nome-completo"
+                name="nomeCompleto"
+                type="text"
+                autocomplete="name"
+                value=""
+                placeholder="Seu nome completo"
+                aria-describedby="erro-nome-completo"
+                readonly
+                required
+              />
+              <span class="erro-campo" id="erro-nome-completo" aria-live="polite"></span>
+            </div>
+
+            <div class="campo largura-total">
+              <label for="email-perfil">E-mail:</label>
+              <input
+                id="email-perfil"
+                name="email"
+                type="email"
+                autocomplete="email"
+                value=""
+                placeholder="seuemail@exemplo.com"
+                aria-describedby="erro-email-perfil"
+                readonly
+                required
+              />
+              <span class="erro-campo" id="erro-email-perfil" aria-live="polite"></span>
+            </div>
+
+            <div class="campo">
+              <label for="telefone">Telefone:</label>
+              <input
+                id="telefone"
+                name="telefone"
+                type="tel"
+                inputmode="tel"
+                autocomplete="tel"
+                maxlength="15"
+                value=""
+                placeholder="(00) 00000-0000"
+                aria-describedby="erro-telefone"
+                readonly
+              />
+              <span class="erro-campo" id="erro-telefone" aria-live="polite"></span>
+            </div>
+
+            <div class="campo">
+              <label for="cpf">CPF:</label>
+              <input
+                id="cpf"
+                name="cpf"
+                type="text"
+                inputmode="numeric"
+                autocomplete="off"
+                maxlength="14"
+                value=""
+                placeholder="000.000.000-00"
+                aria-describedby="erro-cpf"
+                pattern="[0-9]{3}\.[0-9]{3}\.[0-9]{3}-[0-9]{2}"
+                readonly
+                required
+              />
+              <span class="erro-campo" id="erro-cpf" aria-live="polite"></span>
+            </div>
+
+            <div class="acoes-perfil largura-total" id="acoes-perfil" hidden>
+              <button class="botao-secundario" id="cancelar-edicao" type="button">Cancelar</button>
+              <button class="botao-principal" type="submit">Salvar alterações</button>
+            </div>
+
+            <div class="mensagem-formulario largura-total" data-mensagem-formulario role="status" aria-live="polite"></div>
+          </form>
+        </section>
+      </main>
+    </div>
+
+    <div class="aviso-flutuante" id="aviso-flutuante" role="status" aria-live="polite"></div>
+  </body>
+</html>

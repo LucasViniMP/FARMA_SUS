@@ -40,6 +40,9 @@ def login():
             "email": user.email,
             "name": name,
             "role": role,
+            "cpf": profile_data.get("cpf", ""),
+            "telefone": profile_data.get("telefone", ""),
+            "dataNascimento": profile_data.get("dataNascimento", ""),
             "token": token,
             "mode": "firebase",
         }), 200
@@ -99,6 +102,8 @@ def register():
             "uid": user.uid,
             "email": user.email,
             "name": name,
+            "cpf": cpf,
+            "dataNascimento": data_nascimento,
             "token": token,
             "mode": "firebase",
         }), 201

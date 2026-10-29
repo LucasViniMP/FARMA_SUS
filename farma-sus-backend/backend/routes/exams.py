@@ -7,9 +7,14 @@ exams_bp = Blueprint("exams", __name__)
 
 
 @exams_bp.get("/")
-@exams_bp.get("/exames")
 @exams_bp.get("/index.html")
-def home():
+def login_page():
+    return send_from_directory(current_app.static_folder, "index.html")
+
+
+@exams_bp.get("/exames")
+@exams_bp.get("/exames.html")
+def exames_page():
     return send_from_directory(current_app.static_folder, "exames.html")
 
 
