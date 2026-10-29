@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Acesso ao portal FarmaSUS" />
+    <title>Entrar | FarmaSUS</title>
+    <link rel="stylesheet" href="css/global.css" />
+    <link rel="stylesheet" href="css/login.css" />
+    <script src="script.js" defer></script>
+  </head>
+  <body class="pagina-login">
+    <header class="cabecalho">
+      <a class="marca" href="index.html" aria-label="FarmaSUS - página de login">
+        <span class="cruz-marca" aria-hidden="true"></span>
+        <span>FarmaSUS</span>
+      </a>
+    </header>
+
+    <div class="pagina">
+      <main class="conteudo-autenticacao">
+        <section class="painel" aria-labelledby="titulo-pagina">
+          <div class="introducao-formulario">
+            <h1 id="titulo-pagina">Entrar no FarmaSUS</h1>
+            <p>Use seu e-mail e senha para acessar.</p>
+          </div>
+
+          <form id="formulario-login" class="formulario" data-tipo-formulario="login" novalidate>
+            <div class="campo">
+              <label for="email-login">E-mail</label>
+              <input
+                id="email-login"
+                name="email"
+                type="email"
+                autocomplete="email"
+                placeholder="seuemail@exemplo.com"
+                aria-describedby="erro-email-login"
+                required
+              />
+              <span class="erro-campo" id="erro-email-login" aria-live="polite"></span>
+            </div>
+
+            <div class="campo">
+              <label for="senha-login">Senha</label>
+              <div class="campo-senha">
+                <input
+                  id="senha-login"
+                  name="senha"
+                  type="password"
+                  autocomplete="current-password"
+                  placeholder="Digite sua senha"
+                  aria-describedby="erro-senha-login"
+                  required
+                />
+                <button
+                  class="alternar-senha"
+                  type="button"
+                  data-campo-senha="senha-login"
+                  aria-label="Mostrar senha"
+                  aria-pressed="false"
+                >
+                  <svg aria-hidden="true" viewBox="0 0 24 24" focusable="false">
+                    <path d="M2.2 12s3.6-6 9.8-6 9.8 6 9.8 6-3.6 6-9.8 6-9.8-6-9.8-6Z" />
+                    <circle cx="12" cy="12" r="2.8" />
+                  </svg>
+                </button>
+              </div>
+              <span class="erro-campo" id="erro-senha-login" aria-live="polite"></span>
+            </div>
+
+            <button class="botao-principal" type="submit">Entrar</button>
+
+            <div class="mensagem-formulario" data-mensagem-formulario role="status" aria-live="polite"></div>
+          </form>
+
+          <p class="link-alternativo">
+            Ainda não tem conta? <a href="cadastro.html">Cadastre-se</a>
+          </p>
+        </section>
+      </main>
+
+      <footer class="rodape">FarmaSUS</footer>
+    </div>
+  </body>
+</html>

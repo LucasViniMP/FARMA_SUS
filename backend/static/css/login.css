@@ -1,0 +1,18 @@
+.conteudo-autenticacao {
+  align-items: center;
+  padding-top: 46px;
+  padding-bottom: 24px;
+}
+
+.painel {
+  max-width: 420px;
+}
+
+.formulario {
+  display: grid;
+  gap: 20px;
+}
+
+.botao-principal {
+  margin-top: 2px;
+}
