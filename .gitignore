@@ -1,0 +1,27 @@
+# Ambientes virtuais e dependencias
+.venv/
+env/
+venv/
+ENV/
+
+# Chaves e segredos de seguranca (NUNCA SUBIR)
+.env
+*.env
+*.pem
+*.key
+service-account.json
+service-account*.json
+firebase-adminsdk*.json
+
+# Caches e arquivos temporarios Python
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Banco de dados e uploads locais
+*.sqlite3
+*.db
+uploads/
