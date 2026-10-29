@@ -39,7 +39,6 @@ def login_required(fn):
     @wraps(fn)
     def wrapper(*args, **kwargs):
         header = request.headers.get("Authorization", "")
-        # Option 2: Firebase Bearer token provided
         if header.startswith("Bearer "):
             token = header[7:].strip()
             if not token:
@@ -60,11 +59,9 @@ def login_required(fn):
                     pass
                 return jsonify(error="token inválido"), 401
 
-        # In testing mode, strictly require authentication if not provided
         if current_app.config.get("TESTING"):
             return jsonify(error="não autenticado"), 401
 
-        # Option 1: Local development mode (no Firebase needed)
         if current_app.config.get("APP_ENV") == "development":
             g.uid = "paciente-local"
             g.auth_mode = "local"
@@ -115,7 +112,6 @@ def upload_file():
         key = storage.make_key(f.filename, folder="users/" + g.uid)
         storage.upload(key, content)
 
-        # Record metadata for display
         now = datetime.now()
         meta = _load_meta()
         meta[key] = {

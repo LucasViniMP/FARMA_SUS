@@ -17,11 +17,9 @@ def login():
     if not email:
         return jsonify(error="Informe o e-mail."), 400
 
-    # 1. Tenta autenticar pelo Firebase
     try:
         user = auth_client().get_user_by_email(email)
 
-        # Busca perfil no Firestore
         profile_data = {}
         try:
             doc = db_client().collection("users").document(user.uid).get()
@@ -47,7 +45,6 @@ def login():
         }), 200
 
     except Exception as e:
-        # 2. Se em modo de desenvolvimento local e sem Firebase online, permite login de demonstração
         if current_app.config.get("APP_ENV") == "development":
             name = "Yasmin Rios" if "teste" in email or "yasmin" in email else email.split("@")[0].capitalize()
             return jsonify({

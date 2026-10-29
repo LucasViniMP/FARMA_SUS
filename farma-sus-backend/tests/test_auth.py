@@ -54,7 +54,6 @@ def test_portuguese_role_alias_accepted(mock_auth, mock_db, client):
     mock_auth.return_value.verify_id_token.return_value = {"uid": "patient-pt"}
     profile = MagicMock()
     profile.exists = True
-    # Test Portuguese role string "paciente"
     profile.to_dict.return_value = {"role": "paciente", "active": True}
     mock_db.return_value.collection.return_value.document.return_value.get.return_value = profile
 
