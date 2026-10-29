@@ -1,0 +1,619 @@
+/* Tela de medicamentos do paciente. */
+body {
+  height: 100vh;
+  overflow: hidden;
+  background: var(--fundo-pagina);
+}
+
+.cabecalho {
+  position: relative;
+  z-index: 10;
+}
+
+.estrutura-medicamentos {
+  display: grid;
+  height: calc(100vh - 72px);
+  min-height: 0;
+  grid-template-columns: 96px minmax(0, 1fr);
+  overflow: hidden;
+}
+
+/* Menu lateral (mesmo padrão das telas de início e informações). */
+.menu-lateral {
+  min-height: 0;
+  padding: 18px 7px;
+  border-right: 1px solid #dce5e9;
+  background: var(--superficie);
+}
+
+.perfil-menu {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  gap: 7px;
+  margin-bottom: 16px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid #edf1f3;
+  text-align: center;
+  text-decoration: none;
+  border-radius: 6px;
+  transition: background-color 160ms ease;
+}
+
+a.perfil-menu:hover .avatar-perfil {
+  background: var(--cor-principal-hover);
+}
+
+.avatar-perfil {
+  display: grid;
+  width: 44px;
+  height: 44px;
+  place-items: center;
+  border-radius: 50%;
+  color: #ffffff;
+  background: var(--cor-principal);
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.nome-perfil {
+  color: var(--titulo);
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1.25;
+}
+
+.navegacao-lateral {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.item-menu {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 74px;
+  padding: 8px 4px;
+  flex-direction: column;
+  gap: 6px;
+  border: 0;
+  border-radius: 6px;
+  color: #526274;
+  background: transparent;
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1.2;
+  white-space: nowrap;
+  text-align: center;
+  text-decoration: none;
+  cursor: default;
+}
+
+a.item-menu {
+  cursor: pointer;
+}
+
+a.item-menu:hover {
+  background: #f1f7f8;
+}
+
+.item-menu:focus-visible {
+  outline: 3px solid rgb(29 127 138 / 22%);
+  outline-offset: 2px;
+}
+
+.item-menu svg {
+  box-sizing: content-box;
+  width: 23px;
+  height: 23px;
+  padding: 6px;
+  border-radius: 7px;
+  color: #4c6170;
+  background: #f1f5f6;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.7;
+}
+
+.item-menu .icone-solido {
+  fill: currentColor;
+  stroke: none;
+}
+
+.item-menu .detalhe-icone {
+  fill: none;
+  stroke: #ffffff;
+  stroke-width: 1.5;
+}
+
+.item-menu.ativo {
+  color: var(--cor-principal);
+  background: #eaf5f6;
+  box-shadow: inset 0 0 0 1px #d3e9eb;
+}
+
+.item-menu.ativo svg {
+  color: #ffffff;
+  background: var(--cor-principal);
+}
+
+/* Conteúdo */
+.conteudo-medicamentos {
+  width: min(1080px, calc(100% - 48px));
+  height: 100%;
+  min-height: 0;
+  margin: 0 auto;
+  padding: clamp(22px, 3vh, 34px) 0 92px;
+  overflow-y: auto;
+  scrollbar-width: none;
+}
+
+.conteudo-medicamentos::-webkit-scrollbar {
+  display: none;
+}
+
+.introducao-pagina {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 20px;
+}
+
+.icone-introducao {
+  display: grid;
+  width: 44px;
+  height: 44px;
+  flex: 0 0 44px;
+  place-items: center;
+  border-radius: 6px;
+  color: #ffffff;
+  background: var(--cor-principal);
+}
+
+.icone-introducao svg {
+  width: 23px;
+  height: 23px;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.8;
+}
+
+.introducao-pagina h1 {
+  margin: 0 0 3px;
+  color: var(--titulo);
+  font-size: 30px;
+  line-height: 1.1;
+}
+
+.texto-introducao {
+  margin: 0;
+  color: var(--texto-secundario);
+  font-size: 14px;
+  line-height: 1.35;
+}
+
+.cabecalho-secao {
+  display: flex;
+  align-items: baseline;
+  gap: 9px;
+  margin-bottom: 14px;
+}
+
+.cabecalho-secao h2 {
+  margin: 0;
+  color: var(--titulo);
+  font-size: 19px;
+}
+
+.cabecalho-secao > span {
+  color: var(--texto-secundario);
+  font-size: 12px;
+}
+
+/* Cartões de medicamento */
+.lista-medicamentos {
+  display: grid;
+  gap: 14px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.cartao-medicamento {
+  display: grid;
+  grid-template-columns: 132px minmax(0, 1fr);
+  gap: 24px;
+  align-items: center;
+  padding: 18px 20px;
+  border: 1px solid #dce6e9;
+  border-radius: 8px;
+  background: var(--superficie);
+  box-shadow: 0 2px 8px rgb(23 60 67 / 4%);
+}
+
+.foto-produto {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 8px;
+  height: 112px;
+  border: 1px dashed #b8d6d9;
+  border-radius: 8px;
+  color: var(--cor-principal);
+  background: #f3fafb;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.foto-produto svg {
+  width: 34px;
+  height: 34px;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.6;
+}
+
+.dados-medicamento {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+  margin: 0;
+}
+
+.dados-medicamento dt {
+  margin-bottom: 6px;
+  color: var(--texto-secundario);
+  font-size: 12px;
+}
+
+.dados-medicamento dd {
+  margin: 0;
+  color: var(--titulo);
+  font-size: 17px;
+  font-weight: 700;
+  overflow-wrap: anywhere;
+}
+
+.situacao {
+  display: inline-flex;
+  align-items: center;
+  min-height: 27px;
+  padding: 0 10px;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  font-size: 13px;
+}
+
+.situacao.aceito {
+  border-color: #abefc6;
+  color: var(--sucesso);
+  background: var(--fundo-sucesso);
+}
+
+.situacao.pendente {
+  border-color: #fedf89;
+  color: #b54708;
+  background: #fffaeb;
+}
+
+.estado-vazio {
+  padding: 42px 24px;
+  border: 1px dashed #c9d7dc;
+  border-radius: 13px;
+  color: var(--texto-secundario);
+  background: rgb(255 255 255 / 56%);
+  text-align: center;
+}
+
+.estado-vazio[hidden] {
+  display: none;
+}
+
+.estado-vazio h3 {
+  margin: 0 0 6px;
+  color: var(--titulo);
+}
+
+.estado-vazio p {
+  margin: 0;
+}
+
+/* Botão adicionar (mesmo padrão da tela de informações). */
+.botao-adicionar {
+  position: fixed;
+  z-index: 12;
+  right: 24px;
+  bottom: 24px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: 44px;
+  padding: 0 17px;
+  border: 0;
+  border-radius: 6px;
+  color: #ffffff;
+  background: var(--cor-principal);
+  box-shadow: 0 5px 14px rgb(23 60 67 / 18%);
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.botao-adicionar:hover {
+  background: var(--cor-principal-hover);
+}
+
+.botao-adicionar:focus-visible {
+  outline: 3px solid rgb(29 127 138 / 22%);
+  outline-offset: 2px;
+}
+
+.botao-adicionar svg,
+.fechar-modal svg {
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 2;
+}
+
+.botao-adicionar svg {
+  width: 19px;
+  height: 19px;
+}
+
+/* Modal de novo medicamento */
+.modal-medicamento {
+  width: min(520px, calc(100% - 32px));
+  max-height: calc(100vh - 40px);
+  padding: 0;
+  overflow: auto;
+  border: 0;
+  border-radius: 8px;
+  color: var(--texto);
+  background: var(--superficie);
+  box-shadow: 0 24px 70px rgb(15 23 42 / 24%);
+}
+
+.modal-medicamento::backdrop {
+  background: rgb(15 23 42 / 48%);
+  backdrop-filter: blur(2px);
+}
+
+.cabecalho-modal {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 23px 26px 19px;
+  border-bottom: 1px solid #e5ecef;
+}
+
+.rotulo-modal {
+  color: var(--cor-principal);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+}
+
+.cabecalho-modal h2 {
+  margin: 5px 0;
+  color: var(--titulo);
+  font-size: 23px;
+}
+
+.cabecalho-modal p {
+  margin: 0;
+  color: var(--texto-secundario);
+  font-size: 14px;
+}
+
+.fechar-modal {
+  display: grid;
+  width: 36px;
+  height: 36px;
+  flex: 0 0 36px;
+  padding: 0;
+  place-items: center;
+  border: 0;
+  border-radius: 8px;
+  color: var(--texto-secundario);
+  background: #f2f6f7;
+  cursor: pointer;
+}
+
+.fechar-modal svg {
+  width: 18px;
+  height: 18px;
+}
+
+.formulario-medicamento {
+  padding: 21px 26px 25px;
+}
+
+.campo-modal {
+  margin-bottom: 16px;
+}
+
+.campo-modal label {
+  display: block;
+  margin-bottom: 7px;
+  color: var(--texto);
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.campo-modal input {
+  width: 100%;
+  height: 48px;
+  padding: 0 13px;
+  border: 1px solid var(--borda);
+  border-radius: 7px;
+  outline: 0;
+  color: var(--texto);
+  background: #ffffff;
+  font: inherit;
+}
+
+.campo-modal input:focus {
+  border-color: var(--cor-principal);
+  box-shadow: 0 0 0 3px rgb(29 127 138 / 13%);
+}
+
+.erro-modal {
+  min-height: 18px;
+  margin: -5px 0 10px;
+  color: var(--erro);
+  font-size: 13px;
+}
+
+.acoes-modal {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.botao-secundario,
+.botao-confirmar {
+  height: 44px;
+  padding: 0 17px;
+  border-radius: 7px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.botao-secundario {
+  border: 1px solid var(--borda);
+  color: var(--texto);
+  background: #ffffff;
+}
+
+.botao-confirmar {
+  border: 0;
+  color: #ffffff;
+  background: var(--cor-principal);
+}
+
+.aviso-flutuante {
+  position: fixed;
+  z-index: 30;
+  top: 88px;
+  right: 24px;
+  display: none;
+  width: min(350px, calc(100vw - 48px));
+  padding: 13px 15px;
+  border: 1px solid #abefc6;
+  border-radius: 8px;
+  color: var(--sucesso);
+  background: var(--fundo-sucesso);
+  box-shadow: 0 12px 30px rgb(15 23 42 / 14%);
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+.aviso-flutuante.visivel {
+  display: block;
+}
+
+@media (max-width: 900px) {
+  .dados-medicamento {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 760px) {
+  .estrutura-medicamentos {
+    height: calc(100vh - 64px);
+    grid-template-columns: 1fr;
+    grid-template-rows: 67px minmax(0, 1fr);
+  }
+
+  .menu-lateral {
+    padding: 7px 10px;
+    border-right: 0;
+    border-bottom: 1px solid #dce5e9;
+  }
+
+  .perfil-menu {
+    display: none;
+  }
+
+  .navegacao-lateral {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 4px;
+  }
+
+  .item-menu {
+    min-height: 52px;
+    padding: 4px 2px;
+    gap: 3px;
+    border-radius: 7px;
+    white-space: normal;
+  }
+
+  .item-menu svg {
+    width: 20px;
+    height: 20px;
+    padding: 4px;
+    border-radius: 6px;
+  }
+
+  .conteudo-medicamentos {
+    width: min(100% - 28px, 560px);
+    padding: 24px 0 84px;
+  }
+
+  .introducao-pagina h1 {
+    font-size: 29px;
+  }
+
+  .botao-adicionar {
+    right: 16px;
+    bottom: 16px;
+  }
+
+  .aviso-flutuante {
+    top: 76px;
+    right: 16px;
+    left: 16px;
+    width: auto;
+  }
+}
+
+@media (max-width: 480px) {
+  .cartao-medicamento {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .foto-produto {
+    height: 96px;
+  }
+
+  .cabecalho-modal,
+  .formulario-medicamento {
+    padding-right: 20px;
+    padding-left: 20px;
+  }
+
+  .acoes-modal {
+    flex-direction: column-reverse;
+  }
+
+  .botao-secundario,
+  .botao-confirmar {
+    width: 100%;
+  }
+}
