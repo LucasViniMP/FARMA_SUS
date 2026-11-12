@@ -1,0 +1,748 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Painel do farmacêutico para análise de laudos e gestão de medicamentos no FarmaSUS"
+    />
+    <title>Área do farmacêutico | FarmaSUS</title>
+    <link rel="stylesheet" href="css/global.css" />
+    <link rel="stylesheet" href="css/farmaceutico.css" />
+    <script src="assets/js/painel-farmaceutico.js" defer></script>
+  </head>
+
+  <body class="pagina-farmaceutico">
+    <div class="estrutura-farmaceutico">
+      <aside class="menu-lateral-farmaceutico" aria-label="Navegação da área do farmacêutico">
+        <div class="identidade-lateral">
+          <a class="marca marca-lateral" href="farmaceutico.html" aria-label="FarmaSUS - área do farmacêutico">
+            <span class="cruz-marca" aria-hidden="true"></span>
+            <span>FarmaSUS</span>
+          </a>
+          <span class="area-lateral">Área do farmacêutico</span>
+        </div>
+
+        <nav class="navegacao-farmaceutico" aria-label="Seções do painel">
+          <a
+            class="item-menu-farmaceutico ativo"
+            href="#visao-geral"
+            data-view="visao-geral"
+            aria-current="page"
+          >
+            <svg aria-hidden="true" viewBox="0 0 24 24">
+              <path d="M4 13h6V4H4v9Zm0 7h6v-4H4v4Zm10 0h6v-9h-6v9Zm0-16v4h6V4h-6Z"></path>
+            </svg>
+            <span>Visão geral</span>
+          </a>
+
+          <a class="item-menu-farmaceutico" href="#laudos" data-view="laudos">
+            <svg aria-hidden="true" viewBox="0 0 24 24">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6Z"></path>
+              <path d="M14 2v6h6M8 13h8M8 17h5"></path>
+            </svg>
+            <span>Laudos</span>
+          </a>
+
+          <a class="item-menu-farmaceutico" href="#clientes" data-view="clientes">
+            <svg aria-hidden="true" viewBox="0 0 24 24">
+              <circle cx="9" cy="8" r="3"></circle>
+              <path d="M3.5 19c.5-3.3 2.3-5 5.5-5s5 1.7 5.5 5M17 8v6M14 11h6"></path>
+            </svg>
+            <span>Clientes</span>
+          </a>
+
+          <a class="item-menu-farmaceutico" href="#medicamentos" data-view="medicamentos">
+            <svg aria-hidden="true" viewBox="0 0 24 24">
+              <path d="m10.5 20.5-7-7a4.95 4.95 0 0 1 7-7l7 7a4.95 4.95 0 0 1-7 7Z"></path>
+              <path d="m7 10 7 7"></path>
+            </svg>
+            <span>Medicamentos</span>
+          </a>
+        </nav>
+
+        <div class="acoes-laterais">
+          <button
+            class="perfil-farmaceutico"
+            id="abrir-perfil-farmaceutico"
+            type="button"
+            aria-haspopup="dialog"
+            aria-controls="modal-perfil-farmaceutico"
+            aria-label="Abrir perfil de Marina Costa"
+          >
+            <span class="avatar-farmaceutico" aria-hidden="true">MC</span>
+            <span class="dados-farmaceutico">
+              <strong>Marina Costa</strong>
+              <small>CRF-PA 7842</small>
+            </span>
+            <svg class="icone-abrir-perfil" aria-hidden="true" viewBox="0 0 24 24">
+              <path d="m9 6 6 6-6 6"></path>
+            </svg>
+          </button>
+          <button class="botao-restaurar" id="restaurar-demonstracao" type="button" hidden>
+            <svg aria-hidden="true" viewBox="0 0 24 24">
+              <path d="M3 12a9 9 0 1 0 3-6.7L3 8"></path>
+              <path d="M3 3v5h5"></path>
+            </svg>
+            <span>Restaurar dados</span>
+          </button>
+          <a class="botao-sair botao-sair-lateral" href="index.html">
+            <svg aria-hidden="true" viewBox="0 0 24 24">
+              <path d="M10 17l5-5-5-5M15 12H3M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path>
+            </svg>
+            <span>Sair</span>
+          </a>
+        </div>
+      </aside>
+
+      <main class="conteudo-farmaceutico" id="conteudo-principal">
+        <section
+          class="painel-farmaceutico ativo"
+          id="visao-geral"
+          data-painel="visao-geral"
+          aria-labelledby="titulo-visao-geral"
+        >
+          <div class="cabecalho-painel">
+            <div>
+              <h1 id="titulo-visao-geral">Olá, Marina</h1>
+              <p class="descricao-painel">Consulte o panorama da unidade. As alterações são feitas nas telas de Laudos e Medicamentos.</p>
+            </div>
+            <div class="meta-painel">
+              <span class="unidade-painel">
+                <small>Unidade</small>
+                <strong>Farmácia Municipal Centro</strong>
+              </span>
+              <p class="data-painel" id="data-atual" aria-live="polite"></p>
+            </div>
+          </div>
+
+          <div class="grade-indicadores" aria-label="Resumo de atendimentos">
+            <article class="cartao-indicador indicador-pendente">
+              <span class="icone-indicador" aria-hidden="true">
+                <svg viewBox="0 0 24 24">
+                  <path d="M12 8v4l2.5 2.5"></path>
+                  <circle cx="12" cy="12" r="9"></circle>
+                </svg>
+              </span>
+              <div>
+                <span class="valor-indicador" id="total-pendentes">0</span>
+                <span class="rotulo-indicador">Laudos pendentes</span>
+              </div>
+            </article>
+
+            <article class="cartao-indicador indicador-analise">
+              <span class="icone-indicador" aria-hidden="true">
+                <svg viewBox="0 0 24 24">
+                  <path d="M9 11 11 13 15 9"></path>
+                  <path d="M6 3h9l4 4v14H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Z"></path>
+                </svg>
+              </span>
+              <div>
+                <span class="valor-indicador" id="total-analise">0</span>
+                <span class="rotulo-indicador">Em análise</span>
+              </div>
+            </article>
+
+            <article class="cartao-indicador indicador-liberacao">
+              <span class="icone-indicador" aria-hidden="true">
+                <svg viewBox="0 0 24 24">
+                  <path d="M4 12.5 9 17l11-11"></path>
+                </svg>
+              </span>
+              <div>
+                <span class="valor-indicador" id="total-liberacao">0</span>
+                <span class="rotulo-indicador">Aguardando liberação</span>
+              </div>
+            </article>
+
+            <article class="cartao-indicador indicador-disponivel">
+              <span class="icone-indicador" aria-hidden="true">
+                <svg viewBox="0 0 24 24">
+                  <path d="M4 7.5 12 3l8 4.5v9L12 21l-8-4.5v-9Z"></path>
+                  <path d="m4 7.5 8 4.5 8-4.5M12 12v9"></path>
+                </svg>
+              </span>
+              <div>
+                <span class="valor-indicador" id="total-disponiveis">0</span>
+                <span class="rotulo-indicador">Medicamentos disponíveis</span>
+              </div>
+            </article>
+          </div>
+
+          <div class="grade-visao-geral">
+            <section class="cartao-conteudo cartao-fila" aria-labelledby="titulo-fila-resumo">
+              <div class="topo-cartao-conteudo">
+                <div>
+                  <h2 id="titulo-fila-resumo">Fila de laudos</h2>
+                </div>
+                <a class="link-ver-todos" href="#laudos" data-view="laudos">Ir para Laudos</a>
+              </div>
+              <div class="tabela-container">
+                <table class="tabela-farmaceutico tabela-resumo">
+                  <thead>
+                    <tr>
+                      <th scope="col">Paciente</th>
+                      <th scope="col">Medicamento</th>
+                      <th scope="col">Recebido</th>
+                      <th scope="col">Status</th>
+                      <th scope="col"><span class="visualmente-oculto">Acessar tela</span></th>
+                    </tr>
+                  </thead>
+                  <tbody id="fila-resumo-corpo"></tbody>
+                </table>
+              </div>
+            </section>
+
+            <section class="cartao-conteudo cartao-alertas" aria-labelledby="titulo-alertas-estoque">
+              <div class="topo-cartao-conteudo">
+                <div>
+                  <h2 id="titulo-alertas-estoque">Alertas de estoque</h2>
+                </div>
+                <a class="link-ver-todos" href="#medicamentos" data-view="medicamentos">Ir para Medicamentos</a>
+              </div>
+              <div id="estoque-alertas" class="lista-alertas" aria-live="polite"></div>
+            </section>
+          </div>
+        </section>
+
+        <section
+          class="painel-farmaceutico"
+          id="laudos"
+          data-painel="laudos"
+          aria-labelledby="titulo-laudos"
+          hidden
+        >
+          <div class="cabecalho-painel cabecalho-listagem">
+            <div>
+              <h1 id="titulo-laudos">Laudos</h1>
+              <p class="descricao-painel">Analise os documentos, registre sua decisão e libere solicitações aprovadas.</p>
+            </div>
+            <div class="acoes-cabecalho-painel">
+              <button class="botao-primario botao-com-icone" id="abrir-pedido-manual" type="button">
+                <span aria-hidden="true">+</span>
+                Fazer pedido manual
+              </button>
+              <span class="unidade-painel unidade-painel-secundaria">
+                <small>Unidade</small>
+                <strong>Farmácia Municipal Centro</strong>
+              </span>
+            </div>
+          </div>
+
+          <section class="cartao-conteudo cartao-listagem" aria-labelledby="titulo-lista-laudos">
+            <div class="barra-listagem">
+              <div>
+                <h2 id="titulo-lista-laudos">Fila de atendimento</h2>
+                <p><span id="contador-laudos">0</span> laudos encontrados</p>
+              </div>
+              <div class="controles-listagem">
+                <label class="campo-busca" for="busca-laudos">
+                  <span class="visualmente-oculto">Buscar laudos</span>
+                  <svg aria-hidden="true" viewBox="0 0 24 24">
+                    <circle cx="11" cy="11" r="7"></circle>
+                    <path d="m20 20-4-4"></path>
+                  </svg>
+                  <input
+                    id="busca-laudos"
+                    type="search"
+                    placeholder="Buscar paciente ou medicamento"
+                    autocomplete="off"
+                  />
+                </label>
+                <label class="campo-filtro" for="filtro-status-laudos">
+                  <span class="visualmente-oculto">Filtrar laudos por status</span>
+                  <select id="filtro-status-laudos">
+                    <option value="todos">Todos os status</option>
+                    <option value="pendente">Pendente</option>
+                    <option value="em-analise">Em análise</option>
+                    <option value="aprovado">Aprovado</option>
+                    <option value="vinculado">Vinculado</option>
+                    <option value="reprovado">Reprovado</option>
+                    <option value="liberado">Liberado</option>
+                  </select>
+                </label>
+              </div>
+            </div>
+
+            <div class="tabela-container">
+              <table class="tabela-farmaceutico tabela-laudos">
+                <thead>
+                  <tr>
+                    <th scope="col">Paciente</th>
+                    <th scope="col">Medicamento solicitado</th>
+                    <th scope="col">Enviado em</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Ações</th>
+                  </tr>
+                </thead>
+                <tbody id="lista-laudos-corpo"></tbody>
+              </table>
+            </div>
+
+            <div class="estado-vazio" id="estado-vazio-laudos" hidden>
+              <svg aria-hidden="true" viewBox="0 0 24 24">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6Z"></path>
+                <path d="M9 15h6M9 11h2"></path>
+              </svg>
+              <strong>Nenhum laudo encontrado</strong>
+              <span>Tente alterar a busca ou o filtro selecionado.</span>
+            </div>
+          </section>
+        </section>
+
+        <section
+          class="painel-farmaceutico"
+          id="clientes"
+          data-painel="clientes"
+          aria-labelledby="titulo-clientes"
+          hidden
+        >
+          <div class="cabecalho-painel cabecalho-listagem">
+            <div>
+              <h1 id="titulo-clientes">Cadastro de clientes</h1>
+              <p class="descricao-painel">Cadastre quem ainda não possui acesso ao portal para registrar atendimentos presenciais.</p>
+            </div>
+            <div class="acoes-cabecalho-painel">
+              <button class="botao-primario botao-com-icone" id="abrir-cadastro-cliente" type="button">
+                <span aria-hidden="true">+</span>
+                Cadastrar cliente
+              </button>
+              <span class="unidade-painel unidade-painel-secundaria">
+                <small>Unidade</small>
+                <strong>Farmácia Municipal Centro</strong>
+              </span>
+            </div>
+          </div>
+
+          <section class="cartao-conteudo cartao-listagem" aria-labelledby="titulo-lista-clientes">
+            <div class="barra-listagem">
+              <div>
+                <h2 id="titulo-lista-clientes">Clientes da unidade</h2>
+                <p><span id="contador-clientes">0</span> clientes cadastrados</p>
+              </div>
+              <div class="controles-listagem">
+                <label class="campo-busca" for="busca-clientes">
+                  <span class="visualmente-oculto">Buscar clientes</span>
+                  <svg aria-hidden="true" viewBox="0 0 24 24">
+                    <circle cx="11" cy="11" r="7"></circle>
+                    <path d="m20 20-4-4"></path>
+                  </svg>
+                  <input
+                    id="busca-clientes"
+                    type="search"
+                    placeholder="Buscar por nome, CPF ou CNS"
+                    autocomplete="off"
+                  />
+                </label>
+              </div>
+            </div>
+
+            <div class="tabela-container">
+              <table class="tabela-farmaceutico tabela-clientes">
+                <thead>
+                  <tr>
+                    <th scope="col">Cliente</th>
+                    <th scope="col">CPF</th>
+                    <th scope="col">CNS</th>
+                    <th scope="col">Contato</th>
+                    <th scope="col">Ações</th>
+                  </tr>
+                </thead>
+                <tbody id="lista-clientes-corpo"></tbody>
+              </table>
+            </div>
+
+            <div class="estado-vazio" id="estado-vazio-clientes" hidden>
+              <svg aria-hidden="true" viewBox="0 0 24 24">
+                <circle cx="9" cy="8" r="3"></circle>
+                <path d="M3.5 19c.5-3.3 2.3-5 5.5-5s5 1.7 5.5 5M17 8v6M14 11h6"></path>
+              </svg>
+              <strong>Nenhum cliente encontrado</strong>
+              <span>Cadastre um cliente ou altere o termo da busca.</span>
+            </div>
+          </section>
+        </section>
+
+        <section
+          class="painel-farmaceutico"
+          id="medicamentos"
+          data-painel="medicamentos"
+          aria-labelledby="titulo-medicamentos"
+          hidden
+        >
+          <div class="cabecalho-painel cabecalho-listagem">
+            <div>
+              <h1 id="titulo-medicamentos">Medicamentos</h1>
+              <p class="descricao-painel">Atualize os dados do lote e informe o que está disponível para retirada.</p>
+            </div>
+            <span class="unidade-painel unidade-painel-secundaria">
+              <small>Unidade</small>
+              <strong>Farmácia Municipal Centro</strong>
+            </span>
+          </div>
+
+          <section class="cartao-conteudo cartao-listagem" aria-labelledby="titulo-lista-medicamentos">
+            <div class="barra-listagem">
+              <div>
+                <h2 id="titulo-lista-medicamentos">Estoque e dispensação</h2>
+                <p><span id="contador-medicamentos">0</span> medicamentos encontrados</p>
+              </div>
+              <div class="controles-listagem">
+                <label class="campo-busca" for="busca-medicamentos">
+                  <span class="visualmente-oculto">Buscar medicamentos</span>
+                  <svg aria-hidden="true" viewBox="0 0 24 24">
+                    <circle cx="11" cy="11" r="7"></circle>
+                    <path d="m20 20-4-4"></path>
+                  </svg>
+                  <input
+                    id="busca-medicamentos"
+                    type="search"
+                    placeholder="Buscar medicamento ou paciente"
+                    autocomplete="off"
+                  />
+                </label>
+                <label class="campo-filtro" for="filtro-disponibilidade">
+                  <span class="visualmente-oculto">Filtrar pela disponibilidade</span>
+                  <select id="filtro-disponibilidade">
+                    <option value="todos">Toda a disponibilidade</option>
+                    <option value="disponivel">Disponível</option>
+                    <option value="indisponivel">Indisponível</option>
+                    <option value="estoque-baixo">Estoque baixo</option>
+                  </select>
+                </label>
+              </div>
+            </div>
+
+            <div class="tabela-container">
+              <table class="tabela-farmaceutico tabela-medicamentos">
+                <thead>
+                  <tr>
+                    <th scope="col">Medicamento</th>
+                    <th scope="col">Estoque</th>
+                    <th scope="col">Disponibilidade</th>
+                    <th scope="col">Ações</th>
+                  </tr>
+                </thead>
+                <tbody id="lista-medicamentos-corpo"></tbody>
+              </table>
+            </div>
+
+            <div class="estado-vazio" id="estado-vazio-medicamentos" hidden>
+              <svg aria-hidden="true" viewBox="0 0 24 24">
+                <path d="m10.5 20.5-7-7a4.95 4.95 0 0 1 7-7l7 7a4.95 4.95 0 0 1-7 7Z"></path>
+                <path d="m7 10 7 7"></path>
+              </svg>
+              <strong>Nenhum medicamento encontrado</strong>
+              <span>Tente alterar a busca ou o filtro selecionado.</span>
+            </div>
+          </section>
+        </section>
+      </main>
+    </div>
+
+    <dialog
+      class="modal-farmaceutico modal-perfil"
+      id="modal-perfil-farmaceutico"
+      aria-labelledby="titulo-modal-perfil"
+    >
+      <div class="cabecalho-modal">
+        <div>
+          <p class="etiqueta-secao">Conta profissional</p>
+          <h2 id="titulo-modal-perfil">Perfil da farmacêutica</h2>
+        </div>
+        <button
+          class="botao-fechar-modal"
+          id="fechar-modal-perfil"
+          type="button"
+          aria-label="Fechar perfil"
+        >
+          <svg aria-hidden="true" viewBox="0 0 24 24">
+            <path d="m6 6 12 12M18 6 6 18"></path>
+          </svg>
+        </button>
+      </div>
+      <div class="conteudo-perfil">
+        <div class="resumo-perfil">
+          <span class="avatar-perfil-ampliado" aria-hidden="true">MC</span>
+          <div>
+            <h3>Marina Costa</h3>
+            <p>Farmacêutica responsável</p>
+          </div>
+        </div>
+        <dl class="dados-conta">
+          <div>
+            <dt>Registro profissional</dt>
+            <dd>CRF-PA 7842</dd>
+          </div>
+          <div>
+            <dt>E-mail institucional</dt>
+            <dd>marina.costa@farmasus.gov.br</dd>
+          </div>
+          <div>
+            <dt>Unidade</dt>
+            <dd>Farmácia Municipal Centro</dd>
+          </div>
+          <div>
+            <dt>Perfil de acesso</dt>
+            <dd>Farmacêutica</dd>
+          </div>
+        </dl>
+      </div>
+    </dialog>
+
+    <dialog class="modal-farmaceutico modal-laudo" id="modal-laudo" aria-labelledby="titulo-modal-laudo">
+      <div class="cabecalho-modal">
+        <div>
+          <p class="etiqueta-secao">Análise do documento</p>
+          <h2 id="titulo-modal-laudo">Detalhes do laudo</h2>
+        </div>
+        <button class="botao-fechar-modal" id="fechar-modal-laudo" type="button" aria-label="Fechar detalhes do laudo">
+          <svg aria-hidden="true" viewBox="0 0 24 24">
+            <path d="m6 6 12 12M18 6 6 18"></path>
+          </svg>
+        </button>
+      </div>
+      <div id="conteudo-modal-laudo" class="conteudo-modal-laudo"></div>
+    </dialog>
+
+    <dialog class="modal-farmaceutico modal-formulario" id="modal-cadastro-cliente" aria-labelledby="titulo-cadastro-cliente">
+      <form id="form-cadastro-cliente" novalidate>
+        <div class="cabecalho-modal">
+          <div>
+            <p class="etiqueta-secao">Atendimento presencial</p>
+            <h2 id="titulo-cadastro-cliente">Cadastrar cliente</h2>
+          </div>
+          <button class="botao-fechar-modal" id="fechar-cadastro-cliente" type="button" aria-label="Fechar cadastro de cliente">
+            <svg aria-hidden="true" viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18"></path></svg>
+          </button>
+        </div>
+        <p class="texto-apoio-modal">Preencha os dados de identificação e contato usados nos pedidos feitos pela unidade.</p>
+        <div class="grade-formulario-modal">
+          <div class="campo-modal campo-modal-completo">
+            <label for="cliente-nome">Nome completo *</label>
+            <input id="cliente-nome" name="nome" type="text" maxlength="120" autocomplete="name" required />
+          </div>
+          <div class="campo-modal">
+            <label for="cliente-cpf">CPF *</label>
+            <input id="cliente-cpf" name="cpf" type="text" maxlength="14" inputmode="numeric" placeholder="000.000.000-00" required />
+          </div>
+          <div class="campo-modal">
+            <label for="cliente-cns">Cartão SUS (CNS) *</label>
+            <input id="cliente-cns" name="cns" type="text" maxlength="18" inputmode="numeric" placeholder="000 0000 0000 0000" required />
+          </div>
+          <div class="campo-modal">
+            <label for="cliente-nascimento">Data de nascimento *</label>
+            <input id="cliente-nascimento" name="nascimento" type="date" required />
+          </div>
+          <div class="campo-modal">
+            <label for="cliente-telefone">Telefone *</label>
+            <input id="cliente-telefone" name="telefone" type="tel" maxlength="15" autocomplete="tel" placeholder="(00) 00000-0000" required />
+          </div>
+          <div class="campo-modal campo-modal-completo">
+            <label for="cliente-email">E-mail</label>
+            <input id="cliente-email" name="email" type="email" maxlength="120" autocomplete="email" placeholder="cliente@email.com" />
+          </div>
+          <div class="campo-modal campo-modal-completo">
+            <label for="cliente-endereco">Endereço completo *</label>
+            <input id="cliente-endereco" name="endereco" type="text" maxlength="180" autocomplete="street-address" placeholder="Rua, número, bairro e município" required />
+          </div>
+        </div>
+        <span class="erro-campo erro-formulario" id="erro-cadastro-cliente" role="alert"></span>
+        <div class="acoes-modal">
+          <button class="botao-secundario" id="cancelar-cadastro-cliente" type="button">Cancelar</button>
+          <button class="botao-primario" type="submit">Salvar cliente</button>
+        </div>
+      </form>
+    </dialog>
+
+    <dialog class="modal-farmaceutico modal-formulario" id="modal-pedido-manual" aria-labelledby="titulo-pedido-manual">
+      <form id="form-pedido-manual" novalidate>
+        <div class="cabecalho-modal">
+          <div>
+            <p class="etiqueta-secao">Laudo entregue em mãos</p>
+            <h2 id="titulo-pedido-manual">Fazer pedido manual</h2>
+          </div>
+          <button class="botao-fechar-modal" id="fechar-pedido-manual" type="button" aria-label="Fechar pedido manual">
+            <svg aria-hidden="true" viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18"></path></svg>
+          </button>
+        </div>
+        <p class="texto-apoio-modal">Registre o pedido do cliente que apresentou o laudo físico na unidade.</p>
+        <div class="grade-formulario-modal">
+          <div class="campo-modal campo-modal-completo">
+            <label for="pedido-cliente">Cliente cadastrado *</label>
+            <select id="pedido-cliente" name="clienteId" required></select>
+            <small class="ajuda-campo">Não encontrou? Cadastre o cliente na seção Clientes.</small>
+          </div>
+          <div class="campo-modal campo-modal-completo">
+            <label for="pedido-medicamento">Medicamento solicitado *</label>
+            <input id="pedido-medicamento" name="medicamento" type="text" list="lista-medicamentos-pedido" maxlength="140" required />
+            <datalist id="lista-medicamentos-pedido"></datalist>
+          </div>
+          <div class="campo-modal campo-modal-completo">
+            <label for="pedido-dose">Posologia *</label>
+            <input id="pedido-dose" name="dose" type="text" maxlength="180" placeholder="Ex.: 1 comprimido a cada 12 horas" required />
+          </div>
+          <div class="campo-modal">
+            <label for="pedido-prescritor">Prescritor *</label>
+            <input id="pedido-prescritor" name="prescritor" type="text" maxlength="120" required />
+          </div>
+          <div class="campo-modal">
+            <label for="pedido-crm">CRM/registro *</label>
+            <input id="pedido-crm" name="crm" type="text" maxlength="30" placeholder="CRM-PA 00000" required />
+          </div>
+          <div class="campo-modal">
+            <label for="pedido-validade">Validade do laudo *</label>
+            <input id="pedido-validade" name="validade" type="date" required />
+          </div>
+          <div class="campo-modal">
+            <label for="pedido-prioridade">Prioridade *</label>
+            <select id="pedido-prioridade" name="prioridade" required>
+              <option value="Normal">Normal</option>
+              <option value="Alta">Alta</option>
+              <option value="Baixa">Baixa</option>
+            </select>
+          </div>
+          <div class="campo-modal campo-modal-completo">
+            <label for="pedido-observacoes">Observações</label>
+            <textarea id="pedido-observacoes" name="observacoes" rows="3" maxlength="500" placeholder="Anote detalhes relevantes do documento físico."></textarea>
+          </div>
+        </div>
+        <span class="erro-campo erro-formulario" id="erro-pedido-manual" role="alert"></span>
+        <div class="acoes-modal">
+          <button class="botao-secundario" id="cancelar-pedido-manual" type="button">Cancelar</button>
+          <button class="botao-primario" type="submit">Criar pedido</button>
+        </div>
+      </form>
+    </dialog>
+
+    <dialog class="modal-farmaceutico modal-confirmacao" id="modal-reprovacao" aria-labelledby="titulo-modal-reprovacao">
+      <form id="form-reprovacao" novalidate>
+        <div class="cabecalho-modal">
+          <div>
+            <p class="etiqueta-secao etiqueta-perigo">Decisão do laudo</p>
+            <h2 id="titulo-modal-reprovacao">Informar motivo da reprovação</h2>
+          </div>
+        </div>
+        <p class="texto-apoio-modal">O paciente terá acesso a esta justificativa. Escreva uma orientação clara e objetiva.</p>
+        <div class="campo-modal">
+          <label for="motivo-reprovacao">Motivo da reprovação</label>
+          <textarea
+            id="motivo-reprovacao"
+            name="motivo"
+            rows="5"
+            maxlength="500"
+            aria-describedby="erro-motivo"
+            placeholder="Ex.: O documento está ilegível. Envie uma nova cópia com todas as informações visíveis."
+            required
+          ></textarea>
+          <span class="erro-campo" id="erro-motivo" role="alert"></span>
+        </div>
+        <div class="acoes-modal">
+          <button class="botao-secundario" id="cancelar-reprovacao" type="button">Cancelar</button>
+          <button class="botao-perigo" type="submit">Confirmar reprovação</button>
+        </div>
+      </form>
+    </dialog>
+
+    <dialog
+      class="modal-farmaceutico modal-confirmacao"
+      id="modal-confirmar-vinculo"
+      aria-labelledby="titulo-confirmar-vinculo"
+    >
+      <form id="form-confirmar-vinculo">
+        <div class="cabecalho-modal">
+          <div>
+            <p class="etiqueta-secao">Segunda verificação</p>
+            <h2 id="titulo-confirmar-vinculo">Confirmar vínculo do medicamento</h2>
+          </div>
+        </div>
+        <p class="texto-apoio-modal">Confira os dados antes de reservar o medicamento para o paciente.</p>
+        <div class="grade-detalhes" id="detalhes-confirmar-vinculo"></div>
+        <div class="acoes-modal">
+          <button class="botao-secundario" id="cancelar-vinculo" type="button">Voltar e revisar</button>
+          <button class="botao-primario" type="submit">Confirmar vínculo</button>
+        </div>
+      </form>
+    </dialog>
+
+    <dialog
+      class="modal-farmaceutico modal-medicamento"
+      id="modal-detalhe-medicamento"
+      aria-labelledby="titulo-detalhe-medicamento"
+    >
+      <div class="cabecalho-modal">
+        <div>
+          <p class="etiqueta-secao">Estoque e dispensação</p>
+          <h2 id="titulo-detalhe-medicamento">Detalhes do medicamento</h2>
+        </div>
+        <button
+          class="botao-fechar-modal"
+          id="fechar-detalhe-medicamento"
+          type="button"
+          aria-label="Fechar detalhes do medicamento"
+        >
+          <svg aria-hidden="true" viewBox="0 0 24 24">
+            <path d="m6 6 12 12M18 6 6 18"></path>
+          </svg>
+        </button>
+      </div>
+      <div id="conteudo-detalhe-medicamento" class="conteudo-detalhe-medicamento"></div>
+    </dialog>
+
+    <dialog class="modal-farmaceutico modal-medicamento" id="modal-medicamento" aria-labelledby="titulo-modal-medicamento">
+      <form id="form-medicamento" novalidate>
+        <div class="cabecalho-modal">
+          <div>
+            <p class="etiqueta-secao">Atualização de estoque</p>
+            <h2 id="titulo-modal-medicamento">Atualizar medicamento</h2>
+          </div>
+        </div>
+
+        <div class="grade-formulario-modal">
+          <div class="campo-modal campo-modal-completo">
+            <label for="medicamento-nome">Medicamento</label>
+            <input id="medicamento-nome" name="nome" type="text" readonly />
+          </div>
+          <div class="campo-modal">
+            <label for="medicamento-lote">Lote</label>
+            <input id="medicamento-lote" name="lote" type="text" maxlength="30" required />
+          </div>
+          <div class="campo-modal">
+            <label for="medicamento-quantidade">Quantidade</label>
+            <input id="medicamento-quantidade" name="quantidade" type="number" min="0" step="1" required />
+          </div>
+          <div class="campo-modal">
+            <label for="medicamento-validade">Validade</label>
+            <input id="medicamento-validade" name="validade" type="date" required />
+          </div>
+          <div class="campo-modal">
+            <label for="medicamento-localizacao">Localização</label>
+            <input
+              id="medicamento-localizacao"
+              name="localizacao"
+              type="text"
+              maxlength="60"
+              placeholder="Ex.: Armário A · Prateleira 2"
+              required
+            />
+          </div>
+          <label class="campo-checkbox campo-modal-completo" for="medicamento-disponivel">
+            <input id="medicamento-disponivel" name="disponivel" type="checkbox" />
+            <span>
+              <strong>Disponível para retirada</strong>
+              <small>Ao marcar, o medicamento poderá ser informado como disponível ao paciente.</small>
+            </span>
+          </label>
+        </div>
+
+        <div class="acoes-modal">
+          <button class="botao-secundario" id="cancelar-medicamento" type="button">Cancelar</button>
+          <button class="botao-primario" type="submit">Salvar atualização</button>
+        </div>
+      </form>
+    </dialog>
+
+    <div class="toast-farmaceutico" id="toast-farmaceutico" role="status" aria-live="polite" aria-atomic="true"></div>
+  </body>
+</html>

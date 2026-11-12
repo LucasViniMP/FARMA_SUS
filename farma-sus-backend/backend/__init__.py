@@ -4,6 +4,7 @@ from flask import Flask, jsonify
 
 from .config import Config
 from .routes.exams import exams_bp
+from .routes.pharmacist import pharmacist_bp
 from .files_routes import files_bp
 from .auth_routes import auth_bp
 from . import storage
@@ -44,6 +45,7 @@ def create_app(test_config: dict | None = None) -> Flask:
         return jsonify(error="Recurso não encontrado."), 404
 
     app.register_blueprint(exams_bp)
+    app.register_blueprint(pharmacist_bp)
     app.register_blueprint(files_bp)
     app.register_blueprint(auth_bp)
     return app

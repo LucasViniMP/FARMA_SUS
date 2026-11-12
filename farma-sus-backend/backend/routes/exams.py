@@ -18,6 +18,13 @@ def exames_page():
     return send_from_directory(current_app.static_folder, "exames.html")
 
 
+@exams_bp.get("/farmaceutico")
+@exams_bp.get("/farmaceutico.html")
+def pharmacist_page():
+    """Serve o MVP demonstrativo da área do farmacêutico."""
+    return send_from_directory(current_app.static_folder, "farmaceutico.html")
+
+
 @exams_bp.get("/api/me")
 @require_roles("patient", "pharmacist", "admin")
 def my_profile():

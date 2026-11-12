@@ -43,9 +43,19 @@ def test_storage_path_traversal_protection(tmp_path, monkeypatch):
         storage.upload("/root/secret.txt", b"hack")
 
 
+@patch("farmasus.files_routes.db_client")
 @patch("farmasus.files_routes.auth_client")
-def test_files_route_upload_and_download_flow(mock_auth, client):
+def test_files_route_upload_and_download_flow(mock_auth, mock_db, client):
     mock_auth.return_value.verify_id_token.return_value = {"uid": "user-42"}
+    document = mock_db.return_value.collection.return_value.document.return_value
+    document.id = "exam-42"
+    document.get.return_value.exists = True
+    document.get.return_value.to_dict.return_value = {
+        "name": "Paciente Teste",
+        "role": "patient",
+        "active": True,
+        "unitId": "unit-1",
+    }
 
     data = {"file": (io.BytesIO(b"%PDF-sample-content"), "laudo.pdf")}
     upload_res = client.post(

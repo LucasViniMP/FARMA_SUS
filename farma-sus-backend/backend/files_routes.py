@@ -1,13 +1,13 @@
 from functools import wraps
 import json
-import time
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 
 from flask import Blueprint, current_app, g, jsonify, request, send_file
-import jwt
+from firebase_admin import firestore
 
 from . import storage
-from .firebase import auth_client
+from .firebase import auth_client, db_client
+from .security import ROLE_ALIASES
 
 files_bp = Blueprint("files", __name__, url_prefix="/files")
 
@@ -45,19 +45,11 @@ def login_required(fn):
                 return jsonify(error="não autenticado"), 401
             try:
                 decoded = auth_client().verify_id_token(token)
-                g.uid = decoded["uid"]
-                g.auth_mode = "firebase"
-                return fn(*args, **kwargs)
             except Exception:
-                try:
-                    payload = jwt.decode(token, options={"verify_signature": False})
-                    if payload.get("exp", 0) > time.time() and ("farma-sus" in payload.get("iss", "") or payload.get("uid")):
-                        g.uid = payload.get("uid")
-                        g.auth_mode = "firebase"
-                        return fn(*args, **kwargs)
-                except Exception:
-                    pass
                 return jsonify(error="token inválido"), 401
+            g.uid = decoded["uid"]
+            g.auth_mode = "firebase"
+            return fn(*args, **kwargs)
 
         if current_app.config.get("TESTING"):
             return jsonify(error="não autenticado"), 401
@@ -75,6 +67,38 @@ def login_required(fn):
 def _owns(key):
     uid = getattr(g, "uid", "")
     return bool(uid and key.startswith(f"users/{uid}/"))
+
+
+def _firebase_exam_context():
+    if getattr(g, "auth_mode", "local") != "firebase":
+        return None
+    profile_snapshot = db_client().collection("users").document(g.uid).get()
+    if not profile_snapshot.exists:
+        raise ValueError("Perfil do paciente não encontrado.")
+    profile = profile_snapshot.to_dict() or {}
+    unit_id = profile.get("unitId") or profile.get("assignedUnitId") or current_app.config.get("DEFAULT_UNIT_ID")
+    if not unit_id:
+        raise ValueError("Selecione uma unidade de atendimento antes de enviar o laudo.")
+    return profile, unit_id
+
+
+def _pharmacist_can_read(key):
+    if getattr(g, "auth_mode", "local") != "firebase":
+        return False
+    try:
+        db = db_client()
+        profile_snapshot = db.collection("users").document(g.uid).get()
+        if not profile_snapshot.exists:
+            return False
+        profile = profile_snapshot.to_dict() or {}
+        role = ROLE_ALIASES.get(profile.get("role"), profile.get("role"))
+        unit_id = profile.get("unitId")
+        if role != "pharmacist" or not unit_id:
+            return False
+        exams = db.collection("exams").where("fileKey", "==", key).limit(1).stream()
+        return any((exam.to_dict() or {}).get("unitId") == unit_id for exam in exams)
+    except Exception:
+        return False
 
 
 @files_bp.get("")
@@ -107,6 +131,13 @@ def upload_file():
     f = request.files.get("file")
     if not f or not f.filename:
         return jsonify(error="envie o arquivo no campo 'file'"), 400
+    exam_context = None
+    try:
+        exam_context = _firebase_exam_context()
+    except ValueError as error:
+        return jsonify(error=str(error)), 400
+
+    key = None
     try:
         content = f.read()
         key = storage.make_key(f.filename, folder="users/" + g.uid)
@@ -124,15 +155,52 @@ def upload_file():
             "size": len(content),
         }
         _save_meta(meta)
+
+        exam_id = None
+        if exam_context:
+            profile, unit_id = exam_context
+            exam_ref = db_client().collection("exams").document()
+            patient_name = profile.get("name") or profile.get("nome") or "Paciente"
+            exam_ref.set({
+                "patientId": g.uid,
+                "patientName": patient_name,
+                "patientCns": profile.get("cns", ""),
+                "patientCpf": profile.get("cpf", ""),
+                "unitId": unit_id,
+                "fileKey": key,
+                "fileName": f.filename,
+                "medicineName": (request.form.get("medicineName") or "").strip(),
+                "dose": (request.form.get("dose") or "").strip(),
+                "prescriber": (request.form.get("prescriber") or "").strip(),
+                "crm": (request.form.get("crm") or "").strip(),
+                "priority": "Normal",
+                "status": "pending",
+                "submittedAt": firestore.SERVER_TIMESTAMP,
+                "expiresAt": datetime.now(timezone.utc) + timedelta(days=30),
+                "history": [{
+                    "data": datetime.now(timezone.utc).isoformat(),
+                    "acao": "Laudo recebido",
+                    "responsavel": "Portal do paciente",
+                    "detalhe": "Documento enviado para análise da unidade.",
+                }],
+            })
+            exam_id = exam_ref.id
     except storage.StorageError as e:
         return jsonify(error=str(e)), 400
-    return jsonify(key=key, fileName=f.filename), 201
+    except Exception:
+        if key:
+            storage.delete(key)
+            meta = _load_meta()
+            meta.pop(key, None)
+            _save_meta(meta)
+        return jsonify(error="Não foi possível registrar o laudo no banco de dados."), 503
+    return jsonify(key=key, fileName=f.filename, examId=exam_id), 201
 
 
 @files_bp.get("/<path:key>")
 @login_required
 def download_file(key):
-    if not _owns(key):
+    if not _owns(key) and not _pharmacist_can_read(key):
         return jsonify(error="acesso negado"), 403
     try:
         path = storage.get_path(key)

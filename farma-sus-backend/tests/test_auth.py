@@ -101,3 +101,31 @@ def test_missing_firebase_config_returns_503():
         mock_identity.return_value = {"uid": "user-1", "role": "patient"}
         res = client.get("/api/exams")
         assert res.status_code == 503
+
+
+@patch("farmasus.auth_routes.db_client")
+@patch("farmasus.auth_routes.auth_client")
+@patch("farmasus.auth_routes._sign_in_with_password")
+def test_login_returns_id_token_and_pharmacist_role(mock_sign_in, mock_auth, mock_db, client):
+    mock_sign_in.return_value = {
+        "localId": "pharm-1",
+        "idToken": "firebase-id-token",
+        "refreshToken": "firebase-refresh-token",
+        "expiresIn": "3600",
+    }
+    user = MagicMock(uid="pharm-1", email="farmaceutico@teste.com", display_name="Marina Costa")
+    mock_auth.return_value.get_user.return_value = user
+    profile = mock_db.return_value.collection.return_value.document.return_value.get.return_value
+    profile.exists = True
+    profile.to_dict.return_value = {"name": "Marina Costa", "role": "farmaceutico", "active": True}
+
+    response = client.post(
+        "/api/auth/login",
+        json={"email": "farmaceutico@teste.com", "password": "senha-segura"},
+    )
+
+    assert response.status_code == 200
+    data = response.get_json()
+    assert data["token"] == "firebase-id-token"
+    assert data["refreshToken"] == "firebase-refresh-token"
+    assert data["role"] == "pharmacist"

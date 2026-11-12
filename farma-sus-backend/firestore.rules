@@ -1,0 +1,10 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // O acesso aos dados ocorre exclusivamente pelo backend Flask com Firebase Admin.
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

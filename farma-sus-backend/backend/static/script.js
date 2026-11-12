@@ -293,6 +293,7 @@
       const usuarioSessao = {
         email: resultado.email || creds.email,
         name: resultado.name || creds.email.split("@")[0],
+        role: resultado.role || "patient",
         cpf: resultado.cpf || "",
         telefone: resultado.telefone || "",
         dataNascimento: resultado.dataNascimento || "",
@@ -302,6 +303,9 @@
       if (resultado.token) {
         localStorage.setItem("firebase_token", resultado.token);
       }
+        if (resultado.refreshToken) {
+          localStorage.setItem("firebase_refresh_token", resultado.refreshToken);
+        }
 
       sessionStorage.setItem("farmaSUSUsuario", JSON.stringify(usuarioSessao));
 
@@ -317,10 +321,12 @@
       mostrarMensagem(
         form,
         "sucesso",
-        "Login validado com sucesso! Abrindo área de início...",
+        resultado.role === "pharmacist"
+          ? "Login validado com sucesso! Abrindo área do farmacêutico..."
+          : "Login validado com sucesso! Abrindo área de início...",
       );
       window.setTimeout(() => {
-        window.location.href = "inicio.html";
+        window.location.href = resultado.role === "pharmacist" ? "farmaceutico.html" : "inicio.html";
       }, 900);
     } catch (erro) {
       mostrarMensagem(form, "erro", erro.message || "E-mail ou senha incorretos.");

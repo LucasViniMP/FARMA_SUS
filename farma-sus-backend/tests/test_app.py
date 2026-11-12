@@ -15,6 +15,12 @@ def test_home_and_security_headers():
     assert "default-src 'self'" in response.headers["Content-Security-Policy"]
 
 
+def test_pharmacist_mvp_page_is_available():
+    response = app_client().get("/farmaceutico")
+    assert response.status_code == 200
+    assert b"rea do farmac" in response.data
+
+
 def test_api_requires_a_bearer_token():
     response = app_client().get("/api/exams")
     assert response.status_code == 401

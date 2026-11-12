@@ -1,0 +1,2074 @@
+/* Área do farmacêutico — visual enxuto e responsivo */
+html {
+  overflow-x: hidden;
+  background: #f6f8f8;
+}
+
+.pagina-farmaceutico {
+  --farma-cor: #1d7f8a;
+  --farma-cor-forte: #176a73;
+  --farma-cor-suave: #eaf4f4;
+  --farma-fundo: #f6f8f8;
+  --farma-superficie: #ffffff;
+  --farma-titulo: #20383d;
+  --farma-texto: #43545b;
+  --farma-texto-suave: #748187;
+  --farma-borda: #e3e9e9;
+  --farma-borda-forte: #d5dede;
+  --farma-sucesso: #18794e;
+  --farma-alerta: #9a6700;
+  --farma-erro: #b42318;
+  width: 100%;
+  height: 100vh;
+  min-height: 100vh;
+  margin: 0;
+  overflow: hidden;
+  color: var(--farma-texto);
+  background: var(--farma-fundo);
+  font-family: "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont, Arial, sans-serif;
+  font-size: 15px;
+}
+
+.pagina-farmaceutico *,
+.pagina-farmaceutico *::before,
+.pagina-farmaceutico *::after {
+  box-sizing: border-box;
+}
+
+.pagina-farmaceutico button,
+.pagina-farmaceutico input,
+.pagina-farmaceutico select,
+.pagina-farmaceutico textarea {
+  font: inherit;
+}
+
+.pagina-farmaceutico button,
+.pagina-farmaceutico a {
+  -webkit-tap-highlight-color: transparent;
+}
+
+.pagina-farmaceutico :focus-visible {
+  outline: 3px solid rgb(29 127 138 / 22%);
+  outline-offset: 2px;
+}
+
+.pagina-farmaceutico [hidden] {
+  display: none !important;
+}
+
+.visualmente-oculto {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  margin: -1px !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  clip: rect(0 0 0 0) !important;
+  border: 0 !important;
+  white-space: nowrap !important;
+}
+
+/* Estrutura lateral */
+.estrutura-farmaceutico {
+  display: grid;
+  height: 100vh;
+  min-height: 0;
+  overflow: hidden;
+  grid-template-columns: 260px minmax(0, 1fr);
+}
+
+.menu-lateral-farmaceutico {
+  position: sticky;
+  top: 0;
+  display: flex;
+  align-self: start;
+  height: 100vh;
+  padding: 28px 20px 20px;
+  overflow-y: auto;
+  flex-direction: column;
+  border-right: 1px solid var(--farma-borda);
+  background: var(--farma-superficie);
+  scrollbar-width: thin;
+  scrollbar-color: #c8d6d7 transparent;
+}
+
+.identidade-lateral {
+  padding: 0 6px 24px;
+  border-bottom: 1px solid var(--farma-borda);
+}
+
+.marca-lateral {
+  display: inline-flex;
+  align-items: center;
+  gap: 11px;
+  color: var(--farma-cor);
+  font-size: 23px;
+  font-weight: 750;
+  line-height: 1;
+  text-decoration: none;
+}
+
+.marca-lateral .cruz-marca {
+  position: relative;
+  width: 30px;
+  height: 30px;
+  flex: 0 0 30px;
+}
+
+.marca-lateral .cruz-marca::before,
+.marca-lateral .cruz-marca::after {
+  position: absolute;
+  border-radius: 2px;
+  background: currentColor;
+  content: "";
+}
+
+.marca-lateral .cruz-marca::before {
+  top: 0;
+  left: 9px;
+  width: 12px;
+  height: 30px;
+}
+
+.marca-lateral .cruz-marca::after {
+  top: 9px;
+  left: 0;
+  width: 30px;
+  height: 12px;
+}
+
+.area-lateral {
+  display: block;
+  margin: 8px 0 0 41px;
+  color: var(--farma-texto-suave);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.navegacao-farmaceutico {
+  display: flex;
+  margin-top: 18px;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.item-menu-farmaceutico {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  min-height: 44px;
+  padding: 9px 11px;
+  gap: 11px;
+  border-radius: 9px;
+  color: #59686e;
+  font-size: 13px;
+  font-weight: 620;
+  text-decoration: none;
+  transition: color 140ms ease, background-color 140ms ease;
+}
+
+.item-menu-farmaceutico:hover {
+  color: var(--farma-cor-forte);
+  background: #f3f7f7;
+}
+
+.item-menu-farmaceutico.ativo,
+.item-menu-farmaceutico[aria-current="page"] {
+  color: var(--farma-cor-forte);
+  background: var(--farma-cor-suave);
+}
+
+.item-menu-farmaceutico svg,
+.botao-restaurar svg,
+.botao-sair-lateral svg {
+  width: 19px;
+  height: 19px;
+  flex: 0 0 19px;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.8;
+}
+
+.acoes-laterais {
+  display: grid;
+  margin-top: auto;
+  padding-top: 17px;
+  gap: 4px;
+  border-top: 1px solid var(--farma-borda);
+}
+
+.perfil-farmaceutico {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 10px;
+  padding: 6px 8px 12px;
+  gap: 10px;
+  border: 0;
+  border-radius: 9px;
+  color: inherit;
+  background: transparent;
+  text-align: left;
+  cursor: pointer;
+  transition: background-color 140ms ease;
+}
+
+.perfil-farmaceutico:hover {
+  background: #f4f7f7;
+}
+
+.avatar-farmaceutico {
+  display: grid;
+  width: 38px;
+  height: 38px;
+  flex: 0 0 38px;
+  place-items: center;
+  border-radius: 50%;
+  color: #ffffff;
+  background: var(--farma-cor);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.dados-farmaceutico {
+  display: grid;
+  min-width: 0;
+  gap: 2px;
+}
+
+.dados-farmaceutico strong,
+.dados-farmaceutico small {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.icone-abrir-perfil {
+  width: 16px;
+  height: 16px;
+  margin-left: auto;
+  flex: 0 0 16px;
+  color: #99a4a8;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.8;
+}
+
+.dados-farmaceutico strong {
+  color: var(--farma-titulo);
+  font-size: 13px;
+  font-weight: 650;
+}
+
+.dados-farmaceutico small {
+  color: var(--farma-texto-suave);
+  font-size: 11px;
+}
+
+.botao-restaurar,
+.botao-sair-lateral {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  min-height: 39px;
+  padding: 8px 10px;
+  gap: 9px;
+  border: 0;
+  border-radius: 8px;
+  color: var(--farma-texto-suave);
+  background: transparent;
+  font-size: 12px;
+  font-weight: 600;
+  text-align: left;
+  text-decoration: none;
+  cursor: pointer;
+  transition: color 140ms ease, background-color 140ms ease;
+}
+
+.botao-restaurar:hover,
+.botao-sair-lateral:hover {
+  color: var(--farma-titulo);
+  background: #f4f7f7;
+}
+
+.botao-sair-lateral:hover {
+  color: var(--farma-erro);
+}
+
+/* Conteúdo */
+.conteudo-farmaceutico {
+  width: min(100%, 1280px);
+  height: 100vh;
+  min-width: 0;
+  min-height: 0;
+  margin: 0 auto;
+  padding: 32px clamp(28px, 4vw, 52px) 34px;
+  overflow: hidden;
+}
+
+.painel-farmaceutico,
+[data-painel] {
+  display: none;
+}
+
+.painel-farmaceutico.ativo,
+[data-painel].ativo {
+  display: flex;
+  height: 100%;
+  min-height: 0;
+  flex-direction: column;
+  animation: entrada-painel 160ms ease-out;
+}
+
+@keyframes entrada-painel {
+  from {
+    opacity: 0;
+    transform: translateY(3px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.cabecalho-painel,
+.topo-cartao-conteudo {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.cabecalho-painel {
+  margin-bottom: 22px;
+  flex: 0 0 auto;
+}
+
+.acoes-cabecalho-painel {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 18px;
+}
+
+.botao-com-icone {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  white-space: nowrap;
+}
+
+.botao-com-icone > span {
+  font-size: 19px;
+  font-weight: 400;
+  line-height: 1;
+}
+
+.cabecalho-painel h1 {
+  margin: 0 0 7px;
+  color: var(--farma-titulo);
+  font-size: clamp(27px, 2.4vw, 33px);
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  line-height: 1.12;
+}
+
+.descricao-painel {
+  max-width: 680px;
+  margin: 0;
+  color: var(--farma-texto-suave);
+  font-size: 14px;
+  line-height: 1.55;
+}
+
+.data-painel {
+  margin: 2px 0 0;
+  color: var(--farma-texto-suave);
+  font-size: 12px;
+  font-weight: 550;
+  white-space: nowrap;
+}
+
+.meta-painel,
+.unidade-painel {
+  display: grid;
+  justify-items: end;
+}
+
+.meta-painel {
+  gap: 5px;
+}
+
+.unidade-painel {
+  gap: 1px;
+  text-align: right;
+}
+
+.unidade-painel small {
+  color: var(--farma-texto-suave);
+  font-size: 9px;
+  font-weight: 650;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.unidade-painel strong {
+  color: var(--farma-titulo);
+  font-size: 12px;
+  font-weight: 650;
+}
+
+.sobretitulo,
+.etiqueta-secao,
+.rotulo-modal {
+  margin: 0 0 5px;
+  color: var(--farma-cor-forte);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+}
+
+.etiqueta-perigo {
+  color: var(--farma-erro);
+}
+
+/* Indicadores em uma única faixa */
+.grade-indicadores {
+  display: grid;
+  margin-bottom: 22px;
+  overflow: hidden;
+  flex: 0 0 auto;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  border: 1px solid var(--farma-borda);
+  border-radius: 14px;
+  background: var(--farma-superficie);
+}
+
+.cartao-indicador {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  min-height: 92px;
+  padding: 17px 20px;
+  gap: 12px;
+  border-right: 1px solid var(--farma-borda);
+  background: transparent;
+}
+
+.cartao-indicador:last-child {
+  border-right: 0;
+}
+
+.icone-indicador {
+  display: grid;
+  width: 34px;
+  height: 34px;
+  flex: 0 0 34px;
+  place-items: center;
+  border-radius: 10px;
+  color: var(--farma-cor);
+  background: var(--farma-cor-suave);
+}
+
+.icone-indicador svg {
+  width: 18px;
+  height: 18px;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.8;
+}
+
+.cartao-indicador > div {
+  display: grid;
+  min-width: 0;
+  gap: 3px;
+}
+
+.valor-indicador {
+  color: var(--farma-titulo);
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1;
+}
+
+.rotulo-indicador {
+  color: var(--farma-texto-suave);
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1.35;
+}
+
+/* Blocos */
+.grade-visao-geral {
+  display: grid;
+  min-height: 0;
+  flex: 1 1 auto;
+  grid-template-columns: minmax(0, 1.7fr) minmax(275px, 0.8fr);
+  gap: 24px;
+  align-items: stretch;
+}
+
+.cartao-fila,
+.cartao-alertas {
+  display: flex;
+  height: 100%;
+  min-height: 0;
+  flex-direction: column;
+}
+
+.cartao-fila .tabela-container,
+.cartao-alertas .lista-alertas {
+  min-height: 0;
+  flex: 1 1 auto;
+  overflow-y: auto;
+}
+
+.cartao-conteudo {
+  min-width: 0;
+  overflow: hidden;
+  border: 1px solid var(--farma-borda);
+  border-radius: 14px;
+  background: var(--farma-superficie);
+}
+
+.topo-cartao-conteudo {
+  align-items: center;
+  min-height: 68px;
+  padding: 18px 22px;
+  border-bottom: 1px solid var(--farma-borda);
+}
+
+.topo-cartao-conteudo h2,
+.barra-listagem h2 {
+  margin: 0;
+  color: var(--farma-titulo);
+  font-size: 17px;
+  font-weight: 680;
+  letter-spacing: -0.01em;
+}
+
+.link-ver-todos {
+  display: inline-flex;
+  align-items: center;
+  min-height: 34px;
+  color: var(--farma-cor-forte);
+  font-size: 12px;
+  font-weight: 650;
+  text-decoration: none;
+}
+
+.link-ver-todos:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.lista-alertas {
+  padding: 0 22px;
+}
+
+.alerta-painel,
+.alerta-estoque {
+  display: grid;
+  align-items: start;
+  padding: 17px 0;
+  grid-template-columns: 8px minmax(0, 1fr) auto;
+  gap: 12px;
+  border-bottom: 1px solid var(--farma-borda);
+}
+
+.lista-alertas > :last-child {
+  border-bottom: 0;
+}
+
+.alerta-icone {
+  width: 8px;
+  height: 8px;
+  margin-top: 6px;
+  overflow: hidden;
+  border-radius: 50%;
+  color: transparent;
+  background: var(--farma-alerta);
+  font-size: 0;
+}
+
+.alerta-critico .alerta-icone {
+  background: var(--farma-erro);
+}
+
+.alerta-estoque > div {
+  display: grid;
+  min-width: 0;
+  gap: 3px;
+}
+
+.alerta-estoque strong {
+  color: var(--farma-titulo);
+  font-size: 12px;
+  font-weight: 650;
+  line-height: 1.4;
+}
+
+.alerta-estoque span:not(.alerta-icone) {
+  color: var(--farma-texto-suave);
+  font-size: 11px;
+  line-height: 1.45;
+}
+
+.alerta-estoque > .acao-tabela {
+  margin-top: -3px;
+}
+
+/* Filtros e tabelas */
+.cartao-listagem {
+  display: flex;
+  min-height: 0;
+  overflow: hidden;
+  flex: 1 1 auto;
+  flex-direction: column;
+}
+
+.barra-listagem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 76px;
+  padding: 16px 22px;
+  gap: 20px;
+  border-bottom: 1px solid var(--farma-borda);
+  flex: 0 0 auto;
+}
+
+.barra-listagem p {
+  margin: 4px 0 0;
+  color: var(--farma-texto-suave);
+  font-size: 11px;
+}
+
+.controles-listagem {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+}
+
+.campo-busca {
+  position: relative;
+  display: block;
+  width: min(320px, 30vw);
+}
+
+.campo-busca svg {
+  position: absolute;
+  z-index: 1;
+  top: 50%;
+  left: 12px;
+  width: 17px;
+  height: 17px;
+  transform: translateY(-50%);
+  color: #879399;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.8;
+  pointer-events: none;
+}
+
+.campo-busca input,
+.campo-filtro select,
+.campo-modal input,
+.campo-modal textarea,
+.campo-modal select,
+.campo-vinculo select {
+  width: 100%;
+  border: 1px solid var(--farma-borda-forte);
+  border-radius: 8px;
+  outline: none;
+  color: var(--farma-texto);
+  background: #ffffff;
+  transition: border-color 140ms ease, box-shadow 140ms ease;
+}
+
+.campo-busca input,
+.campo-filtro select {
+  height: 41px;
+  padding: 0 12px;
+  font-size: 12px;
+}
+
+.campo-busca input {
+  padding-left: 38px;
+}
+
+.campo-busca input::placeholder,
+.campo-modal input::placeholder,
+.campo-modal textarea::placeholder {
+  color: #98a3a7;
+}
+
+.campo-busca input:focus,
+.campo-filtro select:focus,
+.campo-modal input:focus,
+.campo-modal textarea:focus,
+.campo-modal select:focus,
+.campo-vinculo select:focus {
+  border-color: var(--farma-cor);
+  box-shadow: 0 0 0 3px rgb(29 127 138 / 10%);
+}
+
+.campo-filtro {
+  display: block;
+  min-width: 170px;
+}
+
+.tabela-container {
+  width: 100%;
+  overflow-x: auto;
+  overscroll-behavior-inline: contain;
+  scrollbar-width: thin;
+  scrollbar-color: #c5d4d5 #f3f6f6;
+}
+
+.cartao-listagem > .tabela-container {
+  min-height: 0;
+  flex: 1 1 auto;
+  overflow: auto;
+}
+
+.tabela-farmaceutico {
+  width: 100%;
+  min-width: 760px;
+  border-collapse: collapse;
+  border-spacing: 0;
+  text-align: left;
+}
+
+.tabela-resumo {
+  min-width: 650px;
+}
+
+.tabela-medicamentos {
+  min-width: 620px;
+}
+
+.tabela-clientes {
+  min-width: 760px;
+}
+
+.linha-clicavel {
+  cursor: pointer;
+}
+
+.linha-clicavel:focus-visible {
+  outline: 2px solid var(--farma-cor);
+  outline-offset: -2px;
+}
+
+.tabela-farmaceutico th {
+  position: sticky;
+  z-index: 2;
+  top: 0;
+  padding: 11px 20px;
+  border-bottom: 1px solid var(--farma-borda);
+  color: #7a878c;
+  background: #fafbfb;
+  font-size: 10px;
+  font-weight: 650;
+  letter-spacing: 0.045em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.tabela-medicamentos tbody tr:nth-child(even) {
+  background: #fcfdfd;
+}
+
+.tabela-medicamentos tbody tr:hover {
+  background: #f6fafa;
+}
+
+.tabela-medicamentos td:first-child .celula-principal strong {
+  color: var(--farma-cor-forte);
+  font-size: 13px;
+}
+
+.quantidade-estoque {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 4px;
+  color: var(--farma-texto);
+}
+
+.quantidade-estoque strong {
+  color: var(--farma-titulo);
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.quantidade-estoque small {
+  color: var(--farma-texto-suave);
+  font-size: 9px;
+}
+
+.quantidade-estoque.estoque-baixo strong {
+  color: var(--farma-alerta);
+}
+
+.quantidade-estoque.estoque-esgotado strong {
+  color: var(--farma-erro);
+}
+
+.tabela-farmaceutico td {
+  padding: 15px 20px;
+  border-bottom: 1px solid #edf1f1;
+  color: var(--farma-texto);
+  font-size: 12px;
+  line-height: 1.45;
+  vertical-align: middle;
+}
+
+.tabela-farmaceutico tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+.tabela-farmaceutico tbody tr:hover {
+  background: #fbfcfc;
+}
+
+.celula-principal {
+  display: grid;
+  min-width: 0;
+  gap: 2px;
+}
+
+.celula-principal strong {
+  color: var(--farma-titulo);
+  font-size: 12px;
+  font-weight: 650;
+}
+
+.celula-principal span,
+.texto-secundario {
+  color: var(--farma-texto-suave);
+  font-size: 10px;
+}
+
+.acoes-linha {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 6px;
+  white-space: nowrap;
+}
+
+.acao-tabela {
+  min-height: 31px;
+  padding: 5px 9px;
+  border: 0;
+  border-radius: 7px;
+  background: transparent;
+  font-size: 11px;
+  font-weight: 650;
+  cursor: pointer;
+  transition: color 140ms ease, background-color 140ms ease;
+}
+
+.acao-secundaria {
+  color: var(--farma-cor-forte);
+}
+
+.acao-secundaria:hover {
+  background: var(--farma-cor-suave);
+}
+
+.acao-principal {
+  color: #ffffff;
+  background: var(--farma-cor);
+}
+
+.acao-principal:hover {
+  background: var(--farma-cor-forte);
+}
+
+.acao-perigo {
+  color: var(--farma-erro);
+}
+
+.acao-perigo:hover {
+  background: #fff1f0;
+}
+
+.status,
+.badge-prioridade {
+  display: inline-flex;
+  align-items: center;
+  min-height: 24px;
+  padding: 4px 9px;
+  border-radius: 999px;
+  font-size: 10px;
+  font-weight: 650;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.status.pendente,
+.status.em-analise,
+.status.status-pendente,
+.status.status-em-analise,
+.prioridade-alta {
+  color: #865600;
+  background: #fff7df;
+}
+
+.status.aprovado,
+.status.vinculado,
+.status.liberado,
+.status.disponivel,
+.status.status-aprovado,
+.status.status-vinculado,
+.status.status-liberado {
+  color: #176b46;
+  background: #eaf7f0;
+}
+
+.status.reprovado,
+.status.indisponivel,
+.status.status-reprovado {
+  color: #a52a22;
+  background: #fff0ef;
+}
+
+.prioridade-normal,
+.prioridade-baixa {
+  color: #66747a;
+  background: #eff3f3;
+}
+
+.estado-vazio {
+  padding: 44px 20px;
+  color: var(--farma-texto-suave);
+  text-align: center;
+}
+
+.estado-vazio svg {
+  width: 44px;
+  height: 44px;
+  margin-bottom: 10px;
+  padding: 10px;
+  border-radius: 50%;
+  color: var(--farma-cor);
+  background: var(--farma-cor-suave);
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.7;
+}
+
+.estado-vazio strong,
+.estado-vazio span {
+  display: block;
+}
+
+.estado-vazio strong {
+  margin-bottom: 4px;
+  color: var(--farma-titulo);
+  font-size: 14px;
+}
+
+.estado-vazio span {
+  font-size: 12px;
+}
+
+/* Botões */
+.botao-primario,
+.botao-secundario,
+.botao-perigo {
+  min-height: 41px;
+  padding: 8px 15px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 650;
+  cursor: pointer;
+  transition: border-color 140ms ease, color 140ms ease, background-color 140ms ease;
+}
+
+.botao-primario {
+  border: 1px solid var(--farma-cor);
+  color: #ffffff;
+  background: var(--farma-cor);
+}
+
+.botao-primario:hover {
+  border-color: var(--farma-cor-forte);
+  background: var(--farma-cor-forte);
+}
+
+.botao-secundario {
+  border: 1px solid var(--farma-borda-forte);
+  color: var(--farma-texto);
+  background: #ffffff;
+}
+
+.botao-secundario:hover {
+  border-color: #bdcbcc;
+  background: #f7f9f9;
+}
+
+.botao-perigo {
+  border: 1px solid #e7bbb7;
+  color: var(--farma-erro);
+  background: #fffafa;
+}
+
+.botao-perigo:hover {
+  border-color: #dd9e98;
+  background: #fff1f0;
+}
+
+/* Modais */
+.modal-farmaceutico {
+  width: min(720px, calc(100vw - 32px));
+  max-height: min(88vh, 820px);
+  margin: auto;
+  padding: 0;
+  overflow: auto;
+  border: 0;
+  border-radius: 14px;
+  color: var(--farma-texto);
+  background: #ffffff;
+  box-shadow: 0 26px 80px rgb(20 39 44 / 24%);
+}
+
+.modal-farmaceutico::backdrop {
+  background: rgb(22 39 44 / 48%);
+  backdrop-filter: blur(2px);
+}
+
+.modal-farmaceutico[open] {
+  animation: entrada-modal 150ms ease-out;
+}
+
+@keyframes entrada-modal {
+  from {
+    opacity: 0;
+    transform: translateY(6px) scale(0.99);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.modal-confirmacao {
+  width: min(520px, calc(100vw - 32px));
+}
+
+.modal-medicamento {
+  width: min(660px, calc(100vw - 32px));
+}
+
+.modal-formulario {
+  width: min(760px, calc(100vw - 32px));
+}
+
+.modal-perfil {
+  width: min(520px, calc(100vw - 32px));
+}
+
+.cabecalho-modal {
+  position: sticky;
+  z-index: 2;
+  top: 0;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: 19px 22px;
+  gap: 16px;
+  border-bottom: 1px solid var(--farma-borda);
+  background: rgb(255 255 255 / 97%);
+}
+
+.cabecalho-modal h2 {
+  margin: 0;
+  color: var(--farma-titulo);
+  font-size: 19px;
+  font-weight: 680;
+}
+
+.botao-fechar-modal {
+  display: grid;
+  width: 35px;
+  height: 35px;
+  flex: 0 0 35px;
+  padding: 0;
+  place-items: center;
+  border: 0;
+  border-radius: 8px;
+  color: var(--farma-texto-suave);
+  background: #f3f6f6;
+  cursor: pointer;
+}
+
+.botao-fechar-modal:hover {
+  color: var(--farma-titulo);
+  background: #e9eeee;
+}
+
+.botao-fechar-modal svg {
+  width: 18px;
+  height: 18px;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-width: 1.8;
+}
+
+.conteudo-modal-laudo {
+  padding: 24px;
+}
+
+.conteudo-detalhe-medicamento {
+  padding: 24px;
+}
+
+.cabecalho-detalhe-medicamento {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  gap: 16px;
+}
+
+.cabecalho-detalhe-medicamento h3 {
+  margin: 0 0 5px;
+  color: var(--farma-titulo);
+  font-size: 20px;
+}
+
+.cabecalho-detalhe-medicamento p {
+  margin: 0;
+  color: var(--farma-texto-suave);
+  font-size: 12px;
+}
+
+.grade-detalhes > .detalhe-largura-total {
+  grid-column: 1 / -1;
+}
+
+.acoes-detalhe-medicamento {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 20px;
+  gap: 10px;
+}
+
+.conteudo-perfil {
+  padding: 24px;
+}
+
+.resumo-perfil {
+  display: flex;
+  align-items: center;
+  padding-bottom: 20px;
+  gap: 14px;
+  border-bottom: 1px solid var(--farma-borda);
+}
+
+.avatar-perfil-ampliado {
+  display: grid;
+  width: 54px;
+  height: 54px;
+  flex: 0 0 54px;
+  place-items: center;
+  border-radius: 50%;
+  color: #ffffff;
+  background: var(--farma-cor);
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.resumo-perfil h3 {
+  margin: 0 0 3px;
+  color: var(--farma-titulo);
+  font-size: 18px;
+  font-weight: 680;
+}
+
+.resumo-perfil p {
+  margin: 0;
+  color: var(--farma-texto-suave);
+  font-size: 12px;
+}
+
+.dados-conta {
+  display: grid;
+  margin: 0;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.dados-conta > div {
+  min-width: 0;
+  padding: 17px 0;
+  border-bottom: 1px solid var(--farma-borda);
+}
+
+.dados-conta > div:nth-child(odd) {
+  padding-right: 18px;
+}
+
+.dados-conta > div:nth-child(even) {
+  padding-left: 18px;
+  border-left: 1px solid var(--farma-borda);
+}
+
+.dados-conta > div:nth-last-child(-n + 2) {
+  border-bottom: 0;
+}
+
+.dados-conta dt {
+  margin-bottom: 4px;
+  color: var(--farma-texto-suave);
+  font-size: 9px;
+  font-weight: 650;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.dados-conta dd {
+  margin: 0;
+  overflow-wrap: anywhere;
+  color: var(--farma-titulo);
+  font-size: 12px;
+  font-weight: 620;
+  line-height: 1.45;
+}
+
+.cabecalho-detalhe-laudo {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 22px;
+  gap: 20px;
+}
+
+.cabecalho-detalhe-laudo h2 {
+  margin: 2px 0 5px;
+  color: var(--farma-titulo);
+  font-size: 22px;
+  font-weight: 680;
+}
+
+.cabecalho-detalhe-laudo p {
+  margin: 0;
+  color: var(--farma-texto-suave);
+  font-size: 12px;
+}
+
+.cabecalho-detalhe-laudo > div:last-child {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.grade-detalhes {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  border-top: 1px solid var(--farma-borda);
+  border-left: 1px solid var(--farma-borda);
+}
+
+.grade-detalhes > div {
+  display: grid;
+  min-width: 0;
+  padding: 14px 15px;
+  gap: 4px;
+  border-right: 1px solid var(--farma-borda);
+  border-bottom: 1px solid var(--farma-borda);
+}
+
+.grade-detalhes > div > span {
+  color: var(--farma-texto-suave);
+  font-size: 10px;
+  font-weight: 600;
+}
+
+.grade-detalhes > div > strong {
+  color: var(--farma-titulo);
+  font-size: 12px;
+  font-weight: 630;
+  line-height: 1.45;
+}
+
+.link-arquivo {
+  padding: 0;
+  border: 0;
+  color: var(--farma-cor-forte);
+  background: transparent;
+  font-size: 12px;
+  font-weight: 600;
+  text-align: left;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  cursor: pointer;
+}
+
+.bloco-motivo,
+.bloco-vinculo,
+.aviso-inline {
+  margin: 18px 0 0;
+  padding: 14px 15px;
+  border-radius: 9px;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.bloco-motivo {
+  color: #8e2720;
+  background: #fff3f2;
+}
+
+.bloco-vinculo {
+  color: #185d40;
+  background: #edf8f2;
+}
+
+.bloco-motivo strong,
+.bloco-vinculo strong {
+  display: block;
+  margin-bottom: 3px;
+}
+
+.bloco-motivo p,
+.bloco-vinculo p {
+  margin: 0;
+}
+
+.bloco-vinculo span {
+  display: block;
+  margin-top: 3px;
+}
+
+.aviso-inline {
+  color: #785500;
+  background: #fff8e7;
+}
+
+.secao-historico {
+  margin-top: 24px;
+}
+
+.secao-historico h3 {
+  margin: 0 0 14px;
+  color: var(--farma-titulo);
+  font-size: 14px;
+  font-weight: 680;
+}
+
+.lista-historico {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.item-historico {
+  position: relative;
+  display: grid;
+  padding: 0 0 17px 22px;
+}
+
+.item-historico::before {
+  position: absolute;
+  top: 9px;
+  bottom: -2px;
+  left: 5px;
+  width: 1px;
+  background: var(--farma-borda-forte);
+  content: "";
+}
+
+.item-historico:last-child::before {
+  display: none;
+}
+
+.marcador-historico {
+  position: absolute;
+  top: 4px;
+  left: 1px;
+  width: 9px;
+  height: 9px;
+  border: 2px solid #ffffff;
+  border-radius: 50%;
+  background: var(--farma-cor);
+  box-shadow: 0 0 0 1px #b9d7d9;
+}
+
+.item-historico strong,
+.item-historico span {
+  display: block;
+}
+
+.item-historico strong {
+  color: var(--farma-titulo);
+  font-size: 12px;
+  font-weight: 650;
+}
+
+.item-historico span {
+  margin-top: 2px;
+  color: var(--farma-texto-suave);
+  font-size: 10px;
+}
+
+.item-historico p {
+  margin: 4px 0 0;
+  color: var(--farma-texto);
+  font-size: 11px;
+  line-height: 1.45;
+}
+
+.campo-vinculo {
+  display: grid;
+  flex: 1 1 280px;
+  gap: 6px;
+}
+
+.campo-vinculo label,
+.campo-modal label {
+  color: var(--farma-texto);
+  font-size: 11px;
+  font-weight: 650;
+}
+
+.campo-vinculo select {
+  height: 41px;
+  padding: 0 11px;
+  font-size: 12px;
+}
+
+.acoes-modal-laudo,
+.acoes-modal {
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+  margin-top: 22px;
+  gap: 9px;
+}
+
+.modal-farmaceutico form {
+  padding: 22px;
+}
+
+.modal-farmaceutico form .cabecalho-modal {
+  margin: -22px -22px 19px;
+}
+
+.texto-apoio-modal {
+  margin: 0 0 17px;
+  color: var(--farma-texto-suave);
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.campo-modal {
+  display: grid;
+  min-width: 0;
+  gap: 6px;
+}
+
+.campo-modal input {
+  height: 42px;
+  padding: 0 12px;
+  font-size: 13px;
+}
+
+.campo-modal textarea {
+  min-height: 116px;
+  padding: 11px 12px;
+  resize: vertical;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.campo-modal select {
+  height: 42px;
+  padding: 0 12px;
+  font-size: 13px;
+}
+
+.campo-modal .ajuda-campo {
+  color: var(--farma-texto-suave);
+  font-size: 10px;
+  line-height: 1.4;
+}
+
+.erro-formulario {
+  display: block;
+  margin-top: 14px;
+}
+
+.campo-modal input[readonly] {
+  color: var(--farma-texto-suave);
+  background: #f5f7f7;
+}
+
+.campo-modal input[aria-invalid="true"],
+.campo-modal textarea[aria-invalid="true"] {
+  border-color: var(--farma-erro);
+}
+
+.erro-campo {
+  min-height: 0;
+  color: var(--farma-erro);
+  font-size: 11px;
+}
+
+.erro-campo:empty {
+  display: none;
+}
+
+.grade-formulario-modal {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 15px;
+}
+
+.campo-modal-completo {
+  grid-column: 1 / -1;
+}
+
+.campo-checkbox {
+  display: flex;
+  align-items: flex-start;
+  padding: 12px;
+  gap: 10px;
+  border: 1px solid var(--farma-borda);
+  border-radius: 9px;
+  background: #f8fafa;
+  cursor: pointer;
+}
+
+.campo-checkbox input {
+  width: 18px;
+  height: 18px;
+  margin: 2px 0 0;
+  flex: 0 0 18px;
+  accent-color: var(--farma-cor);
+}
+
+.campo-checkbox span {
+  display: grid;
+  gap: 2px;
+}
+
+.campo-checkbox strong {
+  color: var(--farma-titulo);
+  font-size: 12px;
+}
+
+.campo-checkbox small {
+  color: var(--farma-texto-suave);
+  font-size: 10px;
+  line-height: 1.4;
+}
+
+/* Feedback */
+.toast-farmaceutico {
+  position: fixed;
+  z-index: 100;
+  right: 22px;
+  bottom: 22px;
+  width: min(380px, calc(100vw - 32px));
+  padding: 13px 15px;
+  transform: translateY(15px);
+  border: 1px solid #b9dfca;
+  border-radius: 9px;
+  opacity: 0;
+  color: #145b3b;
+  background: #f0faf5;
+  box-shadow: 0 14px 38px rgb(25 49 55 / 16%);
+  font-size: 12px;
+  line-height: 1.45;
+  pointer-events: none;
+  transition: opacity 150ms ease, transform 150ms ease;
+}
+
+.toast-farmaceutico.visivel {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.toast-farmaceutico.erro {
+  border-color: #efc0bc;
+  color: #92251e;
+  background: #fff5f4;
+}
+
+.toast-farmaceutico.alerta {
+  border-color: #ead59d;
+  color: #735200;
+  background: #fff9e9;
+}
+
+/* Tablet */
+@media (max-width: 1080px) {
+  .grade-indicadores {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .cartao-indicador:nth-child(2) {
+    border-right: 0;
+  }
+
+  .cartao-indicador:nth-child(-n + 2) {
+    border-bottom: 1px solid var(--farma-borda);
+  }
+
+  .grade-visao-geral {
+    grid-template-columns: minmax(0, 1fr);
+    grid-auto-rows: auto;
+    padding-right: 3px;
+    overflow-y: auto;
+  }
+
+  .cartao-fila,
+  .cartao-alertas {
+    height: auto;
+    min-height: 250px;
+  }
+
+  .cartao-fila .tabela-container {
+    max-height: 340px;
+  }
+}
+
+@media (max-width: 900px) {
+  .estrutura-farmaceutico {
+    display: block;
+    height: 100vh;
+  }
+
+  .menu-lateral-farmaceutico {
+    z-index: 50;
+    display: grid;
+    width: 100%;
+    height: 108px;
+    padding: 12px 16px 9px;
+    overflow: hidden;
+    grid-template-areas:
+      "identidade acoes"
+      "navegacao navegacao";
+    grid-template-columns: minmax(0, 1fr) auto;
+    border-right: 0;
+    border-bottom: 1px solid var(--farma-borda);
+    box-shadow: 0 2px 10px rgb(24 54 59 / 4%);
+  }
+
+  .identidade-lateral {
+    display: flex;
+    align-items: center;
+    padding: 0;
+    gap: 10px;
+    grid-area: identidade;
+    border-bottom: 0;
+  }
+
+  .marca-lateral {
+    font-size: 20px;
+  }
+
+  .marca-lateral .cruz-marca {
+    width: 26px;
+    height: 26px;
+    flex-basis: 26px;
+  }
+
+  .marca-lateral .cruz-marca::before {
+    left: 8px;
+    width: 10px;
+    height: 26px;
+  }
+
+  .marca-lateral .cruz-marca::after {
+    top: 8px;
+    width: 26px;
+    height: 10px;
+  }
+
+  .area-lateral {
+    margin: 1px 0 0;
+    padding-left: 10px;
+    border-left: 1px solid var(--farma-borda);
+    font-size: 11px;
+  }
+
+  .botao-restaurar {
+    display: none;
+  }
+
+  .navegacao-farmaceutico {
+    display: flex;
+    margin: 10px -4px 0;
+    overflow-x: auto;
+    flex-direction: row;
+    gap: 4px;
+    grid-area: navegacao;
+    scrollbar-width: none;
+  }
+
+  .navegacao-farmaceutico::-webkit-scrollbar {
+    display: none;
+  }
+
+  .item-menu-farmaceutico {
+    width: auto;
+    min-width: max-content;
+    min-height: 38px;
+    padding: 7px 10px;
+    flex: 0 0 auto;
+    font-size: 12px;
+  }
+
+  .item-menu-farmaceutico svg {
+    width: 17px;
+    height: 17px;
+    flex-basis: 17px;
+  }
+
+  .acoes-laterais {
+    display: flex;
+    align-items: center;
+    margin: 0;
+    padding: 0;
+    gap: 6px;
+    grid-area: acoes;
+    border-top: 0;
+  }
+
+  .perfil-farmaceutico {
+    display: grid;
+    width: 38px;
+    height: 38px;
+    min-height: 38px;
+    margin: 0;
+    padding: 0;
+    place-items: center;
+    background: #f4f7f7;
+  }
+
+  .perfil-farmaceutico .avatar-farmaceutico {
+    width: 32px;
+    height: 32px;
+    flex-basis: 32px;
+    font-size: 10px;
+  }
+
+  .perfil-farmaceutico .dados-farmaceutico,
+  .perfil-farmaceutico .icone-abrir-perfil {
+    display: none;
+  }
+
+  .botao-sair-lateral {
+    width: 38px;
+    min-height: 38px;
+    padding: 0;
+    justify-content: center;
+    background: #f4f7f7;
+  }
+
+  .botao-sair-lateral span {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+  }
+
+  .conteudo-farmaceutico {
+    height: calc(100vh - 108px);
+    padding: 32px 24px 52px;
+    overflow: hidden;
+  }
+
+  .barra-listagem {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .acoes-cabecalho-painel {
+    align-items: flex-end;
+    flex-direction: column-reverse;
+    gap: 10px;
+  }
+
+  .controles-listagem {
+    width: 100%;
+  }
+
+  .campo-busca {
+    width: auto;
+    flex: 1 1 260px;
+  }
+}
+
+/* Celular */
+@media (max-width: 640px) {
+  .menu-lateral-farmaceutico {
+    padding-right: 12px;
+    padding-left: 12px;
+  }
+
+  .area-lateral {
+    display: none;
+  }
+
+  .conteudo-farmaceutico {
+    padding: 25px 14px 44px;
+  }
+
+  .cabecalho-painel {
+    margin-bottom: 21px;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .acoes-cabecalho-painel {
+    width: 100%;
+    align-items: stretch;
+  }
+
+  .acoes-cabecalho-painel .unidade-painel {
+    align-items: start;
+  }
+
+  .meta-painel,
+  .unidade-painel {
+    justify-items: start;
+    text-align: left;
+  }
+
+  .cabecalho-painel h1 {
+    font-size: 27px;
+  }
+
+  .data-painel {
+    margin-top: 0;
+    white-space: normal;
+  }
+
+  .grade-indicadores {
+    margin-bottom: 20px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    border-radius: 11px;
+  }
+
+  .cartao-indicador {
+    min-height: 96px;
+    padding: 14px;
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .icone-indicador {
+    width: 32px;
+    height: 32px;
+    flex-basis: 32px;
+    border-radius: 8px;
+  }
+
+  .icone-indicador svg {
+    width: 17px;
+    height: 17px;
+  }
+
+  .valor-indicador {
+    font-size: 23px;
+  }
+
+  .rotulo-indicador {
+    font-size: 10px;
+  }
+
+  .grade-visao-geral {
+    gap: 18px;
+  }
+
+  .cartao-conteudo {
+    border-radius: 11px;
+  }
+
+  .topo-cartao-conteudo {
+    min-height: 62px;
+    padding: 15px 16px;
+  }
+
+  .lista-alertas {
+    padding-right: 16px;
+    padding-left: 16px;
+  }
+
+  .alerta-painel,
+  .alerta-estoque {
+    grid-template-columns: 8px minmax(0, 1fr);
+  }
+
+  .alerta-estoque > .acao-tabela {
+    margin: 1px 0 0 -9px;
+    grid-column: 2;
+    justify-self: start;
+  }
+
+  .barra-listagem {
+    padding: 15px 16px;
+  }
+
+  .controles-listagem {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .campo-busca,
+  .campo-filtro {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .campo-busca {
+    flex: 0 0 auto;
+  }
+
+  .tabela-farmaceutico {
+    min-width: 700px;
+  }
+
+  .tabela-farmaceutico th,
+  .tabela-farmaceutico td {
+    padding-right: 14px;
+    padding-left: 14px;
+  }
+
+  .modal-farmaceutico,
+  .modal-confirmacao,
+  .modal-medicamento,
+  .modal-formulario {
+    width: calc(100vw - 18px);
+    max-height: calc(100vh - 18px);
+    border-radius: 11px;
+  }
+
+  .conteudo-modal-laudo,
+  .conteudo-detalhe-medicamento,
+  .conteudo-perfil,
+  .modal-farmaceutico form {
+    padding: 18px;
+  }
+
+  .modal-farmaceutico form .cabecalho-modal {
+    margin: -18px -18px 17px;
+  }
+
+  .cabecalho-modal {
+    padding: 16px 18px;
+  }
+
+  .cabecalho-detalhe-laudo {
+    flex-direction: column;
+  }
+
+  .cabecalho-detalhe-laudo > div:last-child {
+    justify-content: flex-start;
+  }
+
+  .grade-detalhes,
+  .grade-formulario-modal,
+  .dados-conta {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .dados-conta > div,
+  .dados-conta > div:nth-child(odd),
+  .dados-conta > div:nth-child(even) {
+    padding: 14px 0;
+    border-right: 0;
+    border-bottom: 1px solid var(--farma-borda);
+    border-left: 0;
+  }
+
+  .dados-conta > div:nth-last-child(2) {
+    border-bottom: 1px solid var(--farma-borda);
+  }
+
+  .dados-conta > div:last-child {
+    border-bottom: 0;
+  }
+
+  .campo-modal-completo {
+    grid-column: 1;
+  }
+
+  .acoes-modal,
+  .acoes-modal-laudo {
+    align-items: stretch;
+    flex-direction: column-reverse;
+  }
+
+  .acoes-modal > *,
+  .acoes-modal-laudo > .botao-primario,
+  .acoes-modal-laudo > .botao-secundario {
+    width: 100%;
+  }
+
+  .campo-vinculo {
+    width: 100%;
+    flex-basis: auto;
+  }
+
+  .toast-farmaceutico {
+    right: 10px;
+    bottom: 10px;
+    left: 10px;
+    width: auto;
+  }
+}
+
+@media (max-width: 360px) {
+  .marca-lateral {
+    font-size: 19px;
+  }
+
+  .item-menu-farmaceutico {
+    padding-right: 8px;
+    padding-left: 8px;
+    gap: 6px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pagina-farmaceutico *,
+  .pagina-farmaceutico *::before,
+  .pagina-farmaceutico *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+@media (forced-colors: active) {
+  .menu-lateral-farmaceutico,
+  .grade-indicadores,
+  .cartao-conteudo,
+  .modal-farmaceutico,
+  .status {
+    border: 1px solid CanvasText;
+  }
+}

@@ -36,6 +36,15 @@ Esta opção permite testar o fluxo real de cadastro, login, leitura de dados no
 - Python 3.10+ instalado no computador.
 - Arquivo `service-account.json` (credenciais do Firebase Admin SDK) e `.env` configurados dentro da pasta `farma-sus-backend/`.
 
+Copie `farma-sus-backend/.env.example` para `farma-sus-backend/.env` e preencha:
+
+- `FIREBASE_PROJECT_ID`: ID do projeto Firebase.
+- `FIREBASE_WEB_API_KEY`: chave Web usada para validar e renovar a sessão do usuário.
+- `GOOGLE_APPLICATION_CREDENTIALS`: caminho local da conta de serviço.
+- `DEFAULT_UNIT_ID`: unidade usada quando o paciente ainda não possui `unitId` no perfil.
+
+As credenciais reais são ignoradas pelo Git e não devem ser versionadas.
+
 #### 2. Iniciando o servidor pelo terminal (PowerShell ou CMD)
 
 Abra o terminal na pasta raiz do projeto e execute:
@@ -70,6 +79,7 @@ Abra o seu navegador e acesse as rotas:
 - **Medicamentos:** [http://localhost:5000/medicamentos.html](http://localhost:5000/medicamentos.html)
 - **Informações / Avisos:** [http://localhost:5000/informacoes.html](http://localhost:5000/informacoes.html)
 - **Meu Perfil:** [http://localhost:5000/perfil.html](http://localhost:5000/perfil.html)
+- **Área do farmacêutico (MVP demonstrativo):** [http://localhost:5000/farmaceutico](http://localhost:5000/farmaceutico)
 
 ---
 
@@ -92,3 +102,16 @@ Para navegar apenas na interface visual sem precisar iniciar o Python:
 5. **Medicamentos (`medicamentos.html`)**: Consulte a lista e o status de liberação dos medicamentos solicitados.
 6. **Informações (`informacoes.html`)**: Central de avisos e notificações de saúde.
 7. **Meu Perfil (`perfil.html`)**: Exibe e edita os dados cadastrais do paciente autenticado.
+
+### MVP do farmacêutico
+
+A área do farmacêutico fica isolada da jornada do paciente e pode ser aberta diretamente em
+`frontend/farmaceutico.html` ou em `http://localhost:5000/farmaceutico` quando o Flask estiver rodando.
+Ela usa dados demonstrativos persistidos no navegador para permitir testar o fluxo completo de
+análise, aprovação ou reprovação, vínculo com medicamento, liberação e atualização do estoque.
+Use **Restaurar demonstração** no menu lateral para voltar ao estado inicial.
+
+Quando existe uma sessão Firebase válida, a área do farmacêutico deixa o modo demonstrativo e usa
+as rotas `/api/pharmacist/*`. Os dados são lidos das coleções `users`, `exams` e `medicines`; cada
+liberação também cria um registro em `dispensations`. O perfil farmacêutico precisa conter
+`role: "pharmacist"`, `active: true`, `unitId` e, opcionalmente, `crf` e `unitName`.
