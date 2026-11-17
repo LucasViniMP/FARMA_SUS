@@ -179,7 +179,11 @@
       try {
         data = await response.json();
       } catch (_) {
-        throw new Error("Erro de resposta do servidor (HTTP " + response.status + "). Verifique se o backend está rodando.");
+        throw new Error(
+          "Erro de resposta do servidor (HTTP " +
+            response.status +
+            "). Verifique se o backend está rodando.",
+        );
       }
 
       if (!response.ok) {
@@ -229,7 +233,11 @@
       try {
         data = await response.json();
       } catch (_) {
-        throw new Error("Erro de resposta do servidor (HTTP " + response.status + "). Certifique-se de acessar via http://localhost:5000.");
+        throw new Error(
+          "Erro de resposta do servidor (HTTP " +
+            response.status +
+            "). Certifique-se de acessar via http://localhost:5000.",
+        );
       }
 
       if (!response.ok) {
@@ -264,13 +272,19 @@
           token: resultado.token || "",
         };
 
-        sessionStorage.setItem("farmaSUSUsuario", JSON.stringify(usuarioSessao));
-        localStorage.setItem("farmasus_dados_perfil", JSON.stringify({
-          nomeCompleto: usuarioSessao.name,
-          email: usuarioSessao.email,
-          cpf: usuarioSessao.cpf,
-          telefone: "",
-        }));
+        sessionStorage.setItem(
+          "farmaSUSUsuario",
+          JSON.stringify(usuarioSessao),
+        );
+        localStorage.setItem(
+          "farmasus_dados_perfil",
+          JSON.stringify({
+            nomeCompleto: usuarioSessao.name,
+            email: usuarioSessao.email,
+            cpf: usuarioSessao.cpf,
+            telefone: "",
+          }),
+        );
 
         mostrarMensagem(
           form,
@@ -303,19 +317,22 @@
       if (resultado.token) {
         localStorage.setItem("firebase_token", resultado.token);
       }
-        if (resultado.refreshToken) {
-          localStorage.setItem("firebase_refresh_token", resultado.refreshToken);
-        }
+      if (resultado.refreshToken) {
+        localStorage.setItem("firebase_refresh_token", resultado.refreshToken);
+      }
 
       sessionStorage.setItem("farmaSUSUsuario", JSON.stringify(usuarioSessao));
 
       if (resultado.name || resultado.cpf) {
-        localStorage.setItem("farmasus_dados_perfil", JSON.stringify({
-          nomeCompleto: usuarioSessao.name,
-          email: usuarioSessao.email,
-          cpf: usuarioSessao.cpf,
-          telefone: usuarioSessao.telefone || "",
-        }));
+        localStorage.setItem(
+          "farmasus_dados_perfil",
+          JSON.stringify({
+            nomeCompleto: usuarioSessao.name,
+            email: usuarioSessao.email,
+            cpf: usuarioSessao.cpf,
+            telefone: usuarioSessao.telefone || "",
+          }),
+        );
       }
 
       mostrarMensagem(
@@ -326,10 +343,18 @@
           : "Login validado com sucesso! Abrindo área de início...",
       );
       window.setTimeout(() => {
-        window.location.href = resultado.role === "pharmacist" ? "farmaceutico.html" : "inicio.html";
+        const destino =
+          { admin: "admin.html", pharmacist: "farmaceutico.html" }[
+            resultado.role
+          ] || "inicio.html";
+        window.location.href = destino;
       }, 900);
     } catch (erro) {
-      mostrarMensagem(form, "erro", erro.message || "E-mail ou senha incorretos.");
+      mostrarMensagem(
+        form,
+        "erro",
+        erro.message || "E-mail ou senha incorretos.",
+      );
     }
   }
 

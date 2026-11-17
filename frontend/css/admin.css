@@ -1,0 +1,162 @@
+/* Extras da área administrativa — usa as mesmas variáveis do painel do farmacêutico */
+.pagina-farmaceutico .painel-farmaceutico.ativo {
+  overflow: auto;
+  padding-bottom: 6px;
+}
+.grade-indicadores.tres {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+.bloco-grafico {
+  padding: 20px 22px;
+  flex: 0 0 auto;
+}
+.bloco-grafico h2,
+.bloco-barras h2 {
+  margin: 0 0 16px;
+  color: var(--farma-titulo);
+  font-size: 17px;
+  font-weight: 680;
+}
+.grafico {
+  display: flex;
+  align-items: flex-end;
+  gap: 14px;
+  height: 170px;
+}
+.grafico div {
+  flex: 1;
+  display: grid;
+  gap: 7px;
+  align-items: end;
+  height: 100%;
+  text-align: center;
+  font-size: 11px;
+  color: var(--farma-texto-suave);
+}
+.grafico i {
+  display: block;
+  border-radius: 6px;
+  background: #cfe4e6;
+  min-height: 6px;
+}
+.grafico div:last-child i {
+  background: var(--farma-cor);
+}
+.duas-colunas {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 16px;
+  flex: 0 0 auto;
+}
+.bloco-barras {
+  padding: 20px 22px;
+}
+.linha-barra {
+  margin-bottom: 13px;
+  font-size: 12px;
+}
+.linha-barra span {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 5px;
+}
+.trilho {
+  height: 7px;
+  border-radius: 99px;
+  background: #e8eeee;
+  overflow: hidden;
+}
+.trilho b {
+  display: block;
+  height: 100%;
+  border-radius: 99px;
+  background: var(--farma-cor);
+}
+.trilho .alerta {
+  background: #d9a441;
+}
+.trilho .erro {
+  background: var(--farma-erro);
+}
+.trilho .ok {
+  background: var(--farma-sucesso);
+}
+.filtros-linha {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+.status.desativado {
+  color: #5f6b70;
+  background: #eef1f1;
+}
+.cartao-listagem {
+  flex: 1 0 260px;
+}
+@media (max-width: 900px) {
+  .grade-indicadores.tres,
+  .duas-colunas {
+    grid-template-columns: 1fr;
+  }
+  .filtros-linha {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .grafico {
+    gap: 7px;
+  }
+}
+.modal-formulario input[readonly] {
+  background: #f6f8f8;
+  color: var(--farma-texto-suave);
+}
+.acoes-linha {
+  display: flex;
+  gap: 4px;
+  justify-content: flex-end;
+}
+/* Desativar fica vermelho ao passar o mouse; a confirmação usa o mesmo visual dos outros modais */
+.acoes-linha .acao-desativar:hover,
+.acoes-linha .acao-desativar:focus-visible {
+  color: var(--farma-erro);
+  background: #fff0ef;
+}
+.modal-confirmar {
+  width: min(420px, calc(100vw - 32px));
+}
+.conteudo-confirmar {
+  padding: 24px;
+}
+.conteudo-confirmar h2 {
+  margin: 0 0 8px;
+  color: var(--farma-titulo);
+  font-size: 18px;
+  font-weight: 680;
+}
+.conteudo-confirmar p {
+  margin: 0 0 22px;
+  color: var(--farma-texto-suave);
+  font-size: 13px;
+  line-height: 1.55;
+}
+.modal-confirmar .botao-perigo {
+  border: 1px solid var(--farma-erro);
+  color: #fff;
+  background: var(--farma-erro);
+}
+.modal-confirmar .botao-perigo:hover {
+  border-color: #8f1d14;
+  background: #8f1d14;
+}
+
+/* Lista de resultados da busca de usuário (caixa de seleção com várias linhas) */
+#fm-usuario {
+  height: auto;
+  min-height: 112px;
+  padding: 4px;
+}
+#fm-usuario option {
+  padding: 7px 8px;
+  border-radius: 6px;
+}

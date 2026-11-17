@@ -15,6 +15,7 @@ import backend.files_routes
 import backend.routes
 import backend.routes.exams
 import backend.routes.pharmacist
+import backend.routes.admin 
 
 sys.modules["farmasus"] = backend
 sys.modules["farmasus.config"] = backend.config
@@ -26,3 +27,4 @@ sys.modules["farmasus.files_routes"] = backend.files_routes
 sys.modules["farmasus.routes"] = backend.routes
 sys.modules["farmasus.routes.exams"] = backend.routes.exams
 sys.modules["farmasus.routes.pharmacist"] = backend.routes.pharmacist
+sys.modules["farmasus.routes.admin"] = backend.routes.admin

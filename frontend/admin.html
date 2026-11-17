@@ -1,0 +1,483 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Área administrativa | FarmaSUS</title>
+    <link rel="stylesheet" href="css/global.css" />
+    <link rel="stylesheet" href="css/farmaceutico.css" />
+    <link rel="stylesheet" href="css/admin.css" />
+    <script src="assets/js/painel-admin.js" defer></script>
+  </head>
+  <body class="pagina-farmaceutico">
+    <div class="estrutura-farmaceutico">
+      <aside
+        class="menu-lateral-farmaceutico"
+        aria-label="Navegação da área administrativa"
+      >
+        <div class="identidade-lateral">
+          <a class="marca marca-lateral" href="admin.html"
+            ><span class="cruz-marca" aria-hidden="true"></span
+            ><span>FarmaSUS</span></a
+          >
+          <span class="area-lateral">Área administrativa</span>
+        </div>
+        <nav class="navegacao-farmaceutico" aria-label="Seções do painel">
+          <a
+            class="item-menu-farmaceutico ativo"
+            href="#painel"
+            data-view="painel"
+            aria-current="page"
+            ><svg viewBox="0 0 24 24">
+              <path
+                d="M4 13h6V4H4v9Zm0 7h6v-4H4v4Zm10 0h6v-9h-6v9Zm0-16v4h6V4h-6Z"
+              /></svg
+            ><span>Painel</span></a
+          >
+          <a
+            class="item-menu-farmaceutico"
+            href="#farmaceuticos"
+            data-view="farmaceuticos"
+            ><svg viewBox="0 0 24 24">
+              <circle cx="9" cy="8" r="3" />
+              <path
+                d="M3.5 19c.5-3.3 2.3-5 5.5-5s5 1.7 5.5 5M17 8v6M14 11h6"
+              /></svg
+            ><span>Farmacêuticos</span></a
+          >
+          <a
+            class="item-menu-farmaceutico"
+            href="#usuarios"
+            data-view="usuarios"
+            ><svg viewBox="0 0 24 24">
+              <circle cx="9" cy="8" r="3" />
+              <path
+                d="M3 19c.5-3.3 2.3-5 6-5s5.5 1.7 6 5M16 5a3 3 0 0 1 0 6M18 14c1.8.5 2.8 2.2 3 5"
+              /></svg
+            ><span>Usuários</span></a
+          >
+          <a class="item-menu-farmaceutico" href="#estoque" data-view="estoque"
+            ><svg viewBox="0 0 24 24">
+              <path
+                d="m10.5 20.5-7-7a4.95 4.95 0 0 1 7-7l7 7a4.95 4.95 0 0 1-7 7Z"
+              />
+              <path d="m7 10 7 7" /></svg
+            ><span>Estoque</span></a
+          >
+          <a
+            class="item-menu-farmaceutico"
+            href="#relatorios"
+            data-view="relatorios"
+            ><svg viewBox="0 0 24 24">
+              <path d="M4 20V10M10 20V4M16 20v-7M22 20H2" /></svg
+            ><span>Relatórios</span></a
+          >
+        </nav>
+        <div class="acoes-laterais">
+          <div class="perfil-farmaceutico">
+            <span class="avatar-farmaceutico" aria-hidden="true">AD</span>
+            <span class="dados-farmaceutico"
+              ><strong>Administrador</strong><small>Rede FarmaSUS</small></span
+            >
+          </div>
+          <a class="botao-sair botao-sair-lateral" href="index.html"
+            ><svg viewBox="0 0 24 24">
+              <path
+                d="M10 17l5-5-5-5M15 12H3M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"
+              /></svg
+            ><span>Sair</span></a
+          >
+        </div>
+      </aside>
+
+      <main class="conteudo-farmaceutico">
+        <section class="painel-farmaceutico ativo" data-painel="painel">
+          <div class="cabecalho-painel">
+            <div>
+              <h1>Painel</h1>
+              <p class="descricao-painel">
+                Estatísticas gerais do sistema FarmaSUS.
+              </p>
+            </div>
+          </div>
+          <div class="grade-indicadores" id="indicadores"></div>
+          <div class="cartao-conteudo bloco-grafico">
+            <h2>Laudos analisados por semana</h2>
+            <div class="grafico" id="grafico"></div>
+          </div>
+        </section>
+
+        <section class="painel-farmaceutico" data-painel="farmaceuticos" hidden>
+          <div class="cabecalho-painel">
+            <div>
+              <h1>Farmacêuticos</h1>
+              <p class="descricao-painel">
+                Conceda, ajuste ou retire o acesso de farmacêutico.
+              </p>
+            </div>
+            <button class="botao-primario" id="novo-farmaceutico" type="button">
+              Novo farmacêutico
+            </button>
+          </div>
+          <div class="cartao-conteudo cartao-listagem">
+            <div class="barra-listagem">
+              <h2>Equipe</h2>
+              <label class="campo-busca"
+                ><svg viewBox="0 0 24 24">
+                  <circle cx="11" cy="11" r="7" />
+                  <path d="m20 20-3.5-3.5" /></svg
+                ><input
+                  id="busca-farmaceuticos"
+                  type="search"
+                  placeholder="Buscar por nome, CPF ou unidade"
+              /></label>
+            </div>
+            <div class="tabela-container">
+              <table class="tabela-farmaceutico">
+                <thead>
+                  <tr>
+                    <th>Nome</th>
+                    <th>CPF</th>
+                    <th>Unidade</th>
+                    <th>Situação</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody id="lista-farmaceuticos"></tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <section class="painel-farmaceutico" data-painel="usuarios" hidden>
+          <div class="cabecalho-painel">
+            <div>
+              <h1>Usuários</h1>
+              <p class="descricao-painel">
+                Pacientes cadastrados e andamento de laudos e medicamentos.
+              </p>
+            </div>
+            <button
+              class="botao-secundario"
+              data-exportar="usuarios"
+              type="button"
+            >
+              Exportar
+            </button>
+          </div>
+          <div class="grade-indicadores tres" id="indicadores-usuarios"></div>
+          <div class="cartao-conteudo cartao-listagem">
+            <div class="barra-listagem">
+              <h2>Pacientes</h2>
+              <label class="campo-busca"
+                ><svg viewBox="0 0 24 24">
+                  <circle cx="11" cy="11" r="7" />
+                  <path d="m20 20-3.5-3.5" /></svg
+                ><input
+                  id="busca-usuarios"
+                  type="search"
+                  placeholder="Buscar por nome, CPF ou unidade"
+              /></label>
+            </div>
+            <div class="tabela-container">
+              <table class="tabela-farmaceutico">
+                <thead>
+                  <tr>
+                    <th>Paciente</th>
+                    <th>Unidade</th>
+                    <th>Laudo</th>
+                    <th>Medicamento</th>
+                  </tr>
+                </thead>
+                <tbody id="lista-usuarios"></tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <section class="painel-farmaceutico" data-painel="estoque" hidden>
+          <div class="cabecalho-painel">
+            <div>
+              <h1>Estoque</h1>
+              <p class="descricao-painel">
+                Verifique e ajuste a quantidade de cada medicamento por unidade.
+              </p>
+            </div>
+            <button
+              class="botao-secundario"
+              data-exportar="estoque"
+              type="button"
+            >
+              Exportar
+            </button>
+          </div>
+          <div class="cartao-conteudo cartao-listagem">
+            <div class="barra-listagem">
+              <h2>Medicamentos</h2>
+              <div class="filtros-linha">
+                <label class="campo-filtro"
+                  ><select id="filtro-estoque">
+                    <option value="">Todas as situações</option>
+                    <option value="baixo">Estoque baixo</option>
+                    <option value="esgotado">Esgotado</option>
+                    <option value="ok">Disponível</option>
+                  </select></label
+                >
+                <label class="campo-busca"
+                  ><svg viewBox="0 0 24 24">
+                    <circle cx="11" cy="11" r="7" />
+                    <path d="m20 20-3.5-3.5" /></svg
+                  ><input
+                    id="busca-estoque"
+                    type="search"
+                    placeholder="Buscar medicamento ou unidade"
+                /></label>
+              </div>
+            </div>
+            <div class="tabela-container">
+              <table class="tabela-farmaceutico">
+                <thead>
+                  <tr>
+                    <th>Medicamento</th>
+                    <th>Unidade</th>
+                    <th>Quantidade</th>
+                    <th>Nível</th>
+                    <th>Situação</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody id="lista-estoque"></tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <section class="painel-farmaceutico" data-painel="relatorios" hidden>
+          <div class="cabecalho-painel">
+            <div>
+              <h1>Relatórios</h1>
+              <p class="descricao-painel">
+                Consolidado de laudos e medicamentos.
+              </p>
+            </div>
+            <button
+              class="botao-secundario"
+              data-exportar="relatorio"
+              type="button"
+            >
+              Exportar relatório
+            </button>
+          </div>
+          <div class="duas-colunas" id="barras-relatorio"></div>
+          <div class="cartao-conteudo cartao-listagem">
+            <div class="barra-listagem">
+              <h2>Detalhamento de medicamentos</h2>
+            </div>
+            <div class="tabela-container">
+              <table class="tabela-farmaceutico">
+                <thead>
+                  <tr>
+                    <th>Medicamento</th>
+                    <th>Paciente</th>
+                    <th>Situação</th>
+                  </tr>
+                </thead>
+                <tbody id="lista-relatorio"></tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <dialog
+      class="modal-farmaceutico modal-formulario"
+      id="modal-farmaceutico"
+      aria-labelledby="titulo-farmaceutico"
+    >
+      <form id="form-farmaceutico" novalidate>
+        <div class="cabecalho-modal">
+          <div>
+            <p class="etiqueta-secao">Equipe</p>
+            <h2 id="titulo-farmaceutico">Novo farmacêutico</h2>
+          </div>
+          <button
+            class="botao-fechar-modal"
+            type="button"
+            data-fechar="modal-farmaceutico"
+            aria-label="Fechar"
+          >
+            <svg aria-hidden="true" viewBox="0 0 24 24">
+              <path d="m6 6 12 12M18 6 6 18"></path>
+            </svg>
+          </button>
+        </div>
+        <div class="grade-formulario-modal">
+          <div
+            class="campo-modal campo-modal-completo"
+            id="bloco-busca-usuario"
+          >
+            <label for="fm-busca">Usuário cadastrado *</label>
+            <input
+              id="fm-busca"
+              type="search"
+              placeholder="Buscar por nome, CPF ou e-mail"
+              autocomplete="off"
+            />
+            <select
+              id="fm-usuario"
+              name="userId"
+              size="4"
+              aria-label="Resultados da busca de usuários"
+            ></select>
+          </div>
+          <div class="campo-modal campo-modal-completo">
+            <label for="fm-name">Nome completo</label
+            ><input id="fm-name" type="text" readonly tabindex="-1" />
+          </div>
+          <div class="campo-modal">
+            <label for="fm-cpf">CPF</label
+            ><input id="fm-cpf" type="text" readonly tabindex="-1" />
+          </div>
+          <div class="campo-modal">
+            <label for="fm-email">E-mail</label
+            ><input id="fm-email" type="text" readonly tabindex="-1" />
+          </div>
+          <div class="campo-modal">
+            <label for="fm-crf">CRF *</label
+            ><input
+              id="fm-crf"
+              name="crf"
+              type="text"
+              maxlength="30"
+              placeholder="CRF-PA 0000"
+              required
+            />
+          </div>
+          <div class="campo-modal">
+            <label for="fm-unitId">Unidade *</label
+            ><select id="fm-unitId" name="unitId" required></select>
+          </div>
+          <div class="campo-modal campo-modal-completo">
+            <label for="fm-nivel">Nível de acesso</label
+            ><input id="fm-nivel" type="text" readonly tabindex="-1" />
+          </div>
+        </div>
+        <span
+          class="erro-campo erro-formulario"
+          id="erro-farmaceutico"
+          role="alert"
+        ></span>
+        <div class="acoes-modal">
+          <button
+            class="botao-secundario"
+            type="button"
+            data-fechar="modal-farmaceutico"
+          >
+            Cancelar</button
+          ><button
+            class="botao-primario"
+            id="salvar-farmaceutico"
+            type="submit"
+          >
+            Conceder acesso
+          </button>
+        </div>
+      </form>
+    </dialog>
+    <dialog
+      class="modal-farmaceutico modal-formulario"
+      id="modal-estoque"
+      aria-labelledby="titulo-estoque"
+    >
+      <form id="form-estoque" novalidate>
+        <div class="cabecalho-modal">
+          <div>
+            <p class="etiqueta-secao">Estoque</p>
+            <h2 id="titulo-estoque">Ajustar estoque</h2>
+          </div>
+          <button
+            class="botao-fechar-modal"
+            type="button"
+            data-fechar="modal-estoque"
+            aria-label="Fechar"
+          >
+            <svg aria-hidden="true" viewBox="0 0 24 24">
+              <path d="m6 6 12 12M18 6 6 18"></path>
+            </svg>
+          </button>
+        </div>
+        <div class="grade-formulario-modal">
+          <div class="campo-modal campo-modal-completo">
+            <label for="est-nome">Medicamento</label
+            ><input id="est-nome" type="text" readonly />
+          </div>
+          <div class="campo-modal">
+            <label for="est-qtd">Quantidade em estoque *</label
+            ><input
+              id="est-qtd"
+              name="quantity"
+              type="number"
+              min="0"
+              step="1"
+              required
+            />
+          </div>
+          <div class="campo-modal">
+            <label for="est-min">Estoque mínimo *</label
+            ><input
+              id="est-min"
+              name="minimum"
+              type="number"
+              min="0"
+              step="1"
+              required
+            />
+          </div>
+        </div>
+        <span
+          class="erro-campo erro-formulario"
+          id="erro-estoque"
+          role="alert"
+        ></span>
+        <div class="acoes-modal">
+          <button
+            class="botao-secundario"
+            type="button"
+            data-fechar="modal-estoque"
+          >
+            Cancelar</button
+          ><button class="botao-primario" type="submit">Salvar ajuste</button>
+        </div>
+      </form>
+    </dialog>
+    <dialog
+      class="modal-farmaceutico modal-confirmar"
+      id="modal-confirmar"
+      aria-labelledby="titulo-confirmar"
+    >
+      <div class="conteudo-confirmar">
+        <h2 id="titulo-confirmar">Desativar farmacêutico?</h2>
+        <p id="texto-confirmar"></p>
+        <div class="acoes-modal">
+          <button
+            class="botao-secundario"
+            type="button"
+            data-fechar="modal-confirmar"
+            autofocus
+          >
+            Cancelar</button
+          ><button class="botao-perigo" id="confirmar-desativar" type="button">
+            Desativar
+          </button>
+        </div>
+      </div>
+    </dialog>
+    <div
+      class="toast-farmaceutico"
+      id="toast"
+      role="status"
+      aria-live="polite"
+    ></div>
+  </body>
+</html>
