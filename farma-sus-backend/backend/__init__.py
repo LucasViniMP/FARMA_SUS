@@ -4,6 +4,7 @@ from flask import Flask, jsonify
 
 from .config import Config
 from .routes.exams import exams_bp
+from .routes.admin import admin_bp 
 from .routes.pharmacist import pharmacist_bp
 from .files_routes import files_bp
 from .auth_routes import auth_bp
@@ -46,6 +47,7 @@ def create_app(test_config: dict | None = None) -> Flask:
 
     app.register_blueprint(exams_bp)
     app.register_blueprint(pharmacist_bp)
+    app.register_blueprint(admin_bp) 
     app.register_blueprint(files_bp)
     app.register_blueprint(auth_bp)
     return app

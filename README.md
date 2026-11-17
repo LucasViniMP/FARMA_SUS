@@ -11,8 +11,19 @@ Sistema web para acompanhamento e solicitação de medicamentos disponibilizados
 - **Felipe Deivid**: Tela de Perfil e integrações.
 - **Gabriel Cardoso**: Tela de Medicamentos e integrações.
 - **João Antônio**: Tela de Laudos e Exames e integrações.
-- **Lucas Vinicius**: Telas de Login, Cadastro, Informações e integrações.
-- **Yasmin Rios**: Tela de Início e integrações.
+- **Lucas Vinicius**: Telas de Login, Cadastro, Informações, Área do farmacêutico e integrações.
+  - Área do farmacêutico: análise de laudos (aprovação ou reprovação), vínculo do laudo com o
+    medicamento, liberação e atualização do estoque, cadastro de clientes e pedidos manuais.
+  - Integração da área com as rotas `/api/pharmacist/*` e com as coleções `users`, `exams`,
+    `medicines` e `dispensations`.
+- **Yasmin Rios**: Tela de Início, Área do administrador e integrações.
+  - Área do administrador: painel com resumo, gestão de farmacêuticos, lista de pacientes e ajuste
+    de estoque, com exportação em CSV.
+  - Níveis de acesso: concessão do acesso de farmacêutico a partir de um paciente já cadastrado,
+    com CRF e unidade, edição, desativação e reativação.
+  - Backend do administrador: rotas `/api/admin/*` (`backend/routes/admin.py`), com acesso restrito
+    ao papel `admin`.
+  - Testes automatizados do administrador (`tests/test_admin.py`).
 
 ---
 
@@ -33,6 +44,7 @@ Você pode rodar o projeto de duas formas: **com o servidor backend** (recomenda
 Esta opção permite testar o fluxo real de cadastro, login, leitura de dados no Firestore e upload/listagem de exames.
 
 #### 1. Pré-requisitos
+
 - Python 3.10+ instalado no computador.
 - Arquivo `service-account.json` (credenciais do Firebase Admin SDK) e `.env` configurados dentro da pasta `farma-sus-backend/`.
 
@@ -55,6 +67,7 @@ cd farma-sus-backend
 ```
 
 > **Dica:** Se o ambiente virtual (`.venv`) ainda não estiver ativo ou configurado na sua máquina:
+>
 > ```powershell
 > cd farma-sus-backend
 > python -m venv .venv
@@ -64,6 +77,7 @@ cd farma-sus-backend
 > ```
 
 Quando o servidor iniciar, você verá uma mensagem similar a:
+
 ```text
  * Running on http://127.0.0.1:5000
 ```
@@ -80,6 +94,7 @@ Abra o seu navegador e acesse as rotas:
 - **Informações / Avisos:** [http://localhost:5000/informacoes.html](http://localhost:5000/informacoes.html)
 - **Meu Perfil:** [http://localhost:5000/perfil.html](http://localhost:5000/perfil.html)
 - **Área do farmacêutico (MVP demonstrativo):** [http://localhost:5000/farmaceutico](http://localhost:5000/farmaceutico)
+- **Área do administrador:** [http://localhost:5000/admin.html](http://localhost:5000/admin.html)
 
 ---
 
@@ -115,3 +130,75 @@ Quando existe uma sessão Firebase válida, a área do farmacêutico deixa o mod
 as rotas `/api/pharmacist/*`. Os dados são lidos das coleções `users`, `exams` e `medicines`; cada
 liberação também cria um registro em `dispensations`. O perfil farmacêutico precisa conter
 `role: "pharmacist"`, `active: true`, `unitId` e, opcionalmente, `crf` e `unitName`.
+
+### Área do administrador
+
+A área do administrador pode ser aberta diretamente em `frontend/admin.html` ou em
+`http://localhost:5000/admin.html` quando o Flask estiver rodando. Sem sessão Firebase ela usa dados
+demonstrativos persistidos no navegador (chave `farmasus_admin_demo` do `localStorage`), o que permite
+testar o painel, a concessão de acesso, a edição de farmacêuticos e o ajuste de estoque sem banco de
+dados. Para voltar ao estado inicial, limpe os dados do site no navegador.
+
+Quando existe uma sessão Firebase válida, a tela deixa o modo demonstrativo e usa as rotas
+`/api/admin/*`. Apenas contas com `role: "admin"` acessam essas rotas; quem está logado com outro
+papel é devolvido ao login. O primeiro administrador é criado fora da tela, com
+`python create_user.py email senha admin "Nome"`.
+
+#### Níveis de acesso
+
+O sistema trabalha do menor para o maior privilégio:
+
+- **Paciente (`patient`):** nível padrão. Todo cadastro feito em `cadastro.html` nasce assim, e o papel
+  é definido pelo servidor, nunca pelo navegador.
+- **Farmacêutico (`pharmacist`):** só o administrador concede, elevando uma conta que já existe.
+- **Administrador (`admin`):** maior nível, criado fora da tela.
+
+#### Novo farmacêutico
+
+O botão **Novo farmacêutico** não cria conta nem senha. O administrador busca, por nome, CPF ou
+e-mail, uma conta de paciente já cadastrada e preenche apenas o que pertence ao nível de farmacêutico:
+**CRF** (obrigatório, no formato `CRF-PA 0000`) e **Unidade** (lista vinda da coleção `units`). Nome,
+CPF e e-mail aparecem somente para leitura, pois pertencem ao perfil da própria pessoa. Quem ainda não
+tem conta precisa se cadastrar antes. Ao confirmar, o servidor grava em `users/<id>` os campos
+`role: "pharmacist"`, `active: true`, `crf`, `unitId`, `unitName`, `grantedBy` e `grantedAt`.
+
+Na edição, apenas CRF e unidade podem ser alterados. **Desativar** grava `active: false` e derruba as
+sessões abertas do profissional; o acesso pode ser reativado depois.
+
+#### Rotas `/api/admin/*`
+
+Todas exigem `role: "admin"` e respondem `{ "error": "mensagem" }` em caso de falha.
+
+- `GET /summary`: totais do painel (pacientes, laudos do mês, farmacêuticos ativos, laudos e
+  medicamentos por status e laudos analisados por semana).
+- `GET /units`: unidades disponíveis para o formulário.
+- `GET /pharmacists`: lista de farmacêuticos.
+- `POST /pharmacists`: recebe `{ userId, crf, unitId }` e eleva um paciente existente. Responde `404`
+  se o usuário não existe, `409` se ele já é farmacêutico ou administrador e `422` para dados inválidos.
+- `PATCH /pharmacists/<id>`: aceita somente `crf`, `unitId` e `active`, e só se o alvo já for farmacêutico.
+- `GET /users`: pacientes, com o laudo mais recente e a situação do medicamento de cada um.
+- `GET /stock` e `PATCH /stock/<id>`: consulta e ajuste de `quantity` e `minimum` (inteiros maiores
+  ou iguais a zero).
+
+Qualquer `role` enviado no corpo de uma requisição é ignorado. A tela também renova o token do Firebase
+automaticamente por `/api/auth/refresh`, o botão **Sair** apaga a sessão do navegador e as exportações
+em CSV neutralizam células que começam com `=`, `+`, `-` ou `@`.
+
+#### Dados utilizados
+
+As rotas leem `users`, `units`, `exams` e `medicines`. Para a conexão com o banco, a coleção `units`
+(documentos com o campo `name`) precisa existir e, por enquanto, tem uma única unidade: **Altamira**
+(sugestão de id: `altamira`; use o mesmo valor em `DEFAULT_UNIT_ID` no `.env`); `medicines` precisa ter `name`, `quantity`, `unitId` e
+`minimum`; e `exams` usa `patientId`, `status`, `medicineName`, `unitId`, `submittedAt` e `reviewedAt`
+(este último alimenta o gráfico de laudos por semana). Se algum nome de campo for diferente no banco
+real, ajuste em `farma-sus-backend/backend/routes/admin.py`.
+
+#### Testes
+
+Na pasta `farma-sus-backend`, com o ambiente virtual ativo, rode `python -m pytest`. Os 69 testes
+passam sem acesso ao banco, pois `tests/test_admin.py` usa um Firestore simulado e cobre permissões,
+elevação de paciente a farmacêutico, validações de CRF e unidade, edição e estoque.
+
+Comprovação da execução (`python -m pytest` em `farma-sus-backend`): 69 testes aprovados, sendo 46 de
+`tests/test_admin.py` e 23 dos testes já existentes (`test_app.py`, `test_auth.py`,
+`test_pharmacist.py` e `test_storage.py`).
